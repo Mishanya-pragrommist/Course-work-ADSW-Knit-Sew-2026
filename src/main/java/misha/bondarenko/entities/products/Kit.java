@@ -57,8 +57,8 @@ public class Kit extends Item {
     }
 
     @Override
-    public void add(Item item) {
-        components.add(item);
+    public void add(Item... item) {
+        components.addAll(List.of(item));
     }
 
     @Override

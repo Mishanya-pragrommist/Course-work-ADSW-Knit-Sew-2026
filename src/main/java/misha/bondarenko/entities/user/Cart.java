@@ -41,7 +41,7 @@ public class Cart {
      * @param product товар
      */
     public void addProduct(Product product) {
-        items.add(product);
+        items.add(new CartItem(product));
     }
 
     /**

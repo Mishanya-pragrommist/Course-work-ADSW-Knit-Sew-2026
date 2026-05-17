@@ -36,8 +36,8 @@ public class Catalog extends Item {
     // --- Реалізація методів роботи з нащадками ---
 
     @Override
-    public void add(Item item) {
-        children.add(item);
+    public void add(Item... item) {
+        children.addAll(List.of(item));
     }
 
     @Override

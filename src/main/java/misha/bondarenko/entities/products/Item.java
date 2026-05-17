@@ -43,7 +43,7 @@ public abstract class Item {
      * Додавання елементу до колекції (каталогу або сету)
      * @param item об'єкт для додавання
      */
-    public void add(Item item) {
+    public void add(Item... item) {
         throw new UnsupportedOperationException("Операція додавання не підтримується цим елементом.");
     }
 

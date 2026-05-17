@@ -1,5 +1,11 @@
 package misha.bondarenko.entities.user;
 
-public class CartItem {
+import misha.bondarenko.entities.products.Item;
 
+public class CartItem {
+    private Item item;
+
+    public CartItem(Item item) {
+        this.item = item;
+    }
 }

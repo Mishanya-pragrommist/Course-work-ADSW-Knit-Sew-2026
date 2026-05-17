@@ -1,14 +1,20 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 /**
- * Клас-композит (Composite).
  * Представляє категорію або каталог, що містить інші елементи (товари або підкаталоги).
  */
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Catalog extends Item {
 
     private final List<Item> children = new ArrayList<>();
@@ -18,7 +24,7 @@ public class Catalog extends Item {
     }
 
     /**
-     * Обчислює загальну вартість усіх елементів у цьому каталозі.
+     * Обчислює загальну вартість усіх елементів у цьому каталозі
      */
     @Override
     public BigDecimal getPrice() {

@@ -1,4 +1,4 @@
-package misha.bondarenko.entities.products;
+package misha.bondarenko.enums;
 
 import lombok.Getter;
 

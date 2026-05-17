@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface CatalogRepository extends JpaRepository<Catalog, Long> {
     List<Catalog> findByParentIsNull();
-    List<Catalog> findByCode(String code);
     List<Catalog> findByName(String name);
 }

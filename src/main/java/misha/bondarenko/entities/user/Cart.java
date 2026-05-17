@@ -22,10 +22,10 @@ public class Cart {
     @Id
     private Long id;
 
-    private ArrayList<Product> products;
+    private ArrayList<CartItem> items;
 
-    public Cart(ArrayList<Product> products) {
-        this.products = products;
+    public Cart(ArrayList<CartItem> items) {
+        this.items = items;
     }
 
     /**
@@ -33,7 +33,7 @@ public class Cart {
      * @return загальна вартість з урахуванням знижок
      */
     public BigDecimal getTotalPrice() {
-        return products.stream().map(Product::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return items.stream().map(Product::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /**
@@ -41,7 +41,7 @@ public class Cart {
      * @param product товар
      */
     public void addProduct(Product product) {
-        products.add(product);
+        items.add(product);
     }
 
     /**
@@ -49,7 +49,7 @@ public class Cart {
      * @param product товар для видалення
      */
     public void removeProduct(Product product) {
-        products.remove(product);
+        items.remove(product);
     }
 
 

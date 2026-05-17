@@ -2,6 +2,8 @@ package misha.bondarenko.entities.products;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,8 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Product extends Item {
 
@@ -20,7 +24,7 @@ public class Product extends Item {
     @Column(nullable = false, unique = true)
     protected String code; // Код виду 010203
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     protected String article; // Артикул
 
     protected String supplier; // Постачальник
@@ -28,33 +32,10 @@ public class Product extends Item {
     protected int stockQuantity; // Кількість на складі
 
     @Enumerated(EnumType.STRING)
-    protected MeasureUnit unit; // Одиниця вимірювання кількості на складі
+    protected MeasureUnit unit; // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
 
     protected BigDecimal price; // Ціна (без знижки)
-    protected BigDecimal discount; // Знижка у форматі дробу (наприклад, 0.10 для 10%)
-
-    public Product(boolean isAvailable,
-                   String article,
-                   String name,
-                   String description,
-                   String supplier,
-                   String brand,
-                   int stockQuantity,
-                   MeasureUnit unit,
-                   BigDecimal price,
-                   BigDecimal discount) {
-        this.isAvailable = isAvailable;
-        this.code = "";
-        this.article = article;
-        this.name = name;
-        this.description = description;
-        this.supplier = supplier;
-        this.brand = brand;
-        this.stockQuantity = stockQuantity;
-        this.unit = unit;
-        this.price = price;
-        this.discount = discount != null ? discount : BigDecimal.ZERO;
-    }
+    protected BigDecimal discount; // Знижка у форматі дробу "0.10"
 
     @Override
     public BigDecimal getPrice() {

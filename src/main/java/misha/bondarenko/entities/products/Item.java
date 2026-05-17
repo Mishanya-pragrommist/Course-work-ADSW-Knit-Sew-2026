@@ -2,24 +2,26 @@ package misha.bondarenko.entities.products;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 /**
  * Базовий абстрактний клас для патерну Композит (Component).
  * Представляє загальний елемент системи: товар, набір або каталог.
  */
 @Entity
-@Inheritance
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder(toBuilder = true)
 public abstract class Item {
 
     @Id
@@ -30,11 +32,11 @@ public abstract class Item {
     // --- Базові методи елемента ---
 
     /**
-     * Отримання ціни елемента.
+     * Отримання ціни елемента
      */
     public abstract BigDecimal getPrice();
 
-    // --- Методи управління нащадками (Composite operations) ---
+    // --- Методи роботи з нащадками ---
     // За замовчуванням генерують виняток. Перевизначаються лише в Catalog та Kit.
 
     /**
@@ -47,7 +49,7 @@ public abstract class Item {
 
     /**
      * Видалення елементу з колекції (каталогу або сету)
-     * @param item об'єкт  для видалення
+     * @param item об'єкт для видалення
      */
     public void remove(Item item) {
         throw new UnsupportedOperationException("Операція видалення не підтримується цим елементом.");

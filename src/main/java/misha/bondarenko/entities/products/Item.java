@@ -63,4 +63,11 @@ public abstract class Item {
     public Item getChild(int index) {
         throw new UnsupportedOperationException("Операція отримання дочірнього елемента не підтримується цим елементом.");
     }
+
+    /**
+     * Метод для відображення товарів та категорій у вигляді дерева
+     * @param indent відступ
+     * @return відформатований рядок
+     */
+    public abstract String render(String indent);
 }

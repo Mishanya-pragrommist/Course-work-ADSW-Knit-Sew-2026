@@ -2,18 +2,20 @@ package misha.bondarenko.entities.products;
 
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Представляє категорію або каталог, що містить інші елементи (товари або підкаталоги).
  */
 @Entity
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 public class Catalog extends Item {
 
@@ -58,5 +60,14 @@ public class Catalog extends Item {
      */
     public List<Item> getChildren() {
         return new ArrayList<>(children);
+    }
+
+    @Override
+    public String render(String indent) {
+        StringBuilder sb = new StringBuilder(indent).append("+ ").append(name).append(", ").append("\n");
+        for (Item n : children) {
+            sb.append(n.render(indent + "\t")).append("\n");
+        }
+        return sb.toString().stripTrailing();
     }
 }

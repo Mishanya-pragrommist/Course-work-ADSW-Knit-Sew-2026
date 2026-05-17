@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import misha.bondarenko.entities.products.Item;
 import misha.bondarenko.entities.products.Product;
 
 import java.math.BigDecimal;
@@ -33,7 +34,7 @@ public class Cart {
      * @return загальна вартість з урахуванням знижок
      */
     public BigDecimal getTotalPrice() {
-        return items.stream().map(Product::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return items.stream().map(CartItem::getItem).map(Item::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /**
@@ -46,10 +47,10 @@ public class Cart {
 
     /**
      * Видалити товар з кошика
-     * @param product товар для видалення
+     * @param item товар для видалення
      */
-    public void removeProduct(Product product) {
-        items.remove(product);
+    public void removeProduct(Item item) {
+        items.remove(item);
     }
 
 

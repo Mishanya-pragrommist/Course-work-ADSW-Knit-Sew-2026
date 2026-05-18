@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import misha.bondarenko.enums.MeasureUnit;
+
+import java.math.BigDecimal;
 
 /**
  * Схема або інструкція для в'язання/шиття
@@ -16,7 +18,6 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder(toBuilder = true)
 @ToString(callSuper = true)
 public class Pattern extends Product {
 
@@ -24,6 +25,14 @@ public class Pattern extends Product {
     private String difficultyLevel; // Рівень складності ("Початковий", "Середній", "Складний")
     private String language; // Мова інструкції ("Українська", "Англійська")
     private String format; // Формат ("PDF", "Друкований буклет")
+
+    public Pattern(boolean isAvailable, String code, String article, String supplier, String brand, int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount, String author, String difficultyLevel, String language, String format) {
+        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+        this.author = author;
+        this.difficultyLevel = difficultyLevel;
+        this.language = language;
+        this.format = format;
+    }
 
     @Override
     public String render(String indent) {

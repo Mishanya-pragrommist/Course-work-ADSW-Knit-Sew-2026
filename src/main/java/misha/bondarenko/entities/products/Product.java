@@ -2,10 +2,10 @@ package misha.bondarenko.entities.products;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
+import java.math.BigDecimal;
+
 import misha.bondarenko.enums.MeasureUnit;
 
-import java.math.BigDecimal;
 
 /**
  * Товар
@@ -15,7 +15,6 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder(toBuilder = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Product extends Item {
 
@@ -59,21 +58,15 @@ public class Product extends Item {
                 ", доступність=" + isAvailable;
     }
 
-    /**
-     * Для дебагу
-     * @return рядок
-     */
-    @Override
-    public String toString() {
-        return "Товар: [" + getBaseDetails() + "]";
-    }
-
+    // TODO: adapt method to render products containment to HTML blocks
     /**
      * Для відображення товару у вигляді картки на сторінці вибору
      * @param indent тимчасове
      * @return відформатований рядок
      */
     public String render(String indent) {
-        return indent + "Товар: [" + getBaseDetails() + "]";
+        return indent + "Товар: [" +
+                getBaseDetails() +
+                "]";
     }
 }

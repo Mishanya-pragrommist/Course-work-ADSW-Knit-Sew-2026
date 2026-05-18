@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import lombok.experimental.SuperBuilder;
+import misha.bondarenko.enums.MeasureUnit;
+
+import java.math.BigDecimal;
 
 /**
  * Наповнювачі та ущільнювачі (синтепух, флізелін, дублерин тощо)
@@ -16,14 +18,32 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder(toBuilder = true)
-@ToString(callSuper = true)
 public class Filler extends Product {
 
     private String fillerType; // Тип (наприклад: "Синтепух", "Флізелін", "Дублерин")
     private int density; // Щільність (г/м2)
     private boolean isHypoallergenic; // Гіпоалергенність
     private double packageWeightKg; // Вага пакування в кілограмах
+
+    public Filler(boolean isAvailable,
+                  String code,
+                  String article,
+                  String supplier,
+                  String brand,
+                  int stockQuantity,
+                  MeasureUnit unit,
+                  BigDecimal price,
+                  BigDecimal discount,
+                  String fillerType,
+                  int density,
+                  boolean isHypoallergenic,
+                  double packageWeightKg) {
+        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+        this.fillerType = fillerType;
+        this.density = density;
+        this.isHypoallergenic = isHypoallergenic;
+        this.packageWeightKg = packageWeightKg;
+    }
 
     @Override
     public String render(String indent) {

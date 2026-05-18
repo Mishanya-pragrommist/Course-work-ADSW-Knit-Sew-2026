@@ -1,11 +1,9 @@
 package misha.bondarenko.entities.products;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,19 +17,15 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-@SuperBuilder(toBuilder = true)
 public class Kit extends Item {
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "kit_components",
-            joinColumns = @JoinColumn(name = "kit_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private List<Item> components = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinColumn(name = "kit_id")
+    private List<KitComponent> components = new ArrayList<>();
 
-    // Додаткова знижка саме за купівлю набором (опціонально)
+    // Додаткова знижка саме за купівлю набором
     private BigDecimal kitDiscount = BigDecimal.ZERO;
+
 
     public Kit(Long id, String name, String description, BigDecimal kitDiscount) {
         super(id, name, description);
@@ -41,13 +35,14 @@ public class Kit extends Item {
     }
 
     /**
-     * Динамічно обчислює ціну набору як суму цін усіх компонентів
-     * з урахуванням знижки на сам набір.
+     * Динамічно обчислює ціну всього набору.
+     * Сумує (ціна_компонента * кількість) та застосовує знижку набору.
      */
     @Override
     public BigDecimal getPrice() {
         BigDecimal total = components.stream()
-                .map(Item::getPrice)
+                .map(comp -> comp.getItem().getPrice()
+                .multiply(BigDecimal.valueOf(comp.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         if (kitDiscount != null && kitDiscount.compareTo(BigDecimal.ZERO) > 0) {
@@ -56,14 +51,33 @@ public class Kit extends Item {
         return total;
     }
 
+    /**
+     * Додає товар до набору із зазначенням конкретної кількості.
+     * Якщо такий товар уже є в наборі, кількість підсумовується.
+     */
+    public void add(Item item, int quantity) {
+        for (KitComponent comp : components) {
+            if (comp.getItem().equals(item)) {
+                comp.setQuantity(comp.getQuantity() + quantity);
+                return;
+            }
+        }
+        components.add(new KitComponent(null, item, quantity));
+    }
+
+    /**
+     * Додає товари з кількістю за замовчуванням (1 шт.).
+     */
     @Override
-    public void add(Item... item) {
-        components.addAll(List.of(item));
+    public void add(Item... items) {
+        for (Item item : items) {
+            add(item, 1);
+        }
     }
 
     @Override
     public void remove(Item item) {
-        components.remove(item);
+        components.removeIf(comp -> comp.getItem().equals(item));
     }
 
     @Override
@@ -71,18 +85,20 @@ public class Kit extends Item {
         if (index < 0 || index >= components.size()) {
             throw new IndexOutOfBoundsException("Елемент не знайдено");
         }
-        return components.get(index);
+        return components.get(index).getItem();
     }
 
-    // Допоміжний метод для виводу складу набору
+    @Override
     public String render(String indent) {
         StringBuilder sb = new StringBuilder();
         sb.append(indent).append("Набір: ").append(name)
                 .append(" | Загальна вартість: ").append(getPrice()).append("\n");
         sb.append(indent).append("Склад:\n");
-        for (Item component : components) {
-            sb.append(indent).append("  - ").append(component.getName())
-                    .append(" (").append(component.getPrice()).append(")\n");
+        for (KitComponent component : components) {
+            sb.append(indent).append("  - ")
+                    .append(component.getItem().getName())
+                    .append(" x").append(component.getQuantity())
+                    .append(" (").append(component.getItem().getPrice()).append(" за шт.)\n");
         }
         return sb.toString();
     }

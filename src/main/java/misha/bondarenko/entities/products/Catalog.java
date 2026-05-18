@@ -55,6 +55,24 @@ public class Catalog extends Item {
         return children.get(index);
     }
 
+    // TODO: implement get subcatalogs only on current level. For example:
+    // + catalog1
+    //      + catalog11
+    //      + catalog12
+    //      + catalog13
+    //          +catalog131
+    //
+    // catalog1.getSubCatalogs() should return catalog11, 12, 13 and not catalog131
+    public List<Catalog> getSubCatalogs() {
+        List<Catalog> catalogs = new ArrayList<>();
+        for (Item item : children) {
+            if (item instanceof Catalog) {
+                catalogs.add((Catalog) item);
+            }
+        }
+        return catalogs;
+    }
+
     /**
      * Повертає список усіх дочірніх елементів для ітерації.
      */
@@ -62,9 +80,29 @@ public class Catalog extends Item {
         return new ArrayList<>(children);
     }
 
+
+    /**
+     * Метод пошуку в ієрархії каталогу за іменем
+     */
+    public List<Item> searchRecursively(String query) {
+        List<Item> found = new ArrayList<>();
+
+        // TODO: implement better search by breaking query into pieces
+        for (Item item : children) {
+            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                found.add(item);
+            }
+            else if (item instanceof Catalog) {
+                found.addAll(((Catalog) item).searchRecursively(query));
+            }
+        }
+        return found;
+    }
+
+    // TODO: adapt method to render catalog containment to HTML block
     @Override
     public String render(String indent) {
-        StringBuilder sb = new StringBuilder(indent).append("+ ").append(name).append(", ").append("\n");
+        StringBuilder sb = new StringBuilder(indent).append("+ ").append(name).append("\n");
         for (Item n : children) {
             sb.append(n.render(indent + "\t")).append("\n");
         }

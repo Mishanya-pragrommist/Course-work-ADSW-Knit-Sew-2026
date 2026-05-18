@@ -13,6 +13,7 @@ public enum MeasureUnit {
     SQUIRM("квадратний метр"),
     GR("грами"),
     UNIT("поштучно"),
+    PIECE("дложіва"),
     SKEIN("моток");
 
     private final String description;

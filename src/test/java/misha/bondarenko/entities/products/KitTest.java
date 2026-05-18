@@ -86,7 +86,7 @@ public class KitTest {
 
         // Наповнення наборів компонентами
         winterKit.add(linenFabric, sewingMachine); // Компоненти: 180.00 + 4750.00 = 4930.00
-        ecoKit.add(cottonFabric, 2); // Компоненти: 200.00
+        ecoKit.add(cottonFabric, 2); // 2 штуки по 100 за кожну, загалом: 200.00
     }
 
     @Test
@@ -111,7 +111,8 @@ public class KitTest {
     void testKitAddAndRemoveComponents() {
         winterKit.add(sewingMachine);
         System.out.println("Kit before removing\n" + winterKit.render(""));
-        // Початкова кількість компонентів у winterKit = 2,
+        // Початкова кількість компонентів у winterKit = 2 (якщо рахувати тільки класи),
+        // та 3, якщо рахувати к-сть товарів;
         // початкова ціна з урахуванням знижок: 8712.00
         assertThat(winterKit.getChild(0)).isEqualTo(linenFabric);
         assertThat(winterKit.getChild(1)).isEqualTo(sewingMachine);

@@ -188,7 +188,8 @@ class CatalogTest {
     }
 
     @Test
-    @DisplayName("Спроба виконати операції управління над товаром має викликати UnsupportedOperationException")
+    @DisplayName("Спроба виконати операції управління над товаром " +
+            "за допомогою об'єкту товару має викликати UnsupportedOperationException")
     void testLeafUnsupportedOperations() {
         assertThatThrownBy(() -> linenFabric.add(cottonFabric))
                 .isInstanceOf(UnsupportedOperationException.class)

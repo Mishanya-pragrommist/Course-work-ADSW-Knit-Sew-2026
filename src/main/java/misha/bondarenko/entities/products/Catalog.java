@@ -99,7 +99,7 @@ public class Catalog extends Item {
         return found;
     }
 
-    // TODO: adapt method to render catalog containment to HTML block
+
     @Override
     public String render(String indent) {
         StringBuilder sb = new StringBuilder(indent).append("+ ").append(name).append("\n");
@@ -107,5 +107,20 @@ public class Catalog extends Item {
             sb.append(n.render(indent + "\t")).append("\n");
         }
         return sb.toString().stripTrailing();
+    }
+
+    /**
+     * TODO: create a method to render catalog containment to HTML block
+     */
+    public String renderHtmlHomePage() {
+        return "renderHtml needs to be implemented";
+    }
+
+    /**
+     * Для відображення категорій у вигляді стовпця зліва на домашній сторінці
+     * @return форматований рядок (може, це буде список рядків, хз)
+     */
+    public String renderHtmlColumn() {
+        return "renderHtmlColumn needs to be implemented";
     }
 }

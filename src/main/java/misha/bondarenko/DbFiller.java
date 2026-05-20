@@ -4,9 +4,12 @@ import misha.bondarenko.entities.products.Catalog;
 import misha.bondarenko.entities.products.Tool;
 import misha.bondarenko.entities.products.Yarn;
 import misha.bondarenko.enums.MeasureUnit;
+import misha.bondarenko.services.CatalogService;
+import misha.bondarenko.services.ProductService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -14,14 +17,19 @@ import java.math.BigDecimal;
 public class DbFiller {
 
     @Bean
-    public CommandLineRunner fillDatabase() {
+    @Transactional
+    public CommandLineRunner fillDatabase(CatalogService catalogService, ProductService itemService) {
         boolean shouldWork = true;
         if (!shouldWork) return null;
 
         return args -> {
-            Catalog yarns = new Catalog(null, "Пряжа", "Пряжа для в'язання");
-            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя");
-            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей");
+            Catalog yarns = new Catalog(null, "Пряжа", "Пряжа для в'язання", "/images/image1.jpeg");
+            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/image1.jpeg");
+            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей", "/images/image1.jpeg");
+            Catalog patterns = new Catalog(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/image1.jpeg");
+            Catalog equipment = new Catalog(null, "Обладнання", "Швейні машинки та ще щось", "/images/image1.jpeg");
+            Catalog fillers = new Catalog(null, "Наповнювачі", "Синтепух, вата, пір'я - все для наповнення", "/images/image1.jpeg");
+            Catalog kits = new Catalog(null, "Набори", "Готові набори для в'язання та шиття", "/images/image1.jpeg");
 
             yarns.add(
                     new Yarn(
@@ -42,8 +50,8 @@ public class DbFiller {
                     ),
                     new Yarn(
                             true,
-                            "YAR-CODE-01",
-                            "ART-YAR-101",
+                            "YAR-CODE-02",
+                            "ART-YAR-102",
                             "ЯрнОптТорг",
                             "Alize",
                             350,
@@ -58,8 +66,8 @@ public class DbFiller {
                     ),
                     new Yarn(
                             true,
-                            "YAR-CODE-01",
-                            "ART-YAR-101",
+                            "YAR-CODE-03",
+                            "ART-YAR-103",
                             "ЯрнОптТорг",
                             "Alize",
                             350,
@@ -75,9 +83,54 @@ public class DbFiller {
             );
 
             tools.add(
-                    new Tool(),
-
+                    new Tool(true,
+                            "091203",
+                            "Art. 091212",
+                            "Бабуся Надія ТМ",
+                            "ДебільніГачки",
+                            190,
+                            MeasureUnit.UNIT,
+                            new BigDecimal("56.00"),
+                            BigDecimal.ZERO,
+                            "Гачок",
+                            "алюміній",
+                            "4мм"
+                            ),
+                    new Tool(true,
+                            "54231",
+                            "Art. 52315",
+                            "Бабуся Надія ТМ",
+                            "ДебільніГачки",
+                            190,
+                            MeasureUnit.UNIT,
+                            new BigDecimal("56.00"),
+                            BigDecimal.ZERO,
+                            "Гачок",
+                            "алюміній",
+                            "4мм"
+                    ),
+                    new Tool(true,
+                            "887464",
+                            "Art. 12845",
+                            "Бабуся Надія ТМ",
+                            "ДебільніГачки",
+                            190,
+                            MeasureUnit.UNIT,
+                            new BigDecimal("60.00"),
+                            BigDecimal.ZERO,
+                            "Гачок",
+                            "алюміній",
+                            "5мм"
+                    )
             );
+
+            catalogService.saveAll(yarns, tools, fabrics, patterns, equipment, fillers, kits);
+
+            System.out.println("2) Отримуємо каталоги з БД\n");
+            System.out.println(catalogService.getRootCatalogsString());
+            System.out.println("\n" + itemService.renderItems());
+            System.out.println("\n" + itemService.renderProducts());
+            //catalogService.getRootCatalogs().forEach(catalog -> System.out.println(catalog.render("")));
         };
 
     }

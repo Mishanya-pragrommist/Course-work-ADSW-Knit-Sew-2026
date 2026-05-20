@@ -1,6 +1,8 @@
 package misha.bondarenko.entities.user;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,12 +17,13 @@ import java.util.ArrayList;
 /**
  * Кошик
  */
-@Entity
+//@Entity
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Cart {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private ArrayList<CartItem> items;

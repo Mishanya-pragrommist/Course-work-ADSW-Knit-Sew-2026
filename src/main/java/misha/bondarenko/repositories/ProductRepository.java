@@ -1,7 +1,6 @@
 package misha.bondarenko.repositories;
 
 import misha.bondarenko.entities.products.Catalog;
-import misha.bondarenko.entities.products.Item;
 import misha.bondarenko.entities.products.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ItemRepository extends JpaRepository<Item, Long> {
-    Optional<Item> findByName(String name);
-    List<Item> findByParent(Catalog parentCatalog);
+public interface ProductRepository extends JpaRepository<Product, Long> {
+    Optional<Product> findByName(String name);
+    List<Product> findByParent(Catalog parentCatalog);
 }

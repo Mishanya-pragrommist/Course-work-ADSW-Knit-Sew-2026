@@ -6,9 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -56,15 +54,14 @@ public class ProductTest {
                 15,
                 MeasureUnit.UNIT,
                 new BigDecimal("420.00"),
-                new BigDecimal("0.10"), // 10% знижки
+                new BigDecimal("0.10"),
+                "В'язання спицями: Велика енциклопедія", // 10% знижки
                 "Елізабет Кент",
                 "КСД",
                 "978-617-12-1234-5",
                 280,
-                2024
-        );
+                2024);
         book.setId(2L);
-        book.setName("В'язання спицями: Велика енциклопедія");
         book.setDescription("Покрокові інструкції та 300 візерунків для в'язання");
 
         // 3. Ініціалізація Тканини (Fabric)
@@ -210,7 +207,7 @@ public class ProductTest {
 
         // 10. Ініціалізація Набору (Kit)
         // Для Kit використовуємо Long ID згідно з твоїм класом
-        kit = new Kit(100L, "Творчий старт", "Повний набір матеріалів для початківця",
+        kit = new Kit(100L, "Творчий старт", "Повний набір матеріалів для початківця", "https://www.livemaster.ru/topic/2214489-vidy-pryazhi-plyusy-i-minusy-razlinoj-pryazhi",
                 new BigDecimal("0.15")); // 15% загальна знижка набору
         kit.setName("Набір 'Творчий старт'");
         kit.setDescription("Ексклюзивний набір, що поєднує інструменти, тканину та нитки в одній коробці");

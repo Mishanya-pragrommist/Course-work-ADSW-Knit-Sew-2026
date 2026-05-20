@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 /**
- * Базовий абстрактний клас для патерну Композит (Component).
+ * Базовий абстрактний клас для патерну Композит.
  * Представляє загальний елемент системи: товар, набір або каталог.
  */
 @Entity
@@ -26,12 +26,15 @@ public abstract class Item {
     protected String name;
     protected String description;
 
+    @Column(columnDefinition = "text")
+    protected String imageUrl; // Посилання на зображення
+
     /**
      * Батьківський каталог
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    private Catalog parent;
+    protected Catalog parent;
 
     // --- Базові методи елемента ---
 
@@ -85,12 +88,15 @@ public abstract class Item {
      */
     public abstract String renderName();
 
+
+    // TODO: either remove this method from everywhere or make it compare things properly for every class
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Item item = (Item) o;
-        return id.equals(item.id) && name.equals(item.name) && description.equals(item.description);
+        return id.equals(item.id)
+                && description.equals(item.description);
     }
 }

@@ -15,8 +15,7 @@ import misha.bondarenko.enums.MeasureUnit;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Product extends Item {
+public class Product extends Item {
 
     protected boolean isAvailable;
 
@@ -44,6 +43,10 @@ public abstract class Product extends Item {
         return price.subtract(price.multiply(discount));
     }
 
+    public BigDecimal getPurePrice() {
+        return price;
+    }
+
     protected String getBaseDetails() {
         return  "код=" + getCode() +
                 ", артикул=" + article +
@@ -68,5 +71,10 @@ public abstract class Product extends Item {
         return indent + "Товар: [" +
                 getBaseDetails() +
                 "]";
+    }
+
+    @Override
+    public String renderName() {
+        return "";
     }
 }

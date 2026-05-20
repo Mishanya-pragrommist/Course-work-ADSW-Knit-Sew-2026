@@ -27,8 +27,8 @@ public class Kit extends Item {
     private BigDecimal kitDiscount = BigDecimal.ZERO;
 
 
-    public Kit(Long id, String name, String description, BigDecimal kitDiscount) {
-        super(id, name, description, null);
+    public Kit(Long id, String name, String description, String imageUrl,  BigDecimal kitDiscount) {
+        super(id, name, description, imageUrl,null);
         if (kitDiscount != null) {
             this.kitDiscount = kitDiscount;
         }

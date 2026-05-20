@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Замовлення
  */
-@Entity
+//@Entity
 @Getter
 @Setter
 public class Order {
@@ -21,5 +21,7 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     private List<Product> products;
 }

@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
@@ -21,6 +19,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Book extends Product {
 
+    private String name; // Назва книги
     private String author; // Автор
     private String publisher; // Видавництво
     private String isbn; // Унікальний номер книги (ISBN)
@@ -36,12 +35,14 @@ public class Book extends Product {
                 MeasureUnit unit,
                 BigDecimal price,
                 BigDecimal discount,
+                String name,
                 String author,
                 String publisher,
                 String isbn,
                 int pages,
                 int publicationYear) {
         super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+        this.name = name;
         this.author = author;
         this.publisher = publisher;
         this.isbn = isbn;

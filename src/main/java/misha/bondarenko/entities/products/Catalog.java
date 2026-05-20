@@ -1,13 +1,16 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,14 +22,18 @@ import java.util.List;
 @NoArgsConstructor
 public class Catalog extends Item {
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("id ASC")
     private final List<Item> children = new ArrayList<>();
 
-    public Catalog(Long id, String name, String description) {
-        super(id, name, description);
+    public Catalog(Long id, String name, String description, String imageUrl) {
+        super(id, name, description, imageUrl, null);
     }
 
+    // TODO: maybe delete this later
     /**
      * Обчислює загальну вартість усіх елементів у цьому каталозі
+     * (нафіга це тут треба?)
      */
     @Override
     public BigDecimal getPrice() {
@@ -39,7 +46,9 @@ public class Catalog extends Item {
 
     @Override
     public void add(Item... item) {
-        children.addAll(List.of(item));
+        List<Item> list = List.of(item);
+        list.forEach(i -> i.setParent(this));
+        this.children.addAll(list);
     }
 
     @Override
@@ -80,6 +89,7 @@ public class Catalog extends Item {
         return new ArrayList<>(children);
     }
 
+    // TODO: decide if I should keep this method or delegate searching to services or something
 
     /**
      * Метод пошуку в ієрархії каталогу за іменем
@@ -87,9 +97,8 @@ public class Catalog extends Item {
     public List<Item> searchRecursively(String query) {
         List<Item> found = new ArrayList<>();
 
-        // TODO: implement better search by breaking query into pieces or by using Embeddings
         for (Item item : children) {
-            if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+            if (item.renderName().toLowerCase().contains(query.toLowerCase())) {
                 found.add(item);
             }
             else if (item instanceof Catalog) {
@@ -114,9 +123,8 @@ public class Catalog extends Item {
         return name;
     }
 
-    /**
-     * TODO: create a method to render catalog containment to HTML block
-     */
+    // TODO: create a method to render catalog containment to HTML block
+
     public String renderHtmlHomePage() {
         return "renderHtml needs to be implemented";
     }

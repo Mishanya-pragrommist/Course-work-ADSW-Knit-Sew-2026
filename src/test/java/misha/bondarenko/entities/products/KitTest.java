@@ -76,11 +76,11 @@ public class KitTest {
         sewingMachine.setName("Швейна машина Singer 23");
 
         // Ініціалізація наборів
-        winterKit = new Kit(1L, "Зимовий набір", "Набір для зимового одягу",
+        winterKit = new Kit(1L, "Зимовий набір", "Набір для зимового одягу", "https://www.livemaster.ru/topic/2214489-vidy-pryazhi-plyusy-i-minusy-razlinoj-pryazhi",
                 new BigDecimal("0.10")); // Знижка набору 10%
         winterKit.setName("Зимовий набір");
 
-        ecoKit = new Kit(2L, "Еко набір",
+        ecoKit = new Kit(2L, "Еко набір", "https://www.livemaster.ru/topic/2214489-vidy-pryazhi-plyusy-i-minusy-razlinoj-pryazhi",
                 "Екологічно чисті матеріали", BigDecimal.ZERO); // Без знижки
         ecoKit.setName("Еко набір");
 

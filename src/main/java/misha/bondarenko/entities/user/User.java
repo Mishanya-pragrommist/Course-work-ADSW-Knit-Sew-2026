@@ -12,7 +12,7 @@ import lombok.Setter;
 /**
  * Користувач
  */
-@Entity
+//@Entity
 @Getter
 @Setter
 @AllArgsConstructor

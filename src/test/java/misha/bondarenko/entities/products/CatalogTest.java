@@ -27,10 +27,10 @@ class CatalogTest {
 
     @BeforeEach
     void setUp() {
-        rootCatalog = new Catalog(1L, "Головний каталог", "Кореневий каталог Knit&Sew");
-        fabricCategory = new Catalog(2L, "Тканини", "Категорія тканин");
-        equipmentCategory = new Catalog(3L, "Обладнання", "Швейне та в'язальне обладнання");
-        kitCategory = new Catalog(4L, "Набори", "Готові набори для в'язання");
+        rootCatalog = new Catalog(1L, "Головний каталог", "Кореневий каталог Knit&Sew", "https://aurayarns.rua-bivaet-pr");
+        fabricCategory = new Catalog(2L, "Тканини", "Категорія тканин", "https://aurayarns.ru/tpost/g1fclx83");
+        equipmentCategory = new Catalog(3L, "Обладнання", "Швейне та в'язальне обладнання", "https://aurayarns.");
+        kitCategory = new Catalog(4L, "Набори", "Готові набори для в'язання", "https://aurayarns.ru/tp");
 
         linenFabric = new Fabric(
                 true,
@@ -89,11 +89,11 @@ class CatalogTest {
         sewingMachine.setName("Швейна машина Singer 23");
 
         // Ініціалізація наборів (Kit) згідно з наданим тобою конструктором (Long id)
-        winterKit = new Kit(1L, "Зимовий набір", "Набір для зимового одягу", new BigDecimal("0.10")); // Знижка набору 10%
+        winterKit = new Kit(1L, "Зимовий набір", "Набір для зимового одягу", "https://aurayarns.r", new BigDecimal("0.10")); // Знижка набору 10%
         winterKit.setName("Зимовий набір");
 
         ecoKit = new Kit(2L, "Еко набір",
-                "Екологічно чисті матеріали", BigDecimal.ZERO); // Без додаткової знижки
+                "Екологічно чисті матеріали", "alkjsdfklasdf",BigDecimal.ZERO); // Без додаткової знижки
         ecoKit.setName("Еко набір");
 
         // Наповнення наборів компонентами

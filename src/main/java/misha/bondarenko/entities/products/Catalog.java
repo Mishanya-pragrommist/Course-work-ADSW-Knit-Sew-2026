@@ -87,7 +87,7 @@ public class Catalog extends Item {
     public List<Item> searchRecursively(String query) {
         List<Item> found = new ArrayList<>();
 
-        // TODO: implement better search by breaking query into pieces
+        // TODO: implement better search by breaking query into pieces or by using Embeddings
         for (Item item : children) {
             if (item.getName().toLowerCase().contains(query.toLowerCase())) {
                 found.add(item);
@@ -107,6 +107,11 @@ public class Catalog extends Item {
             sb.append(n.render(indent + "\t")).append("\n");
         }
         return sb.toString().stripTrailing();
+    }
+
+    @Override
+    public String renderName() {
+        return name;
     }
 
     /**

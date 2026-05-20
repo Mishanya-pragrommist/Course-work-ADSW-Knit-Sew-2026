@@ -37,4 +37,9 @@ public class GiftCertificate extends Product {
                 ", термін дії=" + validityMonths + " міс." +
                 ", умови=" + termsOfUse + "]";
     }
+
+    @Override
+    public String renderName() {
+        return "Подарунковий сертифікат, " + certificateType.toLowerCase() + ", номіналом " + getPrice() + " грн";
+    }
 }

@@ -53,4 +53,10 @@ public class Filler extends Product {
                 ", гіпоалергенний=" + (isHypoallergenic ? "Так" : "Ні") +
                 ", вага пакування=" + packageWeightKg + " кг]";
     }
+
+    @Override
+    public String renderName() {
+        return "Наповнювач " + fillerType + ", " + brand + ", " +
+                density + " г/м², пакування " + packageWeightKg + " кг";
+    }
 }

@@ -21,8 +21,12 @@ public class Yarn extends Product {
     private int weightInGrams; // Вага мотка в грамах
     private String dyeLot; // Партія фарбування (Lot) - важливо для збігу відтінку
     private String color; // Колір
+    private String toolsRecommended; // Рекомендовані інструменти
 
-    public Yarn(boolean isAvailable, String code, String article, String supplier, String brand, int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount, String fiberContent, int lengthInMeters, int weightInGrams, String dyeLot, String color) {
+    public Yarn(boolean isAvailable, String code, String article, String supplier,
+                String brand, int stockQuantity, MeasureUnit unit,
+                BigDecimal price, BigDecimal discount, String fiberContent,
+                int lengthInMeters, int weightInGrams, String dyeLot, String color) {
         super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
         this.fiberContent = fiberContent;
         this.lengthInMeters = lengthInMeters;
@@ -38,5 +42,10 @@ public class Yarn extends Product {
                 ", метраж=" + lengthInMeters + "м / " + weightInGrams + "г" +
                 ", партія (Lot)=" + dyeLot +
                 ", колір=" + color + "]";
+    }
+
+    @Override
+    public String renderName() {
+        return "Пряжа " + supplier + ", " + color.toLowerCase() + ", " + fiberContent + ", " + weightInGrams + "г, " + dyeLot;
     }
 }

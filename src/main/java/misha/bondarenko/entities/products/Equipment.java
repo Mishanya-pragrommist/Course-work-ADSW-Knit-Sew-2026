@@ -62,4 +62,10 @@ public class Equipment extends Product {
                 ", вага=" + weightKg + " кг" +
                 ", кількість операцій=" + operationsCount + "]";
     }
+
+    @Override
+    public String renderName() {
+        return equipmentType + " " + brand + " (" + operationsCount + " опер., " + powerWatt + "W, гарантія: " + warrantyMonths + " міс.)";
+    }
+
 }

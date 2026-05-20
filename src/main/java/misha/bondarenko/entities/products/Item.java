@@ -26,6 +26,13 @@ public abstract class Item {
     protected String name;
     protected String description;
 
+    /**
+     * Батьківський каталог
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Catalog parent;
+
     // --- Базові методи елемента ---
 
     /**
@@ -67,6 +74,16 @@ public abstract class Item {
      * @return відформатований рядок
      */
     public abstract String render(String indent);
+
+    /**
+     * Для відображення повної назви товару, категорії або набору.<br>
+     * Для товарів назва може виглядати як "Пряжа синя Alize 100г Акрил",
+     * тобто як сукупність певних параметрів.<br>
+     * Для категорій назва - назва та опис<br>
+     * Для наборів товарів - назва виду "Набір для в'язання шарфу"
+     * @return рядок з повною назвою товару
+     */
+    public abstract String renderName();
 
     @Override
     public boolean equals(Object o) {

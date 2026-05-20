@@ -58,5 +58,10 @@ public class Book extends Product {
                 ", сторінок=" + pages +
                 ", рік=" + publicationYear + "]";
     }
+
+    @Override
+    public String renderName() {
+        return "Книга \"" + name + "\" - " + author + " " + publisher + ", " + publicationYear + " р.";
+    }
 }
 

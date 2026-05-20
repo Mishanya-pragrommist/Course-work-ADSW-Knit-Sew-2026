@@ -45,4 +45,9 @@ public class Tool extends Product {
                 ", матеріал=" + material +
                 ", розмір=" + size + "]";
     }
+
+    @Override
+    public String renderName() {
+        return toolType + " " + brand + ", " + material.toLowerCase() + ", розмір " + size;
+    }
 }

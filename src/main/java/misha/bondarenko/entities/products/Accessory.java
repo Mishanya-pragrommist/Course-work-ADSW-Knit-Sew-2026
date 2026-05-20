@@ -51,4 +51,10 @@ public class Accessory extends Product {
                 ", розмір=" + size +
                 ", колір=" + color + "]";
     }
+
+    @Override
+    public String renderName() {
+        return accessoryType + " " + brand + ", " + color.toLowerCase() +
+                ", " + material.toLowerCase() + ", діаметр " + size;
+    }
 }

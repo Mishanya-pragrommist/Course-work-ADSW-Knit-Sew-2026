@@ -16,7 +16,7 @@ import misha.bondarenko.enums.MeasureUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Product extends Item {
+public abstract class Product extends Item {
 
     protected boolean isAvailable;
 

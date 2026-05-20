@@ -28,7 +28,7 @@ public class Kit extends Item {
 
 
     public Kit(Long id, String name, String description, BigDecimal kitDiscount) {
-        super(id, name, description);
+        super(id, name, description, null);
         if (kitDiscount != null) {
             this.kitDiscount = kitDiscount;
         }
@@ -49,6 +49,11 @@ public class Kit extends Item {
             return total.subtract(total.multiply(kitDiscount));
         }
         return total;
+    }
+
+    @Override
+    public String renderName() {
+        return "Набір \"" + name + "\" (" + components.size() + " комп.)";
     }
 
     /**

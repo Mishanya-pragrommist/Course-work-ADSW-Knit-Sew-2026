@@ -39,7 +39,7 @@ class CatalogTest {
                 "Постачальник Текстиль",
                 "BrandTextile",
                 100,
-                MeasureUnit.M,
+                MeasureUnit.METERS,
                 new BigDecimal("200.00"), // Базова ціна
                 new BigDecimal("0.10"), // Знижка 10%. У результаті ціна має бути 180.00 грн
                 "Льон",
@@ -58,7 +58,7 @@ class CatalogTest {
                 "Постачальник Текстиль",
                 "BrandTextile",
                 150,
-                MeasureUnit.M,
+                MeasureUnit.METERS,
                 new BigDecimal("100.00"), // Базова ціна
                 BigDecimal.ZERO, // Без знижки
                 "Бавовна",
@@ -76,7 +76,7 @@ class CatalogTest {
                 "Singer Corp",
                 "Singer",
                 10,
-                MeasureUnit.PIECE,
+                MeasureUnit.UNIT,
                 new BigDecimal("5000.00"),
                 new BigDecimal("0.05"), // 5% знижки (фінальна ціна: 4750.00)
                 "Швейна машина",

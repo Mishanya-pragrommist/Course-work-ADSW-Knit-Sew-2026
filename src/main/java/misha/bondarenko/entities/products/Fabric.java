@@ -50,4 +50,11 @@ public class Fabric extends Product {
                 ", щільність=" + density + " г/м2" +
                 ", колір=" + color + "]";
     }
+
+    @Override
+    public String renderName() {
+        return "Тканина " + fabricType.toLowerCase() + " " + brand + ", колір " + color.toLowerCase() + ", "
+                + composition + " " + widthInCm + " см";
+    }
+
 }

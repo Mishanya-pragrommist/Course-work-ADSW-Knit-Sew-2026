@@ -27,7 +27,7 @@ public class KitTest {
                 "Постачальник Текстиль",
                 "BrandTextile",
                 100,
-                MeasureUnit.M,
+                MeasureUnit.METERS,
                 new BigDecimal("200.00"),
                 new BigDecimal("0.10"), // 180.00 загалом
                 "Льон",
@@ -45,7 +45,7 @@ public class KitTest {
                 "Постачальник Текстиль",
                 "BrandTextile",
                 150,
-                MeasureUnit.M,
+                MeasureUnit.METERS,
                 new BigDecimal("100.00"),
                 BigDecimal.ZERO, // Без знижки
                 "Бавовна",
@@ -63,7 +63,7 @@ public class KitTest {
                 "Singer Corp",
                 "Singer",
                 10,
-                MeasureUnit.PIECE,
+                MeasureUnit.UNIT,
                 new BigDecimal("5000.00"),
                 new BigDecimal("0.05"), // 5% знижки (фінальна ціна: 4750.00)
                 "Швейна машина",

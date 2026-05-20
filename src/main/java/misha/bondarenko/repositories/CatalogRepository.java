@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface CatalogRepository extends JpaRepository<Catalog, Long> {
-    List<Catalog> findByParentIsNull();
+    List<Catalog> findAllByParentIsNull();
     List<Catalog> findByName(String name);
 }

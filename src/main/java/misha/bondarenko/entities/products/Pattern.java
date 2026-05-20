@@ -26,7 +26,9 @@ public class Pattern extends Product {
     private String language; // Мова інструкції ("Українська", "Англійська")
     private String format; // Формат ("PDF", "Друкований буклет")
 
-    public Pattern(boolean isAvailable, String code, String article, String supplier, String brand, int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount, String author, String difficultyLevel, String language, String format) {
+    public Pattern(boolean isAvailable, String code, String article, String supplier, String brand,
+                   int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount,
+                   String author, String difficultyLevel, String language, String format) {
         super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
         this.author = author;
         this.difficultyLevel = difficultyLevel;
@@ -42,4 +44,11 @@ public class Pattern extends Product {
                 ", мова=" + language +
                 ", формат=" + format + "]";
     }
+
+    @Override
+    public String renderName() {
+        return name + " від автора" + author +
+                difficultyLevel.toLowerCase() + "рівень, " + format;
+    }
+
 }

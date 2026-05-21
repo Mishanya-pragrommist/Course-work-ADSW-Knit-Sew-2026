@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text="${product.name} + ' - Knit&Sew'">Назва товару - Knit&Sew</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						brand: {
+							50: '#fdf2f8',
+							100: '#fce7f3',
+							500: '#ec6648', // Основний помаранчевий акцент
+							600: '#dd571d',
+							700: '#be1818',
+						}
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+
+<!-- Хедер -->
+<header class="bg-white shadow-sm sticky top-0 z-50">
+	<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+		<!-- Логотип -->
+		<a href="#" class="text-2xl font-bold text-brand-600 flex items-center gap-2">
+			<i data-lucide="scissors" class="w-6 h-6"></i>
+			Knit&Sew
+		</a>
+
+		<!-- Навігація (десктоп) -->
+		<nav class="hidden md:flex space-x-8">
+			<a href="#" class="text-brand-600 font-medium">Головна</a>
+			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Каталог</a>
+			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
+			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
+		</nav>
+
+		<!-- Іконки користувача -->
+		<div class="flex items-center space-x-5">
+			<button class="text-gray-500 hover:text-brand-600 transition-colors">
+				<i data-lucide="user" class="w-6 h-6"></i>
+			</button>
+			<button class="text-gray-500 hover:text-brand-600 transition-colors relative">
+				<i data-lucide="shopping-cart" class="w-6 h-6"></i>
+				<!-- Індикатор кількості товарів поруч з кошиком -->
+				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
+					  th:text="0"></span>
+			</button>
+		</div>
+	</div>
+</header>
+
+<!-- Основний контент -->
+<main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+
+	<!-- Хлібні крихти -->
+	<nav class="flex text-sm text-gray-500 mb-8" aria-label="Breadcrumb">
+		<ol class="inline-flex items-center space-x-1 md:space-x-3">
+			<li class="inline-flex items-center">
+				<a th:href="@{/}" class="hover:text-brand-600 transition-colors">Головна</a>
+			</li>
+			<li>
+				<div class="flex items-center">
+					<i data-lucide="chevron-right" class="w-4 h-4 mx-1"></i>
+					<a href="#" class="hover:text-brand-600 transition-colors">Каталог</a>
+				</div>
+			</li>
+			<li aria-current="page">
+				<div class="flex items-center">
+					<i data-lucide="chevron-right" class="w-4 h-4 mx-1"></i>
+					<span class="text-gray-800 font-medium" th:text="${product.name}">Назва товару</span>
+				</div>
+			</li>
+		</ol>
+	</nav>
+
+	<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
+
+			<!-- Ліва колонка: Зображення -->
+			<div class="flex flex-col gap-4">
+				<div class="aspect-square bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden border border-gray-100 relative">
+					<img th:if="${product.imageURL != null}"
+						 th:src="@{${product.imageURL}}"
+						 th:alt="${product.name}"
+						 class="w-full h-full object-cover">
+					<i th:unless="${product.imageURL != null}" data-lucide="image" class="w-24 h-24 text-gray-300"></i>
+
+					<!-- Шильдик знижки -->
+					<div th:if="${product.discount != null && product.discount > 0}"
+						 class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">
+						Знижка
+					</div>
+				</div>
+			</div>
+
+			<!-- Права колонка: Інформація та купівля -->
+			<div class="flex flex-col">
+				<div class="mb-2 flex justify-between items-start">
+					<span class="text-sm text-gray-500" th:text="'Артикул: ' + ${product.id}">Артикул: 12345</span>
+					<span th:if="${product.isAvailable}" class="text-sm text-green-600 font-medium bg-green-50 px-2 py-1 rounded">В наявності</span>
+					<span th:unless="${product.isAvailable}" class="text-sm text-red-600 font-medium bg-red-50 px-2 py-1 rounded">Немає в наявності</span>
+				</div>
+
+				<h1 class="text-3xl font-bold text-gray-900 mb-4" th:text="${product.name}">Назва товару</h1>
+
+				<!-- Блок ціни -->
+				<div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
+					<!-- Якщо є знижка (очікується, що бекенд передає фінальну та стару ціну, або рахуємо на фронті) -->
+					<div th:if="${product.discount != null && product.discount > 0}" class="flex flex-col">
+						<span class="text-sm text-gray-500 line-through mb-1" th:text="${product.price} + ' грн'">100.00 грн</span>
+						<div class="flex items-baseline gap-2">
+							<span class="text-4xl font-bold text-brand-600" th:text="${product.price - (product.price * product.discount)} + ' грн'">90.00 грн</span>
+						</div>
+					</div>
+					<!-- Якщо знижки немає -->
+					<div th:unless="${product.discount != null && product.discount > 0}">
+						<span class="text-4xl font-bold text-gray-900" th:text="${product.price} + ' грн'">100.00 грн</span>
+					</div>
+				</div>
+
+				<!-- Додавання в кошик -->
+				<form class="flex gap-4 mb-8" th:if="${product.isAvailable}">
+					<!-- Вибір кількості -->
+					<div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-32">
+						<button type="button" class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">-</button>
+						<input type="number" value="1" min="1" class="w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium" readonly>
+						<button type="button" class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">+</button>
+					</div>
+
+					<button type="submit" class="flex-1 bg-brand-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-brand-700 transition-colors flex justify-center items-center gap-2 shadow-sm hover:shadow-md">
+						<i data-lucide="shopping-cart" class="w-5 h-5"></i>
+						До кошика
+					</button>
+				</form>
+
+				<!-- Опис -->
+				<div class="border-t border-gray-100 pt-8 mt-auto">
+					<h3 class="text-lg font-semibold text-gray-900 mb-3">Опис товару</h3>
+					<p class="text-gray-600 leading-relaxed" th:text="${product.description ?: 'Опис відсутній.'}">
+						Детальний опис товару буде виведено тут.
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Секція характеристик (генерується динамічно, якщо передати Map або окремі поля DTO) -->
+	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+		<h3 class="text-xl font-bold text-gray-900 mb-6">Характеристики</h3>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
+			<!-- Приклад виводу характеристик -->
+			<div class="flex justify-between border-b border-gray-100 pb-2">
+				<span class="text-gray-500">Бренд</span>
+				<span class="font-medium text-gray-900">Alize</span>
+			</div>
+			<div class="flex justify-between border-b border-gray-100 pb-2">
+				<span class="text-gray-500">Країна-виробник</span>
+				<span class="font-medium text-gray-900">Туреччина</span>
+			</div>
+			<!-- Сюди можна додати th:each для перебору Map<String, String> attributes з DTO -->
+		</div>
+	</div>
+</main>
+
+<!-- Футер (Скорочений для прикладу) -->
+<footer class="bg-gray-900 text-gray-300 py-6 mt-auto text-center text-sm">
+	<div class="container mx-auto px-4">
+		&copy; 2026 Knit&Sew. Всі права захищені.
+	</div>
+</footer>
+
+<script>
+	lucide.createIcons();
+</script>
+</body>
+</html>

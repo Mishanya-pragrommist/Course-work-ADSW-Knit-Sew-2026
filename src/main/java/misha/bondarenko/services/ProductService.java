@@ -7,33 +7,24 @@ import misha.bondarenko.entities.products.Product;
 import misha.bondarenko.records.ProductCardDto;
 import misha.bondarenko.repositories.CatalogRepository;
 import misha.bondarenko.repositories.ItemRepository;
-import misha.bondarenko.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductService {
     private final CatalogRepository catalogRepository;
     private final ItemRepository itemRepository;
-    private final ProductRepository productRepository;
 
     public ProductService(ItemRepository itemRepository,
-                          CatalogRepository catalogRepository,
-                          ProductRepository productRepository) {
+                          CatalogRepository catalogRepository) {
         this.itemRepository = itemRepository;
         this.catalogRepository = catalogRepository;
-        this.productRepository = productRepository;
     }
 
     public Item findItemByName(String name) {
         return itemRepository.findByName(name).orElse(null);
-    }
-
-    public List<Item> getAllItems() {
-        return itemRepository.findAll();
     }
 
     @Transactional

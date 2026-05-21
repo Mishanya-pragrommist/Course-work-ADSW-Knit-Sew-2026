@@ -24,12 +24,12 @@ public class DbFiller {
 
         return args -> {
             Catalog yarns = new Catalog(null, "Пряжа", "Пряжа для в'язання", "/images/image1.jpeg");
-            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/image1.jpeg");
-            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей", "/images/image1.jpeg");
-            Catalog patterns = new Catalog(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/image1.jpeg");
-            Catalog equipment = new Catalog(null, "Обладнання", "Швейні машинки та ще щось", "/images/image1.jpeg");
-            Catalog fillers = new Catalog(null, "Наповнювачі", "Синтепух, вата, пір'я - все для наповнення", "/images/image1.jpeg");
-            Catalog kits = new Catalog(null, "Набори", "Готові набори для в'язання та шиття", "/images/image1.jpeg");
+            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/knitting-tools-table.jpg");
+            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей", "/images/multi-color-fabric-texture-samples.jpg");
+            Catalog patterns = new Catalog(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/pattern.jpg");
+            Catalog equipment = new Catalog(null, "Обладнання", "Швейні машинки та ще щось", "/images/sewing_machine.jpg");
+            Catalog fillers = new Catalog(null, "Наповнювачі", "Синтепух, вата, пір'я - все для наповнення", "/images/filler.jpg");
+            Catalog kits = new Catalog(null, "Набори", "Готові набори для в'язання та шиття", "/images/kit.jpg");
 
             yarns.add(
                     new Yarn(

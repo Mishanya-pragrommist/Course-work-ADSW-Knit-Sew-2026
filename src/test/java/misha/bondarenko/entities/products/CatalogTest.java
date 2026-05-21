@@ -27,10 +27,10 @@ class CatalogTest {
 
     @BeforeEach
     void setUp() {
-        rootCatalog = new Catalog(1L, "Головний каталог", "Кореневий каталог Knit&Sew", "https://aurayarns.rua-bivaet-pr");
-        fabricCategory = new Catalog(2L, "Тканини", "Категорія тканин", "https://aurayarns.ru/tpost/g1fclx83");
+        rootCatalog = new Catalog(1L, "Головний каталог", "Кореневий каталог Knit&Sew", "http");
+        fabricCategory = new Catalog(2L, "Тканини", "Категорія тканин", "https://aura");
         equipmentCategory = new Catalog(3L, "Обладнання", "Швейне та в'язальне обладнання", "https://aurayarns.");
-        kitCategory = new Catalog(4L, "Набори", "Готові набори для в'язання", "https://aurayarns.ru/tp");
+        kitCategory = new Catalog(4L, "Набори", "Готові набори для в'язання", "https://a");
 
         linenFabric = new Fabric(
                 true,
@@ -125,22 +125,7 @@ class CatalogTest {
         assertThat(kitCategory.getChildren()).hasSize(2).contains(winterKit, ecoKit);
     }
 
-    @Test
-    @DisplayName("Комплексний розрахунок вартості: Каталог із категоріями та наборами")
-    void testComplexCatalogPriceCalculation() {
-        // Збираємо повне дерево
-        rootCatalog.add(fabricCategory);
-        rootCatalog.add(equipmentCategory);
-        rootCatalog.add(winterKit); // Набір напряму в корені (4437.00)
-
-        fabricCategory.add(cottonFabric); // Звичайна категорія (100.00)
-        equipmentCategory.add(sewingMachine); // Звичайна категорія (4750.00)
-
-        // Загальна ціна: 4437.00 (winterKit) + 100.00 (cotton) + 4750.00 (machine) = 9287.00
-        BigDecimal expectedTotalPrice = new BigDecimal("9287.00");
-        assertThat(rootCatalog.getPrice()).isEqualByComparingTo(expectedTotalPrice);
-    }
-
+    // TODO: delete or rebuild this test since searching is likely to be delegated to services
     @Test
     @DisplayName("Пошук товарів та категорій за назвою у всій ієрархії")
     void testSearchInHierarchy() {
@@ -184,7 +169,6 @@ class CatalogTest {
         fabricCategory.remove(linenFabric);
 
         assertThat(fabricCategory.getChildren()).hasSize(1).containsOnly(cottonFabric);
-        assertThat(fabricCategory.getPrice()).isEqualByComparingTo(new BigDecimal("100.00"));
     }
 
     @Test
@@ -200,4 +184,16 @@ class CatalogTest {
                 .hasMessageContaining("не підтримується");
     }
 
+    @Test
+    @DisplayName("Спроба виконати операції отримання ціни каталогу " +
+            "за допомогою об'єкту каталогу має викликати UnsupportedOperationException")
+    void testCatalogUnsupportedOperations() {
+        assertThatThrownBy(() -> rootCatalog.getPrice())
+                .isInstanceOf(UnsupportedOperationException.class)
+                .hasMessageContaining("не підтримується");
+
+        assertThatThrownBy(() -> rootCatalog.getPurePrice())
+                .isInstanceOf(UnsupportedOperationException.class)
+                .hasMessageContaining("не підтримується");
+    }
 }

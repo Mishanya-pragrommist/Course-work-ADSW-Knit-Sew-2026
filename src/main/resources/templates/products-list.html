@@ -160,15 +160,14 @@
 
 							<button th:disabled="${!product.isAvailable}"
 									class="p-2.5 rounded-full transition-colors"
-									th:classappend="${product.isAvailable ? 'bg-brand-50 text-brand-600 hover:bg-brand-500 hover:text-white' :
-									 'bg-gray-100 text-gray-400 cursor-not-allowed'}">
+									th:classappend="${product.isAvailable ? 'bg-brand-50 text-brand-600 hover:bg-brand-500 hover:text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}">
 								<i data-lucide="shopping-cart" class="w-5 h-5"></i>
 							</button>
 						</div>
 					</div>
 				</div>
 
-				<!-- Порожній стан (якщо товарів немає) -->
+				<!-- Якщо товарів немає -->
 				<div th:if="${products.isEmpty()}" class="col-span-full py-12 text-center bg-white rounded-2xl border border-gray-100">
 					<i data-lucide="search-x" class="w-16 h-16 text-gray-300 mx-auto mb-4"></i>
 					<h3 class="text-lg font-medium text-gray-900">У цій категорії поки немає товарів</h3>

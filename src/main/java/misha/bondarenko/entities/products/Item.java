@@ -39,9 +39,15 @@ public abstract class Item {
     // --- Базові методи елемента ---
 
     /**
-     * Отримання ціни елемента
+     * Отримання ціни елемента з урахуванням знижки
      */
     public abstract BigDecimal getPrice();
+
+    /**
+     * Отримання чистої ціни без знижок
+     * @return ціна без знижок
+     */
+    public abstract BigDecimal getPurePrice();
 
     // --- Методи роботи з нащадками ---
     // За замовчуванням генерують виняток. Перевизначаються лише в Catalog та Kit.
@@ -71,8 +77,11 @@ public abstract class Item {
         throw new UnsupportedOperationException("Операція отримання дочірнього елемента не підтримується цим елементом.");
     }
 
+    // --- Методи рендеру елементів для відображення на сторінках ---
+
     /**
-     * Метод для відображення товарів та категорій у вигляді дерева
+     * Метод для відображення товарів та категорій у вигляді дерева (скоріше для дебагу).
+     *
      * @param indent відступ
      * @return відформатований рядок
      */
@@ -88,15 +97,4 @@ public abstract class Item {
      */
     public abstract String renderName();
 
-
-    // TODO: either remove this method from everywhere or make it compare things properly for every class
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Item item = (Item) o;
-        return id.equals(item.id)
-                && description.equals(item.description);
-    }
 }

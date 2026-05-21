@@ -32,12 +32,7 @@ public class CatalogController {
             model.addAttribute("catalog", catalogCardById);
             model.addAttribute("products", productCardDtoList);
 
-            System.out.println("Check product cards if they are not empty");
-            productCardDtoList.forEach(prCard ->
-                    System.out.println(prCard.id() + prCard.name() + prCard.oldPrice() +
-                    prCard.discount() + prCard.isAvailable()));
             System.out.println("Size of list: " + productCardDtoList.size());
-
 
             return "products-list";
         }

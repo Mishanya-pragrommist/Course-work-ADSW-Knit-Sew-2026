@@ -8,8 +8,6 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ProductTest {
     private Accessory accessory;
     private Book book;
@@ -207,7 +205,7 @@ public class ProductTest {
 
         // 10. Ініціалізація Набору (Kit)
         // Для Kit використовуємо Long ID згідно з твоїм класом
-        kit = new Kit(100L, "Творчий старт", "Повний набір матеріалів для початківця", "https://www.livemaster.ru/topic/2214489-vidy-pryazhi-plyusy-i-minusy-razlinoj-pryazhi",
+        kit = new Kit(100L, "Творчий старт", "Повний набір матеріалів для початківця", "https://",
                 new BigDecimal("0.15")); // 15% загальна знижка набору
         kit.setName("Набір 'Творчий старт'");
         kit.setDescription("Ексклюзивний набір, що поєднує інструменти, тканину та нитки в одній коробці");

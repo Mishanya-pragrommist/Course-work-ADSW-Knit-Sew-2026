@@ -23,9 +23,8 @@ public class Kit extends Item {
     @JoinColumn(name = "kit_id")
     private List<KitComponent> components = new ArrayList<>();
 
-    // Додаткова знижка саме за купівлю набором
+    /** Додаткова знижка саме за купівлю набором */
     private BigDecimal kitDiscount = BigDecimal.ZERO;
-
 
     public Kit(Long id, String name, String description, String imageUrl,  BigDecimal kitDiscount) {
         super(id, name, description, imageUrl,null);
@@ -49,6 +48,11 @@ public class Kit extends Item {
             return total.subtract(total.multiply(kitDiscount));
         }
         return total;
+    }
+
+    @Override
+    public BigDecimal getPurePrice() {
+        return getPrice();
     }
 
     @Override

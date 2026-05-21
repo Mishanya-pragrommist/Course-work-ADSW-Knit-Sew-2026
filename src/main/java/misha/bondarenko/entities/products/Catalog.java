@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,19 +29,20 @@ public class Catalog extends Item {
         super(id, name, description, imageUrl, null);
     }
 
-    // TODO: maybe delete this later
-    /**
-     * Обчислює загальну вартість усіх елементів у цьому каталозі
-     * (нафіга це тут треба?)
-     */
+    // Для каталогу немає сенсу обчислювати суму всіх його елементів
+    // (хіба що для адмінів це може бути корисно, типу загальна вартість усіх товарів для закупки)
+
     @Override
     public BigDecimal getPrice() {
-        return children.stream()
-                .map(Item::getPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        throw new UnsupportedOperationException("Операція отримання ціни зі знижкою класом Каталог не підтримується");
     }
 
-    // --- Реалізація методів роботи з нащадками ---
+    @Override
+    public BigDecimal getPurePrice() {
+        throw new UnsupportedOperationException("Операція отримання ціни без знижок класом Каталог не підтримується");
+    }
+
+    // --- Реалізація методів роботи з елементами каталогів ---
 
     @Override
     public void add(Item... item) {
@@ -64,23 +64,6 @@ public class Catalog extends Item {
         return children.get(index);
     }
 
-    // TODO: implement get subcatalogs only on current level. For example:
-    // + catalog1
-    //      + catalog11
-    //      + catalog12
-    //      + catalog13
-    //          +catalog131
-    //
-    // catalog1.getSubCatalogs() should return catalog11, 12, 13 and not catalog131
-    public List<Catalog> getSubCatalogs() {
-        List<Catalog> catalogs = new ArrayList<>();
-        for (Item item : children) {
-            if (item instanceof Catalog) {
-                catalogs.add((Catalog) item);
-            }
-        }
-        return catalogs;
-    }
 
     /**
      * Повертає список усіх дочірніх елементів для ітерації.
@@ -123,17 +106,5 @@ public class Catalog extends Item {
         return name;
     }
 
-    // TODO: create a method to render catalog containment to HTML block
 
-    public String renderHtmlHomePage() {
-        return "renderHtml needs to be implemented";
-    }
-
-    /**
-     * Для відображення категорій у вигляді стовпця зліва на домашній сторінці
-     * @return форматований рядок (може, це буде список рядків, хз)
-     */
-    public String renderHtmlColumn() {
-        return "renderHtmlColumn needs to be implemented";
-    }
 }

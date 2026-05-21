@@ -23,18 +23,12 @@ public class ProductService {
         this.catalogRepository = catalogRepository;
     }
 
-    public Item findItemByName(String name) {
-        return itemRepository.findByName(name).orElse(null);
+    public Item findItemById(long id) {
+        return itemRepository.findById(id).orElse(null);
     }
 
-    @Transactional
-    public String renderItems() {
-        List<Item> items = itemRepository.findAll();
-        StringBuilder sb = new StringBuilder();
-        for (Item item : items) {
-            sb.append(item.render("")).append("\n");
-        }
-        return sb.toString();
+    public Item findItemByName(String name) {
+        return itemRepository.findByName(name).orElse(null);
     }
 
     @Transactional
@@ -54,7 +48,7 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Catalog not found"));
 
         return catalog.getChildren().stream()
-                .filter(item -> item instanceof Product)
+                .filter(item -> item instanceof Product || item instanceof Kit)
                 .map(item -> new ProductCardDto(
                         item.getId(),
                         item.getName(),

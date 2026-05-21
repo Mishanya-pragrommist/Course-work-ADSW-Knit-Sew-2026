@@ -43,6 +43,7 @@ public class Product extends Item {
         return price.subtract(price.multiply(discount));
     }
 
+    @Override
     public BigDecimal getPurePrice() {
         return price;
     }

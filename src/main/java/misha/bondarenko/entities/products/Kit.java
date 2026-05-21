@@ -60,7 +60,7 @@ public class Kit extends Item {
      * Додає товар до набору із зазначенням конкретної кількості.
      * Якщо такий товар уже є в наборі, кількість підсумовується.
      */
-    public void add(Item item, int quantity) {
+    public void add(Product item, int quantity) {
         for (KitComponent comp : components) {
             if (comp.getItem().equals(item)) {
                 comp.setQuantity(comp.getQuantity() + quantity);
@@ -76,7 +76,9 @@ public class Kit extends Item {
     @Override
     public void add(Item... items) {
         for (Item item : items) {
-            add(item, 1);
+            if (item instanceof Product) {
+                add((Product) item, 1);
+            }
         }
     }
 

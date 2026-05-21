@@ -21,7 +21,7 @@ public class KitComponent {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "item_id", nullable = false)
-    private Item item;
+    private Product item;
 
     /**
      * Кількість товару item в наборі

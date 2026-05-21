@@ -77,4 +77,20 @@ public class Product extends Item {
     public String renderName() {
         return "";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return  name.equals(product.name)
+                && code.equals(product.code)
+                && discount.equals(product.discount)
+                && supplier.equals(product.supplier)
+                && brand.equals(product.brand)
+                && stockQuantity == product.stockQuantity
+                && unit.equals(product.unit)
+                && price.equals(product.price)
+                && isAvailable == product.isAvailable;
+    }
 }

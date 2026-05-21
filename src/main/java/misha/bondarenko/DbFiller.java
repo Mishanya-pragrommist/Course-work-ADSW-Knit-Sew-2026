@@ -23,108 +23,70 @@ public class DbFiller {
         if (!shouldWork) return null;
 
         return args -> {
-            Catalog yarns = new Catalog(null, "Пряжа", "Пряжа для в'язання", "/images/image1.jpeg");
-            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/knitting-tools-table.jpg");
-            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей", "/images/multi-color-fabric-texture-samples.jpg");
-            Catalog patterns = new Catalog(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/pattern.jpg");
+            Catalog accessories = new Catalog(null, "Аксесуари", "Гудзики, бісер, прикраси для виробів тощо", "/images/buttons.jpg");
+            Catalog books = new Catalog(null, "Книги з рукоділля", "Книги про в'язання іграшок, шиття одежі, прикрашання виробів тощо", "/images/book.jpg");
             Catalog equipment = new Catalog(null, "Обладнання", "Швейні машинки та ще щось", "/images/sewing_machine.jpg");
+            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей", "/images/multi-color-fabric-texture-samples.jpg");
             Catalog fillers = new Catalog(null, "Наповнювачі", "Синтепух, вата, пір'я - все для наповнення", "/images/filler.jpg");
+            Catalog giftCertificates = new Catalog(null, "Подарункові сертифікати", "Сертифікати, щоб радувати близьких та друзів", "/images/gift_certificate.jpg");
+            Catalog patterns = new Catalog(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/pattern.jpg");
+            Catalog sewingThreads = new Catalog(null, "Нитки для шиття", "Різноманітні нитки для шиття та вишивання", "/images/sewing_threads.jpg");
+            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/knitting-tools-table.jpg");
+            Catalog yarns = new Catalog(null, "Пряжа", "Пряжа для в'язання", "/images/image1.jpeg");
             Catalog kits = new Catalog(null, "Набори", "Готові набори для в'язання та шиття", "/images/kit.jpg");
 
             yarns.add(
-                    new Yarn(
-                            true,
-                            "YAR-CODE-01",
-                            "ART-YAR-101",
-                            "ЯрнОптТорг",
-                            "Alize",
-                            350,
-                            MeasureUnit.UNIT,
-                            new BigDecimal("120.00"),
-                            new BigDecimal("0.08"), // 8% знижки
-                            "51% акрил, 49% вовна",
-                            240,
-                            100,
-                            "LOT-88210",
+                    new Yarn(true, "YAR-CODE-01", "ART-YAR-101",
+                            "ЯрнОптТорг", "Alize", 350,
+                            MeasureUnit.UNIT, new BigDecimal("120.00"), new BigDecimal("0.08"), // 8% знижки
+                            "51% акрил, 49% вовна", 240, 100, "LOT-88210",
                             "Бордовий (col. 390)"
                     ),
-                    new Yarn(
-                            true,
-                            "YAR-CODE-02",
-                            "ART-YAR-102",
-                            "ЯрнОптТорг",
-                            "Alize",
-                            350,
-                            MeasureUnit.UNIT,
-                            new BigDecimal("120.00"),
-                            new BigDecimal("0.08"), // 8% знижки
-                            "51% акрил, 49% вовна",
-                            240,
-                            100,
-                            "LOT-88210",
-                            "Бордовий (col. 390)"
+                    new Yarn(true, "YAR-CODE-02", "ART-YAR-102",
+                            "ЯрнОптТорг", "Alize", 350,
+                            MeasureUnit.UNIT, new BigDecimal("120.00"), new BigDecimal("0.08"), // 8% знижки
+                            "51% акрил, 49% вовна", 240, 100,
+                            "LOT-88210", "бордовий (col. 390)"
                     ),
-                    new Yarn(
-                            true,
-                            "YAR-CODE-03",
-                            "ART-YAR-103",
-                            "ЯрнОптТорг",
-                            "Alize",
-                            350,
-                            MeasureUnit.UNIT,
-                            new BigDecimal("120.00"),
-                            new BigDecimal("0.08"), // 8% знижки
-                            "51% акрил, 49% вовна",
-                            240,
-                            100,
-                            "LOT-88210",
-                            "Бордовий (col. 390)"
+                    new Yarn(true, "YAR-CODE-03", "ART-YAR-103",
+                            "ЯрнОптТорг", "Alize", 350,
+                            MeasureUnit.UNIT, new BigDecimal("120.00"), new BigDecimal("0.08"), // 8% знижки
+                            "51% акрил, 49% вовна", 240, 100,
+                            "LOT-88210", "бордовий (col. 390)"
                     )
             );
 
             tools.add(
-                    new Tool(true,
-                            "091203",
-                            "Art. 091212",
-                            "Бабуся Надія ТМ",
-                            "ДебільніГачки",
-                            190,
-                            MeasureUnit.UNIT,
-                            new BigDecimal("56.00"),
-                            BigDecimal.ZERO,
-                            "Гачок",
-                            "алюміній",
-                            "4мм"
+                    new Tool(true, "091203", "Art. 091212",
+                            "Бабуся Надія ТМ", "ДебільніГачки", 190,
+                            MeasureUnit.UNIT, new BigDecimal("56.00"), BigDecimal.ZERO,
+                            "Гачок", "алюміній", "4мм"
                             ),
-                    new Tool(true,
-                            "54231",
-                            "Art. 52315",
-                            "Бабуся Надія ТМ",
-                            "ДебільніГачки",
-                            190,
-                            MeasureUnit.UNIT,
-                            new BigDecimal("56.00"),
-                            BigDecimal.ZERO,
-                            "Гачок",
-                            "алюміній",
-                            "4мм"
+                    new Tool(true, "54231", "Art. 52315",
+                            "Бабуся Надія ТМ", "ДебільніГачки", 190,
+                            MeasureUnit.UNIT, new BigDecimal("56.00"), new BigDecimal("0.10"),
+                            "Гачок", "алюміній", "4мм"
                     ),
-                    new Tool(true,
-                            "887464",
-                            "Art. 12845",
-                            "Бабуся Надія ТМ",
-                            "ДебільніГачки",
-                            190,
-                            MeasureUnit.UNIT,
-                            new BigDecimal("60.00"),
-                            BigDecimal.ZERO,
-                            "Гачок",
-                            "алюміній",
-                            "5мм"
+                    new Tool(true, "887464", "Art. 12845",
+                            "Бабуся Надія ТМ", "ДебільніГачки", 190,
+                            MeasureUnit.UNIT, new BigDecimal("60.00"), BigDecimal.ZERO,
+                            "Гачок", "алюміній", "5мм"
                     )
             );
 
-            catalogService.saveAll(yarns, tools, fabrics, patterns, equipment, fillers, kits);
+            catalogService.saveAll(
+                    accessories,
+                    books,
+                    equipment,
+                    fabrics,
+                    fillers,
+                    giftCertificates,
+                    patterns,
+                    sewingThreads,
+                    tools,
+                    yarns,
+                    kits
+            );
 
             System.out.println("2) Отримуємо каталоги з БД\n");
             System.out.println(catalogService.getRootCatalogsString());

@@ -1,4 +1,4 @@
-package misha.bondarenko.records;
+package misha.bondarenko.records.dto;
 
 import java.math.BigDecimal;
 

@@ -1,4 +1,4 @@
-package misha.bondarenko.records;
+package misha.bondarenko.records.dto;
 
 /**
  * Інформація про каталог, яка має відображатися на сторінці

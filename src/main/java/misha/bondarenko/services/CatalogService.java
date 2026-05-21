@@ -1,9 +1,8 @@
 package misha.bondarenko.services;
 
 import misha.bondarenko.entities.products.Catalog;
-import misha.bondarenko.records.CatalogCardDto;
+import misha.bondarenko.records.dto.CatalogCardDto;
 import misha.bondarenko.repositories.CatalogRepository;
-import misha.bondarenko.repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

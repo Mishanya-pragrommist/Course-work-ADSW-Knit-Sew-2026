@@ -17,8 +17,8 @@ public class DbFiller {
     @Bean
     @Transactional
     public CommandLineRunner fillDatabase(CatalogService catalogService, ProductService itemService) {
-        boolean shouldWork = true;
-        if (!shouldWork) return null;
+        boolean shouldWork = false;
+        if (!shouldWork) return args -> {};
 
         return args -> {
             Catalog accessories = new Catalog(null, "Аксесуари", "Гудзики, бісер, прикраси для виробів тощо", "/images/buttons.jpg");

@@ -23,16 +23,18 @@ public class Yarn extends Product {
     private String color; // Колір
     private String toolsRecommended; // Рекомендовані інструменти
 
-    public Yarn(boolean isAvailable, String code, String article, String supplier,
-                String brand, int stockQuantity, MeasureUnit unit,
-                BigDecimal price, BigDecimal discount, String fiberContent,
-                int lengthInMeters, int weightInGrams, String dyeLot, String color) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+    public Yarn(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                String article, String supplier, String brand, String fiberContent,
+                int lengthInMeters, int weightInGrams, String dyeLot, String color, String toolsRecommended) {
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
         this.fiberContent = fiberContent;
         this.lengthInMeters = lengthInMeters;
         this.weightInGrams = weightInGrams;
         this.dyeLot = dyeLot;
         this.color = color;
+        this.toolsRecommended = toolsRecommended;
     }
 
     @Override

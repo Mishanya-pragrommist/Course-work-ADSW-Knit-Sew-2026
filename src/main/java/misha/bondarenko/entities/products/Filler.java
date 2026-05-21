@@ -25,21 +25,13 @@ public class Filler extends Product {
     private boolean isHypoallergenic; // Гіпоалергенність
     private double packageWeightKg; // Вага пакування в кілограмах
 
-    public Filler(boolean isAvailable,
-                  String code,
-                  String article,
-                  String supplier,
-                  String brand,
-                  int stockQuantity,
-                  MeasureUnit unit,
-                  BigDecimal price,
-                  BigDecimal discount,
-                  String fillerType,
-                  int density,
-                  boolean isHypoallergenic,
-                  double packageWeightKg) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
-        this.fillerType = fillerType;
+    public Filler(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                  MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                  String article, String supplier, String brand, String fillerType,
+                  int density, boolean isHypoallergenic, double packageWeightKg) {
+
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);        this.fillerType = fillerType;
         this.density = density;
         this.isHypoallergenic = isHypoallergenic;
         this.packageWeightKg = packageWeightKg;

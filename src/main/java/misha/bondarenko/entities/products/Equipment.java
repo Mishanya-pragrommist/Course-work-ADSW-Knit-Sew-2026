@@ -28,22 +28,13 @@ public class Equipment extends Product {
     private double weightKg; // Вага в кілограмах
     private int operationsCount; // Кількість швейних/в'язальних операцій
 
-    public Equipment(boolean isAvailable,
-                     String code,
-                     String article,
-                     String supplier,
-                     String brand,
-                     int stockQuantity,
-                     MeasureUnit unit,
-                     BigDecimal price,
-                     BigDecimal discount,
-                     String equipmentType,
-                     int warrantyMonths,
-                     int powerWatt,
-                     String dimensions,
-                     double weightKg,
-                     int operationsCount) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+    public Equipment(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                     MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                     String article, String supplier, String brand, String equipmentType,
+                     int warrantyMonths, int powerWatt, String dimensions, double weightKg, int operationsCount) {
+
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
         this.equipmentType = equipmentType;
         this.warrantyMonths = warrantyMonths;
         this.powerWatt = powerWatt;

@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Набір для рукоділля. На відміну від каталогу,
@@ -26,11 +28,12 @@ public class Kit extends Item {
     /** Додаткова знижка саме за купівлю набором */
     private BigDecimal kitDiscount = BigDecimal.ZERO;
 
-    public Kit(Long id, String name, String description, String imageUrl,  BigDecimal kitDiscount) {
-        super(id, name, description, imageUrl,null);
-        if (kitDiscount != null) {
-            this.kitDiscount = kitDiscount;
-        }
+    public Kit(Long id, String article, String name, String description,
+               BigDecimal price, BigDecimal discount, MeasureUnit unit,
+               int stockQuantity, boolean isAvailable, String imageUrl) {
+
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null);
     }
 
     /**
@@ -38,9 +41,9 @@ public class Kit extends Item {
      * Сумує (ціна_компонента * кількість) та застосовує знижку набору.
      */
     @Override
-    public BigDecimal getPrice() {
+    public BigDecimal getTotalPrice() {
         BigDecimal total = components.stream()
-                .map(comp -> comp.getItem().getPrice()
+                .map(comp -> comp.getItem().getTotalPrice()
                 .multiply(BigDecimal.valueOf(comp.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -52,7 +55,17 @@ public class Kit extends Item {
 
     @Override
     public BigDecimal getPurePrice() {
-        return getPrice();
+        return getTotalPrice();
+    }
+
+    @Override
+    public BigDecimal getDiscount() {
+        return kitDiscount;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return this.isAvailable;
     }
 
     @Override
@@ -77,7 +90,6 @@ public class Kit extends Item {
     /**
      * Додає товари з кількістю за замовчуванням (1 шт.).
      */
-    @Override
     public void add(Item... items) {
         for (Item item : items) {
             if (item instanceof Product) {
@@ -86,12 +98,10 @@ public class Kit extends Item {
         }
     }
 
-    @Override
     public void remove(Item item) {
         components.removeIf(comp -> comp.getItem().equals(item));
     }
 
-    @Override
     public Item getChild(int index) {
         if (index < 0 || index >= components.size()) {
             throw new IndexOutOfBoundsException("Елемент не знайдено");
@@ -103,14 +113,15 @@ public class Kit extends Item {
     public String render(String indent) {
         StringBuilder sb = new StringBuilder();
         sb.append(indent).append("Набір: ").append(name)
-                .append(" | Загальна вартість: ").append(getPrice()).append("\n");
+                .append(" | Загальна вартість: ").append(getTotalPrice()).append("\n");
         sb.append(indent).append("Склад:\n");
         for (KitComponent component : components) {
             sb.append(indent).append("  - ")
                     .append(component.getItem().getName())
                     .append(" x").append(component.getQuantity())
-                    .append(" (").append(component.getItem().getPrice()).append(" за шт.)\n");
+                    .append(" (").append(component.getItem().getTotalPrice()).append(" за шт.)\n");
         }
         return sb.toString();
     }
+
 }

@@ -1,6 +1,7 @@
 package misha.bondarenko.controllers;
 
 import misha.bondarenko.entities.products.Item;
+import misha.bondarenko.records.ProductCardDto;
 import misha.bondarenko.services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +20,7 @@ public class ProductController {
 
     @GetMapping("/product/{id}")
     public String getProductPage(@PathVariable Long id, Model model) {
-        Item product = productService.findItemById(id);
+        ProductCardDto product = productService.getProductCardById(id);
 
         if (product == null) {
             return "redirect:/"; // Або перенаправлення на сторінку 404

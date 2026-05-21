@@ -22,21 +22,14 @@ public class Accessory extends Product {
     private String size; // Розмір (15см, 5мм, №3 - розмір голки, тощо)
     private String color; // Колір
 
-    public Accessory(boolean isAvailable,
-                     String code,
-                     String article,
-                     String supplier,
-                     String brand,
-                     int stockQuantity,
-                     MeasureUnit unit,
-                     BigDecimal price,
-                     BigDecimal discount,
-                     String accessoryType,
-                     String material,
-                     String size,
-                     String color
-    ) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+    public Accessory(Long id, String article, String name, String description,
+                     BigDecimal price, BigDecimal discount, MeasureUnit unit,
+                     int stockQuantity, boolean isAvailable, String imageUrl,
+                     String supplier, String brand, String accessoryType,
+                     String material, String size, String color) {
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
+
         this.accessoryType = accessoryType;
         this.material = material;
         this.size = size;

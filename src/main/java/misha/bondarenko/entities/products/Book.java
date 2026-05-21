@@ -26,23 +26,12 @@ public class Book extends Product {
     private int pages; // Кількість сторінок
     private int publicationYear; // Рік видання
 
-    public Book(boolean isAvailable,
-                String code,
-                String article,
-                String supplier,
-                String brand,
-                int stockQuantity,
-                MeasureUnit unit,
-                BigDecimal price,
-                BigDecimal discount,
-                String name,
-                String author,
-                String publisher,
-                String isbn,
-                int pages,
-                int publicationYear) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
-        this.name = name;
+    public Book(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                String article, String supplier, String brand, String author,
+                String publisher, String isbn, int pages, int publicationYear) {
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
         this.author = author;
         this.publisher = publisher;
         this.isbn = isbn;

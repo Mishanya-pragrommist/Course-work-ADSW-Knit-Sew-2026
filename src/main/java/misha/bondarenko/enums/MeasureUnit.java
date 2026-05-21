@@ -9,7 +9,7 @@ import lombok.Getter;
 public enum MeasureUnit {
     MM("міліметри"),
     CM("сантиметри"),
-    METERS("метри"),
+    METER("метри"),
     SQUIRM("квадратний метр"),
     GR("грами"),
     UNIT("поштучно"),

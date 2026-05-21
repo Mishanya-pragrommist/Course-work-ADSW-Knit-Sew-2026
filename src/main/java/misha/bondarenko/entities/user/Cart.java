@@ -1,6 +1,5 @@
 package misha.bondarenko.entities.user;
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,7 +36,7 @@ public class Cart {
      * @return загальна вартість з урахуванням знижок
      */
     public BigDecimal getTotalPrice() {
-        return items.stream().map(CartItem::getItem).map(Item::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        return items.stream().map(CartItem::getItem).map(Item::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     /**

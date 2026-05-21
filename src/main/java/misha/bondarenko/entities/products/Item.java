@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 
 /**
- * Базовий абстрактний клас для патерну Композит.
- * Представляє загальний елемент системи: товар, набір або каталог.
+ * Базовий абстрактний клас
+ * Представляє товар та набір
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -21,80 +22,51 @@ public abstract class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    protected Long id;
 
-    protected String name;
-    protected String description;
-
-    @Column(columnDefinition = "text")
+    protected String article; // Артикул товару або набору
+    protected String name; // Назва товару
+    protected String description; // Опис товару
+    protected BigDecimal price; // Ціна без знижки
+    protected BigDecimal discount; // Знижка
+    @Enumerated(EnumType.STRING)
+    protected MeasureUnit unit; // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
+    protected int stockQuantity; // Кількість на складі
+    protected boolean isAvailable; // Наявність товару
     protected String imageUrl; // Посилання на зображення
 
-    /**
-     * Батьківський каталог
-     */
+    /** Батьківський каталог */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     protected Catalog parent;
 
-    // --- Базові методи елемента ---
+    // ============ Базові методи товару ============
 
-    /**
-     * Отримання ціни елемента з урахуванням знижки
-     */
-    public abstract BigDecimal getPrice();
+    /** Отримання ціни елемента з урахуванням знижки */
+    public abstract BigDecimal getTotalPrice();
 
-    /**
-     * Отримання чистої ціни без знижок
+    /** Отримання чистої ціни без знижок
      * @return ціна без знижок
      */
     public abstract BigDecimal getPurePrice();
 
-    // --- Методи роботи з нащадками ---
-    // За замовчуванням генерують виняток. Перевизначаються лише в Catalog та Kit.
+    /** Отримати знижку на товар/сет */
+    public abstract BigDecimal getDiscount();
 
-    /**
-     * Додавання елементу до колекції (каталогу або сету)
-     * @param item об'єкт для додавання
+    /** Чи в наявності товар
+     * @return true - так, false - ні
      */
-    public void add(Item... item) {
-        throw new UnsupportedOperationException("Операція додавання не підтримується цим елементом.");
-    }
-
-    /**
-     * Видалення елементу з колекції (каталогу або сету)
-     * @param item об'єкт для видалення
-     */
-    public void remove(Item item) {
-        throw new UnsupportedOperationException("Операція видалення не підтримується цим елементом.");
-    }
-
-    /**
-     * Отримання дочірнього елемента з дерева
-     * @param index номер елемента в списку
-     * @return знайдений елемент
-     */
-    public Item getChild(int index) {
-        throw new UnsupportedOperationException("Операція отримання дочірнього елемента не підтримується цим елементом.");
-    }
-
-    // --- Методи рендеру елементів для відображення на сторінках ---
-
-    /**
-     * Метод для відображення товарів та категорій у вигляді дерева (скоріше для дебагу).
-     *
-     * @param indent відступ
-     * @return відформатований рядок
-     */
-    public abstract String render(String indent);
+    public abstract boolean isAvailable();
 
     /**
      * Для відображення повної назви товару, категорії або набору.<br>
      * Для товарів назва може виглядати як "Пряжа синя Alize 100г Акрил",
      * тобто як сукупність певних параметрів.<br>
-     * Для категорій назва - назва та опис<br>
+     * Для категорій назва - назва<br>
      * Для наборів товарів - назва виду "Набір для в'язання шарфу"
      * @return рядок з повною назвою товару
      */
     public abstract String renderName();
 
+    public abstract String render(String indent);
 }

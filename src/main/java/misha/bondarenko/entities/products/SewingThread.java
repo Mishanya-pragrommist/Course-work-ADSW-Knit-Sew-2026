@@ -23,10 +23,12 @@ public class SewingThread extends Product {
     private int lengthInMeters; // Довжина намотування в метрах
     private String color; // Колір або номер кольору за палітрою
 
-    public SewingThread(boolean isAvailable, String code, String article, String supplier,
-                        String brand, int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount,
-                        String threadType, String composition, String thickness, int lengthInMeters, String color) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+    public SewingThread(Long id, String name, String description, BigDecimal price, BigDecimal discount
+            , MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                        String article, String supplier, String brand, String threadType,
+                        String composition, String thickness, int lengthInMeters, String color) {
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
         this.threadType = threadType;
         this.composition = composition;
         this.thickness = thickness;

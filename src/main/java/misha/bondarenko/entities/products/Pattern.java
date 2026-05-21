@@ -26,10 +26,12 @@ public class Pattern extends Product {
     private String language; // Мова інструкції ("Українська", "Англійська")
     private String format; // Формат ("PDF", "Друкований буклет")
 
-    public Pattern(boolean isAvailable, String code, String article, String supplier, String brand,
-                   int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount,
-                   String author, String difficultyLevel, String language, String format) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
+    public Pattern(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                   MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                   String article, String supplier, String brand, String author,
+                   String difficultyLevel, String language, String format) {
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
         this.author = author;
         this.difficultyLevel = difficultyLevel;
         this.language = language;

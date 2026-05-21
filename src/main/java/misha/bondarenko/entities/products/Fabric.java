@@ -19,22 +19,14 @@ public class Fabric extends Product {
     private int density; // Щільність тканини (г/м2)
     private String color; // Колір або опис принту
 
-    public Fabric(boolean isAvailable,
-                  String code,
-                  String article,
-                  String supplier,
-                  String brand,
-                  int stockQuantity,
-                  MeasureUnit unit,
-                  BigDecimal price,
-                  BigDecimal discount,
-                  String fabricType,
-                  String composition,
-                  int widthInCm,
-                  int density,
-                  String color) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
-        this.fabricType = fabricType;
+
+    public Fabric(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                  MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                  String article, String supplier, String brand, String fabricType, String composition,
+                  int widthInCm, int density, String color) {
+
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);        this.fabricType = fabricType;
         this.composition = composition;
         this.widthInCm = widthInCm;
         this.density = density;

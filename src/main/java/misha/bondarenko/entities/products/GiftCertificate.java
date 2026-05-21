@@ -23,9 +23,13 @@ public class GiftCertificate extends Product {
     private int validityMonths; // Термін дії у місяцях
     private String termsOfUse; // Короткі умови використання (наприклад: "Діє на весь асортимент, крім акційних товарів")
 
-    public GiftCertificate(boolean isAvailable, String code, String article, String supplier, String brand, int stockQuantity, MeasureUnit unit, BigDecimal price, BigDecimal discount, String certificateType, int validityMonths, String termsOfUse) {
-        super(isAvailable, code, article, supplier, brand, stockQuantity, unit, price, discount);
-        this.certificateType = certificateType;
+    public GiftCertificate(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                           MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+                           String article, String supplier, String brand, String certificateType,
+                           int validityMonths, String termsOfUse) {
+
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand);        this.certificateType = certificateType;
         this.validityMonths = validityMonths;
         this.termsOfUse = termsOfUse;
     }
@@ -40,6 +44,6 @@ public class GiftCertificate extends Product {
 
     @Override
     public String renderName() {
-        return "Подарунковий сертифікат, " + certificateType.toLowerCase() + ", номіналом " + getPrice() + " грн";
+        return "Подарунковий сертифікат, " + certificateType.toLowerCase() + ", номіналом " + getTotalPrice() + " грн";
     }
 }

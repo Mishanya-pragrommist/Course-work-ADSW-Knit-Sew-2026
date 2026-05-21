@@ -88,11 +88,11 @@
 			<!-- Ліва колонка: Зображення -->
 			<div class="flex flex-col gap-4">
 				<div class="aspect-square bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden border border-gray-100 relative">
-					<img th:if="${product.imageURL != null}"
-						 th:src="@{${product.imageURL}}"
+					<img th:if="${product.imageUrl != null}"
+						 th:src="@{${product.imageUrl}}"
 						 th:alt="${product.name}"
 						 class="w-full h-full object-cover">
-					<i th:unless="${product.imageURL != null}" data-lucide="image" class="w-24 h-24 text-gray-300"></i>
+					<i th:unless="${product.imageUrl != null}" data-lucide="image" class="w-24 h-24 text-gray-300"></i>
 
 					<!-- Шильдик знижки -->
 					<div th:if="${product.discount != null && product.discount > 0}"
@@ -105,7 +105,7 @@
 			<!-- Права колонка: Інформація та купівля -->
 			<div class="flex flex-col">
 				<div class="mb-2 flex justify-between items-start">
-					<span class="text-sm text-gray-500" th:text="'Артикул: ' + ${product.id}">Артикул: 12345</span>
+					<span class="text-sm text-gray-500" th:text="'Артикул: ' + ${product.article}">Артикул: 12345</span>
 					<span th:if="${product.isAvailable}" class="text-sm text-green-600 font-medium bg-green-50 px-2 py-1 rounded">В наявності</span>
 					<span th:unless="${product.isAvailable}" class="text-sm text-red-600 font-medium bg-red-50 px-2 py-1 rounded">Немає в наявності</span>
 				</div>
@@ -116,14 +116,14 @@
 				<div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
 					<!-- Якщо є знижка (очікується, що бекенд передає фінальну та стару ціну, або рахуємо на фронті) -->
 					<div th:if="${product.discount != null && product.discount > 0}" class="flex flex-col">
-						<span class="text-sm text-gray-500 line-through mb-1" th:text="${product.price} + ' грн'">100.00 грн</span>
+						<span class="text-sm text-gray-500 line-through mb-1" th:text="${product.oldPrice()} + ' грн'">100.00 грн</span>
 						<div class="flex items-baseline gap-2">
-							<span class="text-4xl font-bold text-brand-600" th:text="${product.price - (product.price * product.discount)} + ' грн'">90.00 грн</span>
+							<span class="text-4xl font-bold text-brand-600" th:text="${product.newPrice()} + ' грн'">90.00 грн</span>
 						</div>
 					</div>
 					<!-- Якщо знижки немає -->
 					<div th:unless="${product.discount != null && product.discount > 0}">
-						<span class="text-4xl font-bold text-gray-900" th:text="${product.price} + ' грн'">100.00 грн</span>
+						<span class="text-4xl font-bold text-gray-900" th:text="${product.oldPrice()} + ' грн'">100.00 грн</span>
 					</div>
 				</div>
 

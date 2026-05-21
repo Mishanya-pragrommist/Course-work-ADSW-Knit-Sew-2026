@@ -27,7 +27,7 @@ public class CatalogController {
         try {
             Long id = Long.parseLong(catId);
             CatalogCardDto catalogCardById = catalogService.getCatalogCardById(id);
-            List<ProductCardDto> productCardDtoList = productService.getProductCards(id);
+            List<ProductCardDto> productCardDtoList = productService.getProductCardsDto(id);
 
             model.addAttribute("catalog", catalogCardById);
             model.addAttribute("products", productCardDtoList);

@@ -2,10 +2,9 @@ package misha.bondarenko.entities.products;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.math.BigDecimal;
-
 import misha.bondarenko.enums.MeasureUnit;
 
+import java.math.BigDecimal;
 
 /**
  * Товар
@@ -17,26 +16,33 @@ import misha.bondarenko.enums.MeasureUnit;
 @AllArgsConstructor
 public class Product extends Item {
 
-    protected boolean isAvailable;
-
-    @Column(nullable = false, unique = true)
-    protected String code; // Код виду 010203
-
     @Column(nullable = false)
     protected String article; // Артикул
 
     protected String supplier; // Постачальник
     protected String brand; // Бренд товару
-    protected int stockQuantity; // Кількість на складі
 
-    @Enumerated(EnumType.STRING)
-    protected MeasureUnit unit; // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
-
-    protected BigDecimal price; // Ціна (без знижки)
-    protected BigDecimal discount; // Знижка у форматі дробу "0.10"
+    public Product(Long id,
+                   String article,
+                   String name,
+                   String description,
+                   BigDecimal price,
+                   BigDecimal discount,
+                   MeasureUnit unit,
+                   int stockQuantity,
+                   boolean isAvailable,
+                   String imageUrl,
+                   Catalog parent,
+                   String supplier,
+                   String brand) {
+        super(id, article, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, parent);
+        this.article = article;
+        this.supplier = supplier;
+        this.brand = brand;
+    }
 
     @Override
-    public BigDecimal getPrice() {
+    public BigDecimal getTotalPrice() {
         if (discount == null || discount.compareTo(BigDecimal.ZERO) == 0) {
             return price;
         }
@@ -48,24 +54,32 @@ public class Product extends Item {
         return price;
     }
 
+    @Override
+    public BigDecimal getDiscount() {
+        return discount;
+    }
+
+    @Override
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
     protected String getBaseDetails() {
-        return  "код=" + getCode() +
-                ", артикул=" + article +
+        return "артикул=" + article +
                 ", назва=" + name +
                 ", опис=" + description +
                 ", постачальник=" + supplier +
                 ", бренд=" + brand +
                 ", кількість=" + stockQuantity +
                 ", одиниці вимірювання=" + unit.getDescription() +
-                ", загальна ціна=" + getPrice() +
+                ", загальна ціна=" + getTotalPrice() +
                 ", знижка=" + discount +
                 ", доступність=" + isAvailable;
     }
 
-    // TODO: adapt method to render products containment to HTML blocks
     /**
-     * Для відображення товару у вигляді картки на сторінці вибору
-     * @param indent тимчасове
+     * Для відображення товару у вигляді картки на сторінці вибору. ТИМЧАСОВЕ РІШЕННЯ ДЛЯ ДЕБАГУ
+     * @param indent відступ
      * @return відформатований рядок
      */
     public String render(String indent) {
@@ -76,7 +90,7 @@ public class Product extends Item {
 
     @Override
     public String renderName() {
-        return "";
+        return "Товар " + name + " " + brand + " " + description;
     }
 
     @Override
@@ -85,7 +99,6 @@ public class Product extends Item {
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
         return  name.equals(product.name)
-                && code.equals(product.code)
                 && discount.equals(product.discount)
                 && supplier.equals(product.supplier)
                 && brand.equals(product.brand)

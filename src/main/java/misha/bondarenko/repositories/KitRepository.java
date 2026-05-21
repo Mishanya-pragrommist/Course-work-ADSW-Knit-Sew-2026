@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: remove if unused
 @Repository
 public interface KitRepository extends JpaRepository<Kit, Long> {
     Optional<Kit> findByName(String name);

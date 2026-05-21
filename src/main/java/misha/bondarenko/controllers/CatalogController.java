@@ -31,7 +31,6 @@ public class CatalogController {
 
             model.addAttribute("catalog", catalogCardById);
             model.addAttribute("products", productCardDtoList);
-            //model.addAttribute("catalogCards", catalogService.getCatalogCards());
 
             System.out.println("Check product cards if they are not empty");
             productCardDtoList.forEach(prCard ->

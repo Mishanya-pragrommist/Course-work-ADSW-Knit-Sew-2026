@@ -37,10 +37,10 @@
 
 		<!-- Навігація (десктоп) -->
 		<nav class="hidden md:flex space-x-8">
-			<a href="#" class="text-brand-600 font-medium">Головна</a>
-			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Каталог</a>
-			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
-			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
+			<a th:href="@{/}" class="text-brand-600 font-medium">Головна</a>
+			<a th:href="@{about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
+			<a th:href="@{contacts}" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
+			<a th:href="@{payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
 		</nav>
 
 		<!-- Іконки користувача -->

@@ -71,117 +71,213 @@
 		<!-- Бічна панель: Фільтри -->
 		<!--TODO: implement filters for each category-->
 		<aside class="w-full lg:w-1/4">
-			<form th:action="@{/catalog/{id}/filter(id=${catalog.id})}" th:object="${filter}"
-				  method="get" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 space-y-6">
+			<form th:action="@{/catalog/{id}/filter(id=${catalog.id})}" th:object="${filter}" method="get" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
 
-				<h3 class="font-bold text-lg text-gray-800">Фільтри</h3>
+				<div class="flex items-center justify-between mb-6">
+					<h3 class="font-bold text-xl text-gray-900 flex items-center gap-2">
+						<i data-lucide="sliders-horizontal" class="w-5 h-5 text-brand-600"></i>
+						Фільтри
+					</h3>
+				</div>
 
-				<!-- Загальні параметри -->
+				<div class="space-y-6">
+					<!-- ========================================== -->
+					<!-- 1. ЗАГАЛЬНІ ПАРАМЕТРИ (Відображаються завжди) -->
+					<!-- ========================================== -->
+					<div class="space-y-4">
+						<div class="flex items-center gap-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
+							<input type="checkbox" th:field="*{isAvailable}" id="isAvailable" class="w-4 h-4 text-brand-600 border-gray-300 rounded focus:ring-brand-500">
+							<label for="isAvailable" class="text-sm font-medium text-gray-800 cursor-pointer">Тільки в наявності</label>
+						</div>
 
-				<div class="grid grid-cols-2 gap-4">
-					<div>
-						<label for="minPrice" class="block text-sm text-gray-600 mb-1">Ціна від</label>
-						<input id="minPrice" type="number" th:field="*{minPrice}" class="w-full border rounded-lg p-2"
-							   step="any" min="0">
+						<div class="grid grid-cols-2 gap-3">
+							<div>
+								<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Ціна від (грн)</label>
+								<input type="number" step="0.01" th:field="*{minPrice}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+							</div>
+							<div>
+								<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Ціна до (грн)</label>
+								<input type="number" step="0.01" th:field="*{maxPrice}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+							</div>
+						</div>
+
+						<div>
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Бренд</label>
+							<input type="text" th:field="*{brand}" placeholder="Назва бренду" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div>
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Постачальник</label>
+							<input type="text" th:field="*{supplier}" placeholder="Назва постачальника" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div>
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Артикул</label>
+							<input type="text" th:field="*{article}" placeholder="ART-101" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName != 'Набори'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Країна-виробник</label>
+							<input type="text" th:field="*{country}" placeholder="Туреччина" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
 					</div>
-					<div>
-						<label for="maxPrice" class="block text-sm text-gray-600 mb-1">Ціна до</label>
-						<input id="maxPrice" type="number" th:field="*{maxPrice}" class="w-full border rounded-lg p-2"
-							   step="any" min="0">
+
+					<!-- ========================================== -->
+					<!-- 2. СПІЛЬНІ СПЕЦИФІЧНІ ПАРАМЕТРИ            -->
+					<!-- ========================================== -->
+
+					<!-- Розділювач з'являється тільки якщо є специфічні поля -->
+					<hr th:if="${categoryName != 'Набори' and categoryName != 'Подарункові сертифікати' and categoryName != 'Книги з рукоділля' and categoryName != 'Схеми' and categoryName != 'Обладнання'}" class="border-gray-100">
+
+					<div class="space-y-4">
+						<!-- Колір -->
+						<div th:if="${categoryName == 'Тканина' or categoryName == 'Пряжа' or categoryName == 'Нитки для шиття' or categoryName == 'Аксесуари'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Колір</label>
+							<input type="text" th:field="*{color}" placeholder="червоний" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Матеріал -->
+						<div th:if="${categoryName == 'Інструменти' or categoryName == 'Аксесуари'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Матеріал</label>
+							<input type="text" th:field="*{material}" placeholder="дерево, метал" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Розмір -->
+						<div th:if="${categoryName == 'Інструменти' or categoryName == 'Аксесуари'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Розмір / Діаметр</label>
+							<input type="text" th:field="*{size}" placeholder="4мм, 80см" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Склад -->
+						<div th:if="${categoryName == 'Тканина' or categoryName == 'Пряжа' or categoryName == 'Нитки для шиття'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Склад (Матеріал)</label>
+							<input type="text" th:field="*{composition}" placeholder="100% бавовна" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Щільність -->
+						<div th:if="${categoryName == 'Тканина' or categoryName == 'Наповнювачі'}" class="grid grid-cols-2 gap-3">
+							<div>
+								<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Щільність від</label>
+								<input type="number" th:field="*{minDensity}" placeholder="г/м²" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+							</div>
+							<div>
+								<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Щільність до</label>
+								<input type="number" th:field="*{maxDensity}" placeholder="г/м²" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+							</div>
+						</div>
+					</div>
+
+					<!-- ========================================== -->
+					<!-- 3. УНІКАЛЬНІ ПАРАМЕТРИ КАТЕГОРІЙ           -->
+					<!-- ========================================== -->
+
+					<hr th:if="${categoryName != 'Набори'}" class="border-gray-100">
+
+					<div class="space-y-4">
+						<!-- Типи сутностей -->
+						<div th:if="${categoryName == 'Аксесуари'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Тип аксесуара</label>
+							<input type="text" th:field="*{accessoryType}" placeholder="Ґудзик, маркер..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Тканина'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Тип тканини</label>
+							<input type="text" th:field="*{fabricType}" placeholder="Льон, трикотаж..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Наповнювачі'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Тип наповнювача</label>
+							<input type="text" th:field="*{fillerType}" placeholder="Синтепух, флізелін..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Нитки для шиття'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Тип ниток</label>
+							<input type="text" th:field="*{threadType}" placeholder="Універсальні, армовані..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Інструменти'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Тип інструмента</label>
+							<input type="text" th:field="*{toolType}" placeholder="Спиці, гачок..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Обладнання'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Тип обладнання</label>
+							<input type="text" th:field="*{equipmentType}" placeholder="Швейна машина, оверлок..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Подарункові сертифікати'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Формат сертифіката</label>
+							<input type="text" th:field="*{certificateType}" placeholder="Електронний, пластик..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Специфічне для Пряжі -->
+						<div th:if="${categoryName == 'Пряжа'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Партія фарбування (Lot)</label>
+							<input type="text" th:field="*{dyeLot}" placeholder="12345" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Специфічне для Обладнання -->
+						<div th:if="${categoryName == 'Обладнання'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Мін. кількість операцій</label>
+							<input type="number" th:field="*{minOperationsCount}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+						<div th:if="${categoryName == 'Обладнання'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Макс. вага (кг)</label>
+							<input type="number" step="0.1" th:field="*{maxWeightKg}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Специфічне для Книг та Схем -->
+						<div th:if="${categoryName == 'Книги з рукоділля' or categoryName == 'Схеми'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Автор</label>
+							<input type="text" th:field="*{author}" placeholder="Ім'я автора" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<div th:if="${categoryName == 'Книги з рукоділля'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Видавництво</label>
+							<input type="text" th:field="*{publisher}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+						<div th:if="${categoryName == 'Книги з рукоділля'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Рік видання</label>
+							<input type="number" th:field="*{publicationYear}" placeholder="2024" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Специфічне для Схем -->
+						<div th:if="${categoryName == 'Схеми'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Рівень складності</label>
+							<input type="text" th:field="*{difficultyLevel}" placeholder="Початковий, середній..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+						<div th:if="${categoryName == 'Схеми'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Формат</label>
+							<input type="text" th:field="*{format}" placeholder="PDF, Друкований..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+						<div th:if="${categoryName == 'Схеми'}">
+							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Мова</label>
+							<input type="text" th:field="*{language}" placeholder="Українська..." class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
+						</div>
+
+						<!-- Специфічне для Наповнювачів -->
+						<div th:if="${categoryName == 'Наповнювачі'}" class="flex items-center gap-2 bg-gray-50 p-3 rounded-lg border border-gray-100">
+							<input type="checkbox" th:field="*{isHypoallergenic}" id="isHypoallergenic" class="w-4 h-4 text-brand-600 border-gray-300 rounded focus:ring-brand-500">
+							<label for="isHypoallergenic" class="text-sm font-medium text-gray-800 cursor-pointer">Гіпоалергенний матеріал</label>
+						</div>
+					</div>
+
+					<!-- ========================================== -->
+					<!-- 4. КНОПКИ КЕРУВАННЯ                        -->
+					<!-- ========================================== -->
+					<div class="flex flex-col gap-3 pt-6 border-t border-gray-100 mt-6">
+						<button type="submit" class="w-full bg-brand-600 text-white font-bold py-3 rounded-lg hover:bg-brand-700 transition-colors shadow-sm flex items-center justify-center gap-2">
+							<i data-lucide="check" class="w-4 h-4"></i>
+							Застосувати
+						</button>
+
+						<a th:href="@{/catalog/{id}/(id=${catalog.id})}"
+						   class="w-full flex justify-center items-center gap-2 text-center bg-white text-gray-600 font-semibold py-3 rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-900 transition-all">
+							<i data-lucide="x" class="w-4 h-4"></i>
+							Скинути фільтри
+						</a>
 					</div>
 				</div>
-
-				<div class="flex items-center gap-2">
-					<input type="checkbox" th:field="*{isAvailable}" id="isAvailable" class="w-4 h-4
-					text-brand-600 border rounded focus:ring-brand-500">
-					<label for="isAvailable" class="text-sm text-gray-700">Тільки в наявності</label>
-				</div>
-
-				<div>
-					<label for="article" class="block text-sm text-gray-600 mb-1">Артикул</label>
-					<input id="article" th:field="*{article}" class="w-full border rounded-lg p-2">
-				</div>
-
-				<div>
-					<label for="brand" class="block text-sm text-gray-600 mb-1">Бренд</label>
-					<input id="brand" type="text" th:field="*{brand}" class="w-full border rounded-lg p-2">
-				</div>
-
-				<!-- Спільні специфічні параметри -->
-				<div th:if="${categoryName == 'Аксесуари'}">
-					<label for="accessoryType" class="block text-sm text-gray-600 mb-1">Тип аксесуару</label>
-					<input id="accessoryType" type="text" th:field="*{accessoryType}" placeholder="гудзик" class="w-full border rounded-lg p-2">
-				</div>
-				<div th:if="${categoryName == 'Пряжа'}">
-					<label for="dyeLot" class="block text-sm text-gray-600 mb-1">Партія</label>
-					<input id="dyeLot" type="text" th:field="*{dyeLot}" placeholder="LOT-88210" class="w-full border rounded-lg p-2">
-
-				</div>
-
-				<div th:if="${categoryName != 'Набори'}">
-					<label for="country" class="block text-sm text-gray-600 mb-1">Країна виробник</label>
-					<input id="country" type="text" th:field="*{country}" placeholder="Туреччина" class="w-full border rounded-lg p-2">
-				</div>
-
-				<div th:if="${categoryName == 'Інструменти'}">
-					<label for="toolType" class="block text-sm text-gray-600 mb-1">Тип інструменту</label>
-					<input id="toolType" type="text" th:field="*{toolType}" placeholder="Гачок, спиця тощо" class="w-full border rounded-lg p-2">
-				</div>
-
-				<div th:if="${categoryName == 'Тканина' or categoryName == 'Пряжа' or categoryName == 'Нитки для шиття' or categoryName == 'Аксесуари'}">
-					<label for="color" class="block text-sm text-gray-600 mb-1">Колір</label>
-					<input id="color" type="text" th:field="*{color}" placeholder="Наприклад: червоний" class="w-full border rounded-lg p-2">
-				</div>
-
-				<div th:if="${categoryName == 'Інструменти' or categoryName == 'Аксесуари'}">
-					<label for="material" class="block text-sm text-gray-600 mb-1">Матеріал</label>
-					<input id="material" type="text" th:field="*{material}" placeholder="Наприклад: дерево"
-						   class="w-full border rounded-lg p-2">
-				</div>
-
-				<div th:if="${categoryName == 'Інструменти' or categoryName == 'Аксесуари'}">
-					<label for="size" class="block text-sm text-gray-600 mb-1">Розмір / Діаметр</label>
-					<input id="size" type="text" th:field="*{size}" placeholder="Наприклад: 4мм" class="w-full border rounded-lg p-2">
-				</div>
-
-				<div th:if="${categoryName == 'Тканина' or categoryName == 'Пряжа' or categoryName == 'Нитки для шиття'}">
-					<label for="composition" class="block text-sm text-gray-600 mb-1">Склад</label>
-					<input id="composition" type="text" th:field="*{composition}" placeholder="Наприклад: бавовна" class="w-full border rounded-lg p-2">
-				</div>
-
-				<div th:if="${categoryName == 'Тканина' or categoryName == 'Наповнювачі'}" class="grid grid-cols-2 gap-4">
-					<div>
-						<label for="minDens" class="block text-sm text-gray-600 mb-1">Щільність від</label>
-						<input id="minDens" type="number" th:field="*{minDensity}" class="w-full border rounded-lg p-2">
-					</div>
-					<div>
-						<label for="maxDens" class="block text-sm text-gray-600 mb-1">Щільність до</label>
-						<input id="maxDens" type="number" th:field="*{maxDensity}" class="w-full border rounded-lg p-2">
-					</div>
-				</div>
-
-				<!-- Унікальні параметри -->
-
-				<div th:if="${categoryName == 'Обладнання'}">
-					<label for="minOpCount" class="block text-sm text-gray-600 mb-1">Кількість операцій (від)</label>
-					<input id="minOpCount" type="number" th:field="*{minOperationsCount}" class="w-full border rounded-lg p-2">
-				</div>
-
-
-
-
-				<!-- Кнопки керування -->
-				<div class="flex flex-col gap-3 mt-6">
-					<button type="submit" class="w-full bg-brand-600 text-white font-bold py-3 rounded-lg hover:bg-brand-700 transition-colors">
-						Застосувати
-					</button>
-
-					<a th:href="@{/catalog/{id}/ (id=${catalog.id})}"
-					   class="w-full flex justify-center text-center bg-gray-100 text-gray-700 font-semibold py-3 rounded-lg border border-gray-200 hover:bg-gray-200 hover:text-gray-900 transition-all">
-						Скинути фільтри
-					</a>
-				</div>
-
 			</form>
 		</aside>
 

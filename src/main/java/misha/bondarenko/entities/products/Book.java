@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Book extends Product {
 
-    private String name; // Назва книги
     private String author; // Автор
     private String publisher; // Видавництво
     private String isbn; // Унікальний номер книги (ISBN)
@@ -51,7 +50,8 @@ public class Book extends Product {
 
     @Override
     public String renderName() {
-        return "Книга \"" + name + "\" - " + author + " " + publisher + ", " + publicationYear + " р." + ", " + article;
+        return "Книга \"" + name + "\" - " + author + ", видавництво " +
+                publisher + ", " + publicationYear + " р." + ", " + article;
     }
 }
 

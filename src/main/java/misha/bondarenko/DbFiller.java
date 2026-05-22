@@ -3,7 +3,6 @@ package misha.bondarenko;
 import misha.bondarenko.entities.products.*;
 import misha.bondarenko.enums.MeasureUnit;
 import misha.bondarenko.services.CatalogService;
-import misha.bondarenko.services.ItemService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +15,8 @@ public class DbFiller {
 
     @Bean
     @Transactional
-    public CommandLineRunner fillDatabase(CatalogService catalogService, ItemService itemService) {
-        boolean shouldWork = true;
+    public CommandLineRunner fillDatabase(CatalogService catalogService) {
+        boolean shouldWork = false;
         if (!shouldWork) return args -> {};
 
         return args -> {
@@ -285,62 +284,62 @@ public class DbFiller {
 
             // --- 9. Інструменти (Tool) - 9 шт ---
             Tool tool1 = new Tool(null, "Гачок алюмінієвий 4мм", "Зручний гачок для пряжі",
-                    new BigDecimal("56.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 190, true, "/images/tool1.jpg",
+                    new BigDecimal("56.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 190, true, "/images/plugs/tool plug.png",
                     "ART-1101", "Бабуся Надія ТМ", "KnitPro", "Німеччина", "Гачок", "Алюміній", "4мм");
             Tool tool2 = new Tool(null, "Спиці кругові KnitPro 3.5мм", "Дерев'яні спиці на тросику",
-                    new BigDecimal("250.00"), new BigDecimal("0.10"), MeasureUnit.UNIT, 50, false, "/images/tool2.jpg",
+                    new BigDecimal("250.00"), new BigDecimal("0.10"), MeasureUnit.UNIT, 50, false, "/images/plugs/tool plug.png",
                     "ART-1102", "В'язальний Рай", "KnitPro", "Німеччина", "Спиці кругові", "Дерево", "3.5мм");
             Tool tool3 = new Tool(null, "Ножиці для вишивання Prym", "Гострі кравецькі ножиці",
-                    new BigDecimal("80.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 120, true, "/images/tool3.jpg",
+                    new BigDecimal("80.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 120, true, "/images/plugs/tool plug.png",
                     "ART-1103", "ШвачкаОпт", "Prym", "Україна","Ножиці", "Сталь", "13см");
             Tool tool4 = new Tool(null, "Сніпер", "Сніпер для розпорування швів",
-                    new BigDecimal("60.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 120, true, "/images/tool3.jpg",
+                    new BigDecimal("60.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 120, true, "/images/plugs/tool plug.png",
                     "ART-1104", "ШвачкаОпт", "Prym", "Україна","Сніпер", "Сталь, пластик", "10см");
             Tool tool5 = new Tool(null, "Спиці прямі алюмінієві 4мм", "Класичні прямі спиці для шарфів",
-                    new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 200, true, "/images/tool4.jpg",
+                    new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 200, true, "/images/plugs/tool plug.png",
                     "ART-1105", "Бабуся Надія ТМ", "KnitPro", "Німеччина", "Спиці прямі", "Алюміній", "4мм");
             Tool tool6 = new Tool(null, "Спиці панчішні бамбукові 2.5мм", "Набір з 5 спиць для шкарпеток",
-                    new BigDecimal("180.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/tool5.jpg",
+                    new BigDecimal("180.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/plugs/tool plug.png",
                     "ART-1106", "В'язальний Рай", "KnitPro", "Індія", "Спиці панчішні", "Бамбук", "2.5мм");
             Tool tool7 = new Tool(null, "Сантиметрова стрічка 150см", "Двостороння гнучка стрічка",
-                    new BigDecimal("45.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 300, true, "/images/tool6.jpg",
+                    new BigDecimal("45.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 300, true, "/images/plugs/tool plug.png",
                     "ART-1107", "ШвачкаОпт", "Prym", "Німеччина", "Вимірювальний інструмент", "Скловолокно", "150см");
             Tool tool8 = new Tool(null, "Набір голок для ручного шиття", "Голки різного розміру, 20 шт",
-                    new BigDecimal("50.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/tool7.jpg",
+                    new BigDecimal("50.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/plugs/tool plug.png",
                     "ART-1108", "ШвачкаОпт", "Prym", "Німеччина", "Голки", "Сталь", "Асорті");
             Tool tool9 = new Tool(null, "Крейда кравецька воскова", "Не кришиться, легко змивається",
-                    new BigDecimal("25.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 150, true, "/images/tool8.jpg",
+                    new BigDecimal("25.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 150, true, "/images/plugs/tool plug.png",
                     "ART-1109", "ШвачкаОпт", "Prym", "Німеччина", "Розмітка", "Віск", "Квадрат");
 
             tools.add(tool1, tool2, tool3, tool4, tool5, tool6, tool7, tool8, tool9);
 
             // --- 10. Пряжа (Yarn) - 9 шт ---
             Yarn yarn1 = new Yarn(null, "Пряжа Alize Lanagold Бордова", "Класична напіввовняна пряжа",
-                    new BigDecimal("120.00"), new BigDecimal("0.08"), MeasureUnit.SKEIN, 350, true, "/images/yarn1.jpg",
+                    new BigDecimal("120.00"), new BigDecimal("0.08"), MeasureUnit.SKEIN, 350, true, "/images/plugs/yarn plug.png",
                     "ART-1201", "ЯрнОптТорг", "Alize", "Туреччина","51% акрил, 49% вовна", 240, 100, "LOT-88210", "Бордовий", "Спиці 4-6 мм");
             Yarn yarn2 = new Yarn(null, "Пряжа Alize Lanagold Синя", "Класична напіввовняна пряжа",
-                    new BigDecimal("120.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 350, true, "/images/yarn2.jpg",
+                    new BigDecimal("120.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 350, true, "/images/plugs/tool plug.png",
                     "ART-1202", "ЯрнОптТорг", "Alize", "Туреччина","51% акрил, 49% вовна", 240, 100, "LOT-88210", "Синій", "Спиці 4-6 мм");
             Yarn yarn3 = new Yarn(null, "Пряжа YarnArt Jeans Біла", "Бавовняна пряжа для літніх речей",
-                    new BigDecimal("150.00"), new BigDecimal("0.10"), MeasureUnit.SKEIN, 200, true, "/images/yarn3.jpg",
+                    new BigDecimal("150.00"), new BigDecimal("0.10"), MeasureUnit.SKEIN, 200, true, "/images/plugs/yarn plug.png",
                     "ART-1203", "ПряжаТрейд", "YarnArt", "Туреччина", "55% бавовна, 45% поліакрил", 160, 50, "LOT-123", "Білий", "Гачок 2-3.5 мм");
             Yarn yarn4 = new Yarn(null, "Пряжа YarnArt Jeans Червона", "Бавовняна пряжа для речей",
-                    new BigDecimal("150.00"), new BigDecimal("0.05"), MeasureUnit.SKEIN, 200, true, "/images/yarn3.jpg",
+                    new BigDecimal("150.00"), new BigDecimal("0.05"), MeasureUnit.SKEIN, 200, true, "/images/plugs/yarn plug.png",
                     "ART-1204", "ПряжаТрейд", "YarnArt", "Туреччина" ,"55% бавовна, 45% поліакрил", 160, 50, "LOT-124", "Червоний", "Гачок 2-3.5 мм");
             Yarn yarn5 = new Yarn(null, "Пряжа плюшева Himalaya Dolphin Baby М'ятна", "Дуже м'яка плюшева пряжа",
-                    new BigDecimal("165.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 120, true, "/images/yarn4.jpg",
+                    new BigDecimal("165.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 120, true, "/images/plugs/yarn plug.png",
                     "ART-1205", "ЯрнОптТорг", "Himalaya", "Туреччина", "100% мікрополіестер", 120, 100, "LOT-332", "М'ятний", "Гачок 4.5 мм");
             Yarn yarn6 = new Yarn(null, "Пряжа плюшева Himalaya Dolphin Baby Рожева", "Дуже м'яка плюшева пряжа",
-                    new BigDecimal("165.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 0, false, "/images/yarn5.jpg",
+                    new BigDecimal("165.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 0, false, "/images/plugs/yarn plug.png",
                     "ART-1206", "ЯрнОптТорг", "Himalaya", "Туреччина", "100% мікрополіестер", 120, 100, "LOT-333", "Рожевий", "Гачок 4.5 мм");
             Yarn yarn7 = new Yarn(null, "Пряжа мохер Alize Kid Royal Сіра", "Тонкий і пухнастий мохер",
-                    new BigDecimal("130.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 90, true, "/images/yarn6.jpg",
+                    new BigDecimal("130.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 90, true, "/images/plugs/yarn plug.png",
                     "ART-1207", "ЯрнОптТорг", "Alize", "Туреччина", "62% кід мохер, 38% поліамід", 500, 50, "LOT-111", "Сірий", "Спиці 2-6 мм");
             Yarn yarn8 = new Yarn(null, "Пряжа мохер Alize Kid Royal Чорна", "Тонкий і пухнастий мохер",
-                    new BigDecimal("130.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 0, false, "/images/yarn7.jpg",
+                    new BigDecimal("130.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 0, false, "/images/plugs/yarn plug.png",
                     "ART-1208", "ЯрнОптТорг", "Alize", "Туреччина", "62% кід мохер, 38% поліамід", 500, 50, "LOT-112", "Чорний", "Спиці 2-6 мм");
             Yarn yarn9 = new Yarn(null, "Пряжа шкарпеткова Alize Artisan", "Спеціальна зносостійка пряжа",
-                    new BigDecimal("180.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 150, true, "/images/yarn8.jpg",
+                    new BigDecimal("180.00"), BigDecimal.ZERO, MeasureUnit.SKEIN, 150, true, "/images/plugs/yarn plug.png",
                     "ART-1209", "ЯрнОптТорг", "Alize", "Туреччина", "75% вовна, 25% поліамід", 420, 100, "LOT-777", "Гірчичний", "Спиці 2-4 мм");
 
             yarns.add(yarn1, yarn2, yarn3, yarn4, yarn5, yarn6, yarn7, yarn8, yarn9);

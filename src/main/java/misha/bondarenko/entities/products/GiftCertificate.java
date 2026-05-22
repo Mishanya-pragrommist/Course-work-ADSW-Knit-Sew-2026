@@ -45,6 +45,7 @@ public class GiftCertificate extends Product {
 
     @Override
     public String renderName() {
-        return "Подарунковий сертифікат, " + certificateType.toLowerCase() + ", номіналом " + getTotalPrice() + " грн";
+        return "Подарунковий сертифікат, " + certificateType.toLowerCase() +
+                ", номіналом " + getTotalPrice() + " грн, " + article;
     }
 }

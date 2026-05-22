@@ -49,6 +49,7 @@ public class SewingThread extends Product {
     @Override
     public String renderName() {
         return "Нитка " + threadType + " " + brand + ", " +
-                color.toLowerCase() + ", товщина " + thickness + ", довжина " + lengthInMeters + "м";
+                color.toLowerCase() + ", товщина " + thickness +
+                ", довжина " + lengthInMeters + "м, " + article;
     }
 }

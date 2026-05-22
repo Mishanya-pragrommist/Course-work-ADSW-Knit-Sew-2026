@@ -50,7 +50,7 @@ public class Pattern extends Product {
     @Override
     public String renderName() {
         return name + " від автора " + author +
-                difficultyLevel.toLowerCase() + " рівень, " + format;
+                difficultyLevel.toLowerCase() + " рівень, " + format + ", " + article;
     }
 
 }

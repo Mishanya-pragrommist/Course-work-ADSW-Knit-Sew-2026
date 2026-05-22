@@ -50,6 +50,6 @@ public class Filler extends Product {
     @Override
     public String renderName() {
         return "Наповнювач " + fillerType + ", " + brand + ", " +
-                density + " г/м², пакування " + packageWeightKg + " кг";
+                density + " г/м², пакування " + packageWeightKg + " кг, " + article;
     }
 }

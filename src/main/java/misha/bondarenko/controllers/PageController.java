@@ -7,6 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * Контролер для переходу до каталогу товарів та
+ * для переходу на нефункціональні сторінки типу "Контакти" та "Оплата і доставка"
+ */
 @Controller
 public class PageController {
 
@@ -29,5 +33,10 @@ public class PageController {
     @GetMapping("/contacts")
     public String contacts(Model model) {
         return "contacts";
+    }
+
+    @GetMapping("/payment-delivery")
+    public String paymentDelivery(Model model) {
+        return "payment-delivery";
     }
 }

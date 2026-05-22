@@ -68,7 +68,7 @@ public class Kit extends Item {
 
     @Override
     public String renderName() {
-        return "Набір \"" + name + "\" (" + components.size() + " комп.)";
+        return "Набір \"" + name + "\" (" + components.size() + " комп.), " + article;
     }
 
     /**

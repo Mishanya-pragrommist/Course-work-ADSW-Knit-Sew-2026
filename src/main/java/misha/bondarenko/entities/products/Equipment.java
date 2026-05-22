@@ -54,8 +54,8 @@ public class Equipment extends Product {
 
     @Override
     public String renderName() {
-        return equipmentType + " " + brand + " (" + operationsCount + " опер., "
-                + powerWatt + "W, гарантія: " + warrantyMonths + " міс.)" + ", " + article;
+        return equipmentType + " " + brand + ", " + operationsCount + " опер., "
+                + powerWatt + "W, гарантія: " + warrantyMonths + " міс., " + ", " + article;
     }
 
 }

@@ -41,10 +41,10 @@
 
 		<!-- Навігація (десктоп) -->
 		<nav class="hidden md:flex space-x-8">
-			<a href="#" class="text-brand-600 font-medium">Головна</a>
-			<a href="#" class="text-gray-600 hover:text-brand-600 transition-colors">Каталог</a>
+			<a th:href="@{/}" class="text-brand-600 font-medium">Головна</a>
 			<a th:href="@{about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
 			<a th:href="@{contacts}" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
+			<a th:href="@{payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
 		</nav>
 
 		<!-- Іконки користувача -->
@@ -136,8 +136,7 @@
 		<div>
 			<h4 class="text-white text-lg font-semibold mb-4">Покупцям</h4>
 			<ul class="space-y-2 text-sm">
-				<li><a href="#" class="hover:text-white transition-colors">Оплата і доставка</a></li>
-				<li><a href="#" class="hover:text-white transition-colors">Повернення товару</a></li>
+				<li><a th:href="@{payment-delivery}" class="hover:text-white transition-colors">Оплата і доставка</a></li>
 				<li><a href="#" class="hover:text-white transition-colors">Подарункові сертифікати</a></li>
 				<li><a href="#" class="hover:text-white transition-colors">Часті питання (FAQ)</a></li>
 			</ul>

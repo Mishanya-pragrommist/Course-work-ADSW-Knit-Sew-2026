@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Map;
+
 @Controller
 public class ProductController {
 
@@ -18,13 +20,14 @@ public class ProductController {
 
     @GetMapping("/product/{id}")
     public String getProductPage(@PathVariable Long id, Model model) {
-        ProductCardDto product = itemService.getProductCardById(id);
-
-        if (product == null) {
+        Map<String, String> productAttributes = itemService.getProductDetailsMap(id);
+        ProductCardDto productCardDto = itemService.getProductCardById(id);
+        if (productAttributes == null) {
             return "redirect:/"; // Або перенаправлення на сторінку 404
         }
 
-        model.addAttribute("product", product);
+        model.addAttribute("productAttributes", productAttributes);
+        model.addAttribute("product", productCardDto);
         return "product";
     }
 }

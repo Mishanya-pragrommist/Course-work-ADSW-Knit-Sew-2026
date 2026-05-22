@@ -156,17 +156,12 @@
 	<!-- Секція характеристик (генерується динамічно, якщо передати Map або окремі поля DTO) -->
 	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
 		<h3 class="text-xl font-bold text-gray-900 mb-6">Характеристики</h3>
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4">
-			<!-- Приклад виводу характеристик -->
-			<div class="flex justify-between border-b border-gray-100 pb-2">
-				<span class="text-gray-500">Бренд</span>
-				<span class="font-medium text-gray-900">Alize</span>
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-y-4">
+			<!-- Перебираємо весь словник attributes -->
+			<div th:each="attr : ${productAttributes}" class="flex justify-between border-b border-gray-100 pb-2">
+				<span class="text-gray-500" th:text="${attr.key}">Назва характеристики</span>
+				<span class="font-medium text-gray-900" th:text="${attr.value}">Значення</span>
 			</div>
-			<div class="flex justify-between border-b border-gray-100 pb-2">
-				<span class="text-gray-500">Країна-виробник</span>
-				<span class="font-medium text-gray-900">Туреччина</span>
-			</div>
-			<!-- Сюди можна додати th:each для перебору Map<String, String> attributes з DTO -->
 		</div>
 	</div>
 </main>

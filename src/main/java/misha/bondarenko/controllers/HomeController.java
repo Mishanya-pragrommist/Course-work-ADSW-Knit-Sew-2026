@@ -1,7 +1,7 @@
 package misha.bondarenko.controllers;
 
 import misha.bondarenko.services.CatalogService;
-import misha.bondarenko.services.ProductService;
+import misha.bondarenko.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +13,7 @@ public class HomeController {
     @Autowired
     private CatalogService catalogService;
     @Autowired
-    private ProductService productService;
+    private ItemService itemService;
 
     @GetMapping("/")
     public String home(Model model) {

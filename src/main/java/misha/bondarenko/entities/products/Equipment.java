@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
-import lombok.experimental.SuperBuilder;
 import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
@@ -30,11 +28,11 @@ public class Equipment extends Product {
 
     public Equipment(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                      MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                     String article, String supplier, String brand, String equipmentType,
+                     String article, String supplier, String brand, String country, String equipmentType,
                      int warrantyMonths, int powerWatt, String dimensions, double weightKg, int operationsCount) {
 
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
         this.equipmentType = equipmentType;
         this.warrantyMonths = warrantyMonths;
         this.powerWatt = powerWatt;

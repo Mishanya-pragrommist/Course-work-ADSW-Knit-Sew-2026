@@ -82,4 +82,10 @@ public class CatalogService {
         catalogRepository.saveAll(List.of(catalogs));
     }
 
+
+    // ====== Deleting methods ======
+
+    public void deleteAll() {
+        catalogRepository.deleteAll();
+    }
 }

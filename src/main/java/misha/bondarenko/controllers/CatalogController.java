@@ -4,7 +4,7 @@ import misha.bondarenko.records.dto.CatalogCardDto;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.services.CatalogService;
-import misha.bondarenko.services.ProductService;
+import misha.bondarenko.services.ItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,30 +18,26 @@ import java.util.List;
 public class CatalogController {
 
     private final CatalogService catalogService;
-    private final ProductService productService;
-    public CatalogController(CatalogService catalogService, ProductService productService) {
+    private final ItemService itemService;
+    public CatalogController(CatalogService catalogService, ItemService itemService) {
         this.catalogService = catalogService;
-        this.productService = productService;
+        this.itemService = itemService;
     }
 
     @GetMapping("/catalog/{catId}/")
     public String showProducts(@PathVariable String catId,
+                               ProductFilter productFilter,
                                Model model) {
         try {
             Long id = Long.parseLong(catId);
             CatalogCardDto catalogCardById = catalogService.getCatalogCardById(id);
-            List<ProductCardDto> productCardDtoList = productService.getProductCardsDto(id);
+            List<ProductCardDto> productCardDtoList = itemService.getProductCardsDto(id);
 
             // Передаємо маркер категорії (назву або спеціальний enum/код)
             model.addAttribute("categoryName", catalogCardById.name());
 
             // Порожній DTO для збору даних з форми
-            model.addAttribute("filter", new ProductFilter(
-                    null, null, null, null, null,
-                    null, null, null, null, null,
-                    null, null, null, null, null,
-                    null, null, null, null, null,
-                    null, null, null, null, null, null, null));
+            model.addAttribute("filter", productFilter);
 
             model.addAttribute("catalog", catalogCardById);
             model.addAttribute("products", productCardDtoList);
@@ -64,8 +60,9 @@ public class CatalogController {
 
         Long catalogId = Long.valueOf(id);
         CatalogCardDto catalogCardById = catalogService.getCatalogCardById(catalogId);
+        System.out.println(filter.minPrice() + " " +  filter.maxPrice() + " " + filter.accessoryType());
         // Отримуємо відфільтровані та відсортовані картки
-        List<ProductCardDto> products = productService.getProductCardsDtoFiltered(
+        List<ProductCardDto> products = itemService.getProductCardsDtoFiltered(
                 catalogId, filter, sortBy, direction
         );
 
@@ -73,6 +70,8 @@ public class CatalogController {
         model.addAttribute("products", products);
         model.addAttribute("filter", filter);
         model.addAttribute("catalog", catalogCardById);
+
+        model.addAttribute("categoryName", catalogCardById.name());
 
         // Передаємо параметри сортування для підсвічування активних кнопок у UI
         model.addAttribute("sortBy", sortBy);

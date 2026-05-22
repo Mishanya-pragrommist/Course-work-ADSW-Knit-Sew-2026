@@ -51,7 +51,7 @@ public class Cart {
      * Видалити товар з кошика
      * @param item товар для видалення
      */
-    public void removeProduct(Item item) {
+    public void removeProduct(CartItem item) {
         items.remove(item);
     }
 

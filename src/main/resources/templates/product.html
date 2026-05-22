@@ -114,7 +114,7 @@
 
 				<!-- Блок ціни -->
 				<div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
-					<!-- Якщо є знижка (очікується, що бекенд передає фінальну та стару ціну, або рахуємо на фронті) -->
+					<!-- Якщо є знижка -->
 					<div th:if="${product.discount != null && product.discount > 0}" class="flex flex-col">
 						<span class="text-sm text-gray-500 line-through mb-1" th:text="${product.oldPrice()} + ' грн'">100.00 грн</span>
 						<div class="flex items-baseline gap-2">

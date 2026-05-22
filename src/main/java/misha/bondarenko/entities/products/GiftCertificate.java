@@ -25,11 +25,12 @@ public class GiftCertificate extends Product {
 
     public GiftCertificate(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                            MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                           String article, String supplier, String brand, String certificateType,
-                           int validityMonths, String termsOfUse) {
+                           String article, String supplier, String brand, String country,
+                           String certificateType, int validityMonths, String termsOfUse) {
 
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);        this.certificateType = certificateType;
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
+        this.certificateType = certificateType;
         this.validityMonths = validityMonths;
         this.termsOfUse = termsOfUse;
     }

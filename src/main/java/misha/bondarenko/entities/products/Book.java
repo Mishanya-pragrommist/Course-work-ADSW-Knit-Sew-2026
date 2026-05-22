@@ -28,10 +28,10 @@ public class Book extends Product {
 
     public Book(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                 MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                String article, String supplier, String brand, String author,
-                String publisher, String isbn, int pages, int publicationYear) {
+                String article, String supplier, String brand, String country,
+                String author, String publisher, String isbn, int pages, int publicationYear) {
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
         this.author = author;
         this.publisher = publisher;
         this.isbn = isbn;

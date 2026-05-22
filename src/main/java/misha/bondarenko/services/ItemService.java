@@ -2,7 +2,6 @@ package misha.bondarenko.services;
 
 import misha.bondarenko.entities.products.Catalog;
 import misha.bondarenko.entities.products.Item;
-import misha.bondarenko.entities.products.Product;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.repositories.CatalogRepository;
@@ -15,12 +14,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ProductService {
+public class ItemService {
     private final CatalogRepository catalogRepository;
     private final ItemRepository itemRepository;
 
-    public ProductService(ItemRepository itemRepository,
-                          CatalogRepository catalogRepository) {
+    public ItemService(ItemRepository itemRepository,
+                       CatalogRepository catalogRepository) {
         this.itemRepository = itemRepository;
         this.catalogRepository = catalogRepository;
     }
@@ -41,7 +40,7 @@ public class ProductService {
                 .map(item -> new ProductCardDto(
                         item.getId(),
                         item.getArticle(),
-                        item.getName(),
+                        item.renderName(),
                         item.getDescription(),
                         item.getPurePrice(),
                         item.getDiscount(),
@@ -57,7 +56,7 @@ public class ProductService {
         return new ProductCardDto(
                 item.getId(),
                 item.getArticle(),
-                item.getName(),
+                item.renderName(),
                 item.getDescription(),
                 item.getPurePrice(),
                 item.getDiscount(),
@@ -86,7 +85,7 @@ public class ProductService {
                 .map(item -> new ProductCardDto(
                         item.getId(),
                         item.getArticle(),
-                        item.getName(),
+                        item.renderName(),
                         item.getDescription(),
                         item.getPurePrice(),
                         item.getDiscount(),
@@ -95,5 +94,10 @@ public class ProductService {
                         item.getImageUrl()
                 ))
                 .toList();
+    }
+
+    // ====== Delete methods ======
+    public void deleteAll() {
+        itemRepository.deleteAll();
     }
 }

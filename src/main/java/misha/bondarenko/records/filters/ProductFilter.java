@@ -12,12 +12,14 @@ public record ProductFilter(
         Boolean isAvailable,
         String brand,
         String supplier,
+        String article,
 
         // === Спільні специфічні параметри ===
         String color,            // Для Fabric, Yarn, SewingThread, Accessory
         String material,         // Для Tool, Accessory
         String size,             // Для Tool, Accessory (діаметр, довжина тощо)
         String composition,      // Для Fabric, SewingThread, Yarn (fiberContent)
+        String country,          // Для всіх товарів окрім наборів
         Integer minDensity,      // Для Fabric, Filler
         Integer maxDensity,      // Для Fabric, Filler
 
@@ -30,6 +32,7 @@ public record ProductFilter(
         String toolType,         // Tool
         String equipmentType,    // Equipment
         String certificateType,  // GiftCertificate
+        String dyeLot,           // Yarn
 
         // Обладнання (Equipment)
         Integer minOperationsCount,
@@ -45,4 +48,6 @@ public record ProductFilter(
 
         // Наповнювачі (Filler)
         Boolean isHypoallergenic
-) { }
+
+)
+{ }

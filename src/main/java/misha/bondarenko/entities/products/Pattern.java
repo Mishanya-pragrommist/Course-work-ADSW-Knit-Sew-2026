@@ -28,10 +28,10 @@ public class Pattern extends Product {
 
     public Pattern(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                    MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                   String article, String supplier, String brand, String author,
-                   String difficultyLevel, String language, String format) {
+                   String article, String supplier, String brand, String country,
+                   String author, String difficultyLevel, String language, String format) {
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
         this.author = author;
         this.difficultyLevel = difficultyLevel;
         this.language = language;
@@ -49,8 +49,8 @@ public class Pattern extends Product {
 
     @Override
     public String renderName() {
-        return name + " від автора" + author +
-                difficultyLevel.toLowerCase() + "рівень, " + format;
+        return name + " від автора " + author +
+                difficultyLevel.toLowerCase() + " рівень, " + format;
     }
 
 }

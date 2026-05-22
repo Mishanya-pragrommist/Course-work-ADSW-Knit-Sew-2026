@@ -7,6 +7,8 @@ import misha.bondarenko.entities.products.Item;
 @Getter
 @Setter
 public class CartItem {
+
+
     private Item item;
 
     public CartItem(Item item) {

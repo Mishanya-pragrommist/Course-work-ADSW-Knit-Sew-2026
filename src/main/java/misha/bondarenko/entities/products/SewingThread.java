@@ -25,10 +25,10 @@ public class SewingThread extends Product {
 
     public SewingThread(Long id, String name, String description, BigDecimal price, BigDecimal discount
             , MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                        String article, String supplier, String brand, String threadType,
-                        String composition, String thickness, int lengthInMeters, String color) {
+                        String article, String supplier, String brand, String country,
+                        String threadType, String composition, String thickness, int lengthInMeters, String color) {
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
         this.threadType = threadType;
         this.composition = composition;
         this.thickness = thickness;
@@ -49,6 +49,6 @@ public class SewingThread extends Product {
     @Override
     public String renderName() {
         return "Нитка " + threadType + " " + brand + ", " +
-                color.toLowerCase() + ", товщина " + thickness + ", довжина" + lengthInMeters + "м";
+                color.toLowerCase() + ", товщина " + thickness + ", довжина " + lengthInMeters + "м";
     }
 }

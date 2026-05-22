@@ -27,11 +27,12 @@ public class Filler extends Product {
 
     public Filler(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                   MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                  String article, String supplier, String brand, String fillerType,
-                  int density, boolean isHypoallergenic, double packageWeightKg) {
+                  String article, String supplier, String brand, String country,
+                  String fillerType, int density, boolean isHypoallergenic, double packageWeightKg) {
 
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);        this.fillerType = fillerType;
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
+        this.fillerType = fillerType;
         this.density = density;
         this.isHypoallergenic = isHypoallergenic;
         this.packageWeightKg = packageWeightKg;

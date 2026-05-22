@@ -24,16 +24,16 @@ public abstract class Item {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
-    protected String article; // Артикул товару або набору
-    protected String name; // Назва товару
-    protected String description; // Опис товару
-    protected BigDecimal price; // Ціна без знижки
+    protected String article;      // Артикул товару або набору
+    protected String name;         // Назва товару
+    protected String description;  // Опис товару
+    protected BigDecimal price;    // Ціна без знижки
     protected BigDecimal discount; // Знижка
     @Enumerated(EnumType.STRING)
-    protected MeasureUnit unit; // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
-    protected int stockQuantity; // Кількість на складі
+    protected MeasureUnit unit;    // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
+    protected int stockQuantity;   // Кількість на складі
     protected boolean isAvailable; // Наявність товару
-    protected String imageUrl; // Посилання на зображення
+    protected String imageUrl;     // Посилання на зображення
 
     /** Батьківський каталог */
     @ManyToOne(fetch = FetchType.LAZY)

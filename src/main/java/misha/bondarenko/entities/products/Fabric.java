@@ -22,11 +22,13 @@ public class Fabric extends Product {
 
     public Fabric(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                   MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                  String article, String supplier, String brand, String fabricType, String composition,
+                  String article, String supplier, String brand, String country,
+                  String fabricType, String composition,
                   int widthInCm, int density, String color) {
 
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);        this.fabricType = fabricType;
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
+        this.fabricType = fabricType;
         this.composition = composition;
         this.widthInCm = widthInCm;
         this.density = density;
@@ -45,8 +47,8 @@ public class Fabric extends Product {
 
     @Override
     public String renderName() {
-        return "Тканина " + fabricType.toLowerCase() + " " + brand + ", колір " + color.toLowerCase() + ", "
-                + composition + " " + widthInCm + " см";
+        return "Тканина " + fabricType.toLowerCase() + " " + brand + ", " + color.toLowerCase() + ", "
+                + composition + ", ширина рул. " + widthInCm + " см";
     }
 
 }

@@ -3,6 +3,7 @@ package misha.bondarenko.specifications;
 import jakarta.persistence.criteria.Predicate;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.entities.products.*;
+import misha.bondarenko.entities.products.Item;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
@@ -13,57 +14,77 @@ import java.util.List;
  */
 public class ProductSpecifications {
 
+    // Змінено тип специфікації на Item, щоб включити Kit та Product
     public static Specification<Item> withFilter(ProductFilter filter) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            // === 1. Загальні параметри ===
             if (filter.minPrice() != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("price"), filter.minPrice()));
             }
             if (filter.maxPrice() != null) {
                 predicates.add(cb.lessThanOrEqualTo(root.get("price"), filter.maxPrice()));
             }
-            if (filter.isAvailable() != null) {
-                predicates.add(cb.equal(root.get("isAvailable"), filter.isAvailable()));
+
+            if (filter.article() != null) {
+                predicates.add(cb.like(root.get("article"), "%" + filter.article().toLowerCase() + "%"));
             }
+
+            if (Boolean.TRUE.equals(filter.isAvailable())) {
+                predicates.add(cb.equal(root.get("isAvailable"), true));
+            }
+
+            // Поля brand, supplier та country існують тільки в Product, тому приводимо root до Product
             if (filter.brand() != null && !filter.brand().isBlank()) {
-                predicates.add(cb.equal(root.get("brand"), filter.brand()));
+                String brandQuery = "%" + filter.brand().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Product.class).get("brand")), brandQuery));
+            }
+            if (filter.country() != null && !filter.country().isBlank()) {
+                String countryQuery = "%" + filter.country().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Product.class).get("country")), countryQuery));
             }
             if (filter.supplier() != null && !filter.supplier().isBlank()) {
-                predicates.add(cb.equal(root.get("supplier"), filter.supplier()));
+                String supplierQuery = "%" + filter.supplier().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Product.class).get("supplier")), supplierQuery));
             }
 
-            // === 2. Спільні специфічні параметри ===
+            // === 2. Спільні специфічні параметри (з частковим збігом без регістру) ===
             if (filter.color() != null && !filter.color().isBlank()) {
+                String colorQuery = "%" + filter.color().toLowerCase() + "%";
                 predicates.add(cb.or(
-                        cb.equal(cb.treat(root, Fabric.class).get("color"), filter.color()),
-                        cb.equal(cb.treat(root, Yarn.class).get("color"), filter.color()),
-                        cb.equal(cb.treat(root, SewingThread.class).get("color"), filter.color()),
-                        cb.equal(cb.treat(root, Accessory.class).get("color"), filter.color())
+                        cb.like(cb.lower(cb.treat(root, Fabric.class).get("color")), colorQuery),
+                        cb.like(cb.lower(cb.treat(root, Yarn.class).get("color")), colorQuery),
+                        cb.like(cb.lower(cb.treat(root, SewingThread.class).get("color")), colorQuery),
+                        cb.like(cb.lower(cb.treat(root, Accessory.class).get("color")), colorQuery)
                 ));
             }
-
+            // Material
             if (filter.material() != null && !filter.material().isBlank()) {
+                String materialQuery = "%" + filter.material().toLowerCase() + "%";
                 predicates.add(cb.or(
-                        cb.equal(cb.treat(root, Tool.class).get("material"), filter.material()),
-                        cb.equal(cb.treat(root, Accessory.class).get("material"), filter.material())
+                        cb.like(cb.lower(cb.treat(root, Tool.class).get("material")), materialQuery),
+                        cb.like(cb.lower(cb.treat(root, Accessory.class).get("material")), materialQuery)
                 ));
+            }
+            // DyeLot
+            if (filter.dyeLot() != null && !filter.dyeLot().isBlank()) {
+                predicates.add(cb.like(cb.treat(root, Yarn.class).get("dyeLot"), "%" + filter.dyeLot().toLowerCase() + "%"));
             }
 
             if (filter.size() != null && !filter.size().isBlank()) {
+                String sizeQuery = "%" + filter.size().toLowerCase() + "%";
                 predicates.add(cb.or(
-                        cb.equal(cb.treat(root, Tool.class).get("size"), filter.size()),
-                        cb.equal(cb.treat(root, Accessory.class).get("size"), filter.size())
+                        cb.like(cb.lower(cb.treat(root, Tool.class).get("size")), sizeQuery),
+                        cb.like(cb.lower(cb.treat(root, Accessory.class).get("size")), sizeQuery)
                 ));
             }
 
             if (filter.composition() != null && !filter.composition().isBlank()) {
-                String pattern = "%" + filter.composition().toLowerCase() + "%";
+                String compQuery = "%" + filter.composition().toLowerCase() + "%";
                 predicates.add(cb.or(
-                        cb.like(cb.lower(cb.treat(root, Fabric.class).get("composition")), pattern),
-                        cb.like(cb.lower(cb.treat(root, SewingThread.class).get("composition")), pattern),
-                        cb.like(cb.lower(cb.treat(root, Yarn.class).get("fiberContent")), pattern)
+                        cb.like(cb.lower(cb.treat(root, Fabric.class).get("composition")), compQuery),
+                        cb.like(cb.lower(cb.treat(root, SewingThread.class).get("composition")), compQuery),
+                        cb.like(cb.lower(cb.treat(root, Yarn.class).get("fiberContent")), compQuery)
                 ));
             }
 
@@ -85,25 +106,32 @@ public class ProductSpecifications {
 
             // Типи сутностей
             if (filter.accessoryType() != null && !filter.accessoryType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Accessory.class).get("accessoryType"), filter.accessoryType()));
+                String queryType = "%" + filter.accessoryType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Accessory.class).get("accessoryType")), queryType));
             }
             if (filter.fabricType() != null && !filter.fabricType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Fabric.class).get("fabricType"), filter.fabricType()));
+                String queryType = "%" + filter.fabricType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Fabric.class).get("fabricType")), queryType));
             }
             if (filter.fillerType() != null && !filter.fillerType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Filler.class).get("fillerType"), filter.fillerType()));
+                String queryType = "%" + filter.fillerType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Filler.class).get("fillerType")), queryType));
             }
             if (filter.threadType() != null && !filter.threadType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, SewingThread.class).get("threadType"), filter.threadType()));
+                String queryType = "%" + filter.threadType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, SewingThread.class).get("threadType")), queryType));
             }
             if (filter.toolType() != null && !filter.toolType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Tool.class).get("toolType"), filter.toolType()));
+                String queryType = "%" + filter.toolType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Tool.class).get("toolType")), queryType));
             }
             if (filter.equipmentType() != null && !filter.equipmentType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Equipment.class).get("equipmentType"), filter.equipmentType()));
+                String queryType = "%" + filter.equipmentType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Equipment.class).get("equipmentType")), queryType));
             }
             if (filter.certificateType() != null && !filter.certificateType().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, GiftCertificate.class).get("certificateType"), filter.certificateType()));
+                String queryType = "%" + filter.certificateType().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, GiftCertificate.class).get("certificateType")), queryType));
             }
 
             // Обладнання
@@ -116,25 +144,30 @@ public class ProductSpecifications {
 
             // Література та Схеми
             if (filter.author() != null && !filter.author().isBlank()) {
+                String authorQuery = "%" + filter.author().toLowerCase() + "%";
                 predicates.add(cb.or(
-                        cb.equal(cb.treat(root, Book.class).get("author"), filter.author()),
-                        cb.equal(cb.treat(root, Pattern.class).get("author"), filter.author())
+                        cb.like(cb.lower(cb.treat(root, Book.class).get("author")), authorQuery),
+                        cb.like(cb.lower(cb.treat(root, Pattern.class).get("author")), authorQuery)
                 ));
             }
             if (filter.publisher() != null && !filter.publisher().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Book.class).get("publisher"), filter.publisher()));
+                String publisherQuery = "%" + filter.publisher().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Book.class).get("publisher")), publisherQuery));
             }
             if (filter.publicationYear() != null) {
                 predicates.add(cb.equal(cb.treat(root, Book.class).get("publicationYear"), filter.publicationYear()));
             }
             if (filter.difficultyLevel() != null && !filter.difficultyLevel().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Pattern.class).get("difficultyLevel"), filter.difficultyLevel()));
+                String diffQuery = "%" + filter.difficultyLevel().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Pattern.class).get("difficultyLevel")), diffQuery));
             }
             if (filter.format() != null && !filter.format().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Pattern.class).get("format"), filter.format()));
+                String formatQuery = "%" + filter.format().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Pattern.class).get("format")), formatQuery));
             }
             if (filter.language() != null && !filter.language().isBlank()) {
-                predicates.add(cb.equal(cb.treat(root, Pattern.class).get("language"), filter.language()));
+                String langQuery = "%" + filter.language().toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(cb.treat(root, Pattern.class).get("language")), langQuery));
             }
 
             // Наповнювачі

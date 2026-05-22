@@ -2,7 +2,6 @@ package misha.bondarenko.entities.products;
 
 import jakarta.persistence.Entity;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
@@ -25,10 +24,10 @@ public class Accessory extends Product {
     public Accessory(Long id, String article, String name, String description,
                      BigDecimal price, BigDecimal discount, MeasureUnit unit,
                      int stockQuantity, boolean isAvailable, String imageUrl,
-                     String supplier, String brand, String accessoryType,
+                     String supplier, String brand, String country, String accessoryType,
                      String material, String size, String color) {
         super(id, article, name, description, price, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null, supplier, brand);
+                stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
 
         this.accessoryType = accessoryType;
         this.material = material;

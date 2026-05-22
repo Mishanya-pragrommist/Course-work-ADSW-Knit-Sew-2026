@@ -128,13 +128,10 @@ public class ItemService {
         Map<String, String> attributes = new LinkedHashMap<>();
 
         attributes.put("Артикул", item.getArticle());
-        attributes.put("Назва", item.renderName());
-        attributes.put("Опис", item.getDescription());
         attributes.put("Ціна без знижок", item.getPurePrice().toString());
         attributes.put("Знижка", String.valueOf(item.getDiscount()));
         attributes.put("Загальна ціна", String.valueOf(item.getTotalPrice()));
         attributes.put("В наявності", String.valueOf(item.isAvailable()));
-        attributes.put("imageUrl", item.getImageUrl());
 
         // Якщо це звичайний товар, можемо дістати спільні для Product поля
         if (item instanceof Product product) {

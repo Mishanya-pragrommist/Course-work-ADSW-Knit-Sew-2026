@@ -103,12 +103,12 @@
 							</div>
 						</div>
 
-						<div>
+						<div th:if="${categoryName != 'Подарункові сертифікати'}">
 							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Бренд</label>
 							<input type="text" th:field="*{brand}" placeholder="Назва бренду" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
 						</div>
 
-						<div>
+						<div th:if="${categoryName != 'Подарункові сертифікати'}">
 							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Постачальник</label>
 							<input type="text" th:field="*{supplier}" placeholder="Назва постачальника" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
 						</div>
@@ -118,7 +118,7 @@
 							<input type="text" th:field="*{article}" placeholder="ART-101" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
 						</div>
 
-						<div th:if="${categoryName != 'Набори'}">
+						<div th:if="${categoryName != 'Набори' && categoryName != 'Подарункові сертифікати'}">
 							<label class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Країна-виробник</label>
 							<input type="text" th:field="*{country}" placeholder="Туреччина" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
 						</div>
@@ -129,7 +129,12 @@
 					<!-- ========================================== -->
 
 					<!-- Розділювач з'являється тільки якщо є специфічні поля -->
-					<hr th:if="${categoryName != 'Набори' and categoryName != 'Подарункові сертифікати' and categoryName != 'Книги з рукоділля' and categoryName != 'Схеми' and categoryName != 'Обладнання'}" class="border-gray-100">
+					<hr th:if="${categoryName != 'Набори'
+					and categoryName != 'Подарункові сертифікати'
+					and categoryName != 'Книги з рукоділля'
+					and categoryName != 'Схеми'
+					and categoryName != 'Обладнання'}"
+						class="border-gray-100">
 
 					<div class="space-y-4">
 						<!-- Колір -->

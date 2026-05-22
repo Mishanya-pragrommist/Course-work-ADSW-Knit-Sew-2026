@@ -1,6 +1,8 @@
 package misha.bondarenko.specifications;
 
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.entities.products.*;
 import misha.bondarenko.entities.products.Item;
@@ -10,21 +12,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Клас для генерації динамічних SQL-запитів фільтрації товарів.
+ * Клас для генерації динамічних SQL-запитів для фільтрації товарів
  */
 public class ProductSpecifications {
 
-    // Змінено тип специфікації на Item, щоб включити Kit та Product
     public static Specification<Item> withFilter(ProductFilter filter) {
         return (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (filter.minPrice() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("price"), filter.minPrice()));
-            }
-            if (filter.maxPrice() != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("price"), filter.maxPrice()));
-            }
+            // ========= Порівняння цін з урахуванням знижок =========
+//            Кращий варіант, але при ньому фінальна ціна наборів (kit)
+//            рахується як null, бо в цьому класі ціна рахується динамічно і поле price не змінюється
+//
+//            Отже, для розв'язання проблеми створено
+//            stream-фільтрацію в сервісі. Так воно працюватиме
+//            і не вимагатиме надто складної логіки, хоча швидкодія дещо впаде
+
+//            Expression<BigDecimal> price = root.get("price");
+//            Root<Product> productRoot = cb.treat(root, Product.class);
+//            Expression<BigDecimal> discount = productRoot.get("discount");
+//            Expression<BigDecimal> safeDiscount = cb.coalesce(discount, BigDecimal.ZERO);
+//            Expression<BigDecimal> discountAmount = cb.prod(price, safeDiscount);
+//            Expression<BigDecimal> finalPrice = cb.diff(price, discountAmount);
+//
+//            if (filter.minPrice() != null) {
+//                predicates.add(cb.greaterThanOrEqualTo(finalPrice, filter.minPrice()));
+//            }
+//            if (filter.maxPrice() != null) {
+//                predicates.add(cb.lessThanOrEqualTo(finalPrice, filter.maxPrice()));
+//            }
 
             if (filter.article() != null) {
                 predicates.add(cb.like(root.get("article"), "%" + filter.article().toLowerCase() + "%"));

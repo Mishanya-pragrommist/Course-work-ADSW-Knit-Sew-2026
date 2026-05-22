@@ -82,12 +82,12 @@
 					<div>
 						<label for="minPrice" class="block text-sm text-gray-600 mb-1">Ціна від</label>
 						<input id="minPrice" type="number" th:field="*{minPrice}" class="w-full border rounded-lg p-2"
-							   min="0">
+							   step="any" min="0">
 					</div>
 					<div>
 						<label for="maxPrice" class="block text-sm text-gray-600 mb-1">Ціна до</label>
 						<input id="maxPrice" type="number" th:field="*{maxPrice}" class="w-full border rounded-lg p-2"
-						min="0">
+							   step="any" min="0">
 					</div>
 				</div>
 

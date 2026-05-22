@@ -47,6 +47,6 @@ public class Accessory extends Product {
     @Override
     public String renderName() {
         return accessoryType + " " + brand + ", " + color.toLowerCase() +
-                ", " + material.toLowerCase() + ", діаметр " + size;
+                ", " + material.toLowerCase() + ", діаметр " + size + ", " + article;
     }
 }

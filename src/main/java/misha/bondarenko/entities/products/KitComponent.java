@@ -5,7 +5,7 @@ import lombok.*;
 import misha.bondarenko.entities.products.Item;
 
 /**
- * Допоміжна сутність для збереження кількості конкретного товару в наборі.
+ * Допоміжна сутність для збереження кількості конкретного товару в наборі
  */
 @Entity
 @Table(name = "kit_components")

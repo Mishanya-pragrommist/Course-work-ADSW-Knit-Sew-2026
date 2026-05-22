@@ -30,23 +30,23 @@ public class CatalogController {
                                Model model) {
         try {
             Long id = Long.parseLong(catId);
-            CatalogCardDto catalogCardById = catalogService.getCatalogCardById(id);
+            CatalogCardDto catalogCard = catalogService.getCatalogCardById(id);
             List<ProductCardDto> productCardDtoList = itemService.getProductCardsDto(id);
 
             // Передаємо маркер категорії (назву або спеціальний enum/код)
-            model.addAttribute("categoryName", catalogCardById.name());
+            model.addAttribute("categoryName", catalogCard.name());
 
-            // Порожній DTO для збору даних з форми
+            // Порожній фільтр для збору даних з форми
             model.addAttribute("filter", productFilter);
-
-            model.addAttribute("catalog", catalogCardById);
+            model.addAttribute("catalog", catalogCard);
             model.addAttribute("products", productCardDtoList);
 
+            // Для дебагу
             System.out.println("Size of list: " + productCardDtoList.size());
-
+            System.out.println(productCardDtoList.get(0).article());
             return "products-list";
         }
-        catch (NumberFormatException e) {
+        catch (Exception e) {
             return "redirect:/"; // Go back to home page
         }
     }

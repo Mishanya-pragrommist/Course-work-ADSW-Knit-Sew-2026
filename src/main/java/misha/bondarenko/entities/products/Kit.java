@@ -9,11 +9,9 @@ import misha.bondarenko.enums.MeasureUnit;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
- * Набір для рукоділля. На відміну від каталогу,
- * не може містити вкладені каталоги чи набори
+ * Набір для рукоділля. Не може (і не має) містити вкладені набори
  */
 @Entity
 @Getter
@@ -38,7 +36,7 @@ public class Kit extends Item {
 
     /**
      * Динамічно обчислює ціну всього набору.
-     * Сумує (ціна_компонента * кількість) та застосовує знижку набору.
+     * Сумує (ціна_компонента * кількість) та застосовує знижку набору (якщо така задана)
      */
     @Override
     public BigDecimal getTotalPrice() {

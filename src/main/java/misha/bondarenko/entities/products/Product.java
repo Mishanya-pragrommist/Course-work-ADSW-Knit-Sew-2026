@@ -7,7 +7,7 @@ import misha.bondarenko.enums.MeasureUnit;
 import java.math.BigDecimal;
 
 /**
- * Товар
+ * Товар (типу Пряжа, Тканина, Сертифікат, Набір тощо)
  */
 @Entity
 @Getter

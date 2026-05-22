@@ -36,7 +36,6 @@ public class DbFiller {
             Catalog kits = new Catalog(null, "Набори", "Готові набори для в'язання та шиття", "/images/kit.jpg");
 
             // --- 1. Аксесуари (Accessory) ---
-            // Порядок: id, article, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, supplier, brand, accessoryType, material, size, color
             accessories.add(
                     new Accessory(null, "ART-301", "Ґудзик пластиковий 15мм", "Декоративний ґудзик для кардиганів",
                             new BigDecimal("15.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 500, true, "/images/btn1.jpg",
@@ -53,7 +52,6 @@ public class DbFiller {
             );
 
             // --- 2. Книги (Book) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, author, publisher, isbn, pages, publicationYear
             books.add(
                     new Book(null, "Велика енциклопедія в'язання", "Детальний посібник з безліччю схем",
                             new BigDecimal("450.00"), new BigDecimal("0.10"), MeasureUnit.UNIT, 20, true, "/images/book1.jpg",
@@ -71,7 +69,6 @@ public class DbFiller {
             );
 
             // --- 3. Обладнання (Equipment) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, equipmentType, warrantyMonths, powerWatt, dimensions, weightKg, operationsCount
             equipment.add(
                     new Equipment(null, "Швейна машина Singer 23", "Надійна електромеханічна машина",
                             new BigDecimal("5500.00"), new BigDecimal("0.05"), MeasureUnit.UNIT, 5, true, "/images/eq1.jpg",
@@ -85,7 +82,6 @@ public class DbFiller {
             );
 
             // --- 4. Тканини (Fabric) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, fabricType, composition, widthInCm, density, color
             fabrics.add(
                     new Fabric(null, "Бавовна біла натуральна", "Ідеальна для пошиття літніх речей",
                             new BigDecimal("180.00"), BigDecimal.ZERO, MeasureUnit.METER, 100, true, "/images/fab1.jpg",
@@ -99,7 +95,6 @@ public class DbFiller {
             );
 
             // --- 5. Наповнювачі (Filler) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, fillerType, density, isHypoallergenic, packageWeightKg
             fillers.add(
                     new Filler(null, "Холофайбер гіпоалергенний 1 кг", "М'який наповнювач для іграшок та подушок",
                             new BigDecimal("150.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 40, true, "/images/fil1.jpg",
@@ -113,7 +108,6 @@ public class DbFiller {
             );
 
             // --- 6. Подарункові сертифікати (GiftCertificate) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, certificateType, validityMonths, termsOfUse
             giftCertificates.add(
                     new GiftCertificate(null, "Сертифікат номіналом 500 грн", "Ідеальний подарунок для творчої людини",
                             new BigDecimal("500.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 999, true, "/images/cert1.jpg",
@@ -127,7 +121,6 @@ public class DbFiller {
             );
 
             // --- 7. Схеми (Pattern) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, author, difficultyLevel, language, format
             patterns.add(
                     new Pattern(null, "Схема светра 'Оверсайз'", "Детальний опис з відео-підказками",
                             new BigDecimal("150.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 999, true, "/images/pat1.jpg",
@@ -141,7 +134,6 @@ public class DbFiller {
             );
 
             // --- 8. Нитки для шиття (SewingThread) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, threadType, composition, thickness, lengthInMeters, color
             SewingThread thr1 = new SewingThread(null, "Нитки Gutermann універсальні чорні", "Універсальні міцні нитки",
                     new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.METER, 300, true, "/images/thr1.jpg",
                     "ART-1001", "НиткиОпт", "Gutermann", "Австрія","Універсальна", "100% поліестер", "№40", 200, "чорний");
@@ -158,7 +150,6 @@ public class DbFiller {
             sewingThreads.add(thr1, thr2, thr3, thr34);
 
             // --- 9. Інструменти (Tool) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, toolType, material, size
             Tool tool1 = new Tool(null, "Гачок алюмінієвий 4мм", "Зручний гачок для пряжі",
                     new BigDecimal("56.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 190, true, "/images/tool1.jpg",
                     "ART-1101", "Бабуся Надія ТМ", "KnitPro", "Німеччина", "Гачок", "Алюміній", "4мм");
@@ -174,7 +165,6 @@ public class DbFiller {
             tools.add(tool1, tool2, tool3, tool4);
 
             // --- 10. Пряжа (Yarn) ---
-            // Порядок: id, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, article, supplier, brand, fiberContent, lengthInMeters, weightInGrams, dyeLot, color, toolsRecommended
             Yarn yarn1 = new Yarn(null, "Пряжа Alize Lanagold Бордова", "Класична напіввовняна пряжа",
                     new BigDecimal("120.00"), new BigDecimal("0.08"), MeasureUnit.SKEIN, 350, true, "/images/yarn1.jpg",
                     "ART-1201", "ЯрнОптТорг", "Alize", "Туреччина","51% акрил, 49% вовна", 240, 100, "LOT-88210", "Бордовий", "Спиці 4-6 мм");
@@ -191,7 +181,6 @@ public class DbFiller {
             yarns.add(yarn1, yarn2, yarn3, yarn4);
 
             // --- 11. Набори (Kit) ---
-            // Порядок для Kit: id, article, name, description, price (базова для конструктора Item, ставимо ZERO), discount, unit, stockQuantity, isAvailable, imageUrl
             Kit kit1 = new Kit(null, "ART-1301", "Набір 'Старт в'язання'", "Все необхідне для першого шарфа",
                     BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 20, true, "/images/kit1.jpg");
             kit1.setKitDiscount(new BigDecimal("0.10")); // 10% знижка на набір

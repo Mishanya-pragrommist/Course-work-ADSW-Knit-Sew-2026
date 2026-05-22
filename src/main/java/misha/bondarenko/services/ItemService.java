@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -82,6 +83,16 @@ public class ItemService {
 
         return itemRepository.findAll(spec, sort)
                 .stream()
+                .filter(item -> {
+                    // Викликаємо поліморфний метод (для Kit він просумує компоненти,
+                    // для Product - застосує знижку)
+                    BigDecimal actualPrice = item.getTotalPrice();
+
+                    boolean passMin = filter.minPrice() == null || actualPrice.compareTo(filter.minPrice()) >= 0;
+                    boolean passMax = filter.maxPrice() == null || actualPrice.compareTo(filter.maxPrice()) <= 0;
+
+                    return passMin && passMax;
+                })
                 .map(item -> new ProductCardDto(
                         item.getId(),
                         item.getArticle(),

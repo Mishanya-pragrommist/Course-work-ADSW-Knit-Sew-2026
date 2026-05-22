@@ -48,7 +48,7 @@ public class Fabric extends Product {
     @Override
     public String renderName() {
         return "Тканина " + fabricType.toLowerCase() + " " + brand + ", " + color.toLowerCase() + ", "
-                + composition + ", ширина рул. " + widthInCm + " см";
+                + composition + ", ширина рул. " + widthInCm + " см" + ", " + article;
     }
 
 }

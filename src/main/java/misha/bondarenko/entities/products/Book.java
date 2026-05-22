@@ -51,7 +51,7 @@ public class Book extends Product {
 
     @Override
     public String renderName() {
-        return "Книга \"" + name + "\" - " + author + " " + publisher + ", " + publicationYear + " р.";
+        return "Книга \"" + name + "\" - " + author + " " + publisher + ", " + publicationYear + " р." + ", " + article;
     }
 }
 

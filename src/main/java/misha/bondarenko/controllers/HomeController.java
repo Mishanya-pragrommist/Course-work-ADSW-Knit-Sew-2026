@@ -20,4 +20,9 @@ public class HomeController {
         model.addAttribute("catalogsRecords", catalogService.getCatalogCards());
         return "home";
     }
+
+    @GetMapping("/about-us")
+    public String aboutUs(Model model) {
+        return "about-us";
+    }
 }

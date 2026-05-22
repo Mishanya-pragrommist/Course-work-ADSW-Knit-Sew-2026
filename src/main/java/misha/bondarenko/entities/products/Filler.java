@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 public class Filler extends Product {
 
     private String fillerType; // Тип (наприклад: "Синтепух", "Флізелін", "Дублерин")
-    private int density; // Щільність (г/м2)
+    private Integer density; // Щільність (г/м2)
     private boolean isHypoallergenic; // Гіпоалергенність
     private double packageWeightKg; // Вага пакування в кілограмах
 

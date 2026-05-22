@@ -49,6 +49,7 @@ public class Yarn extends Product {
 
     @Override
     public String renderName() {
-        return "Пряжа " + supplier + ", " + color.toLowerCase() + ", " + fiberContent + ", " + weightInGrams + "г, " + dyeLot;
+        return "Пряжа " + brand + ", " + color.toLowerCase() + ", "
+                + fiberContent + ", " + weightInGrams + "г, " + dyeLot +  ", " + article;
     }
 }

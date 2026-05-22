@@ -17,7 +17,6 @@ import java.math.BigDecimal;
 public class Product extends Item {
 
     @Column(nullable = false)
-    protected String article;  // Артикул
     protected String supplier; // Постачальник
     protected String brand;    // Бренд товару
     protected String country;  // Країна виробник
@@ -36,8 +35,8 @@ public class Product extends Item {
                    String supplier,
                    String brand,
                    String country) {
-        super(id, article, name, description, price, discount, unit, stockQuantity, isAvailable, imageUrl, parent);
-        this.article = article;
+        super(id, article, name, description, price, discount, unit,
+                stockQuantity, isAvailable, imageUrl, parent);
         this.supplier = supplier;
         this.brand = brand;
         this.country = country;

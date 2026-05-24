@@ -30,17 +30,17 @@
 <header class="bg-white shadow-sm sticky top-0 z-50">
 	<div class="container mx-auto px-4 py-4 flex justify-between items-center">
 		<!-- Логотип -->
-		<a href="#" class="text-2xl font-bold text-brand-600 flex items-center gap-2">
+		<a th:href="@{/}" class="text-2xl font-bold text-brand-600 flex items-center gap-2">
 			<i data-lucide="scissors" class="w-6 h-6"></i>
 			Knit&Sew
 		</a>
 
-		<!-- Навігація (десктоп) -->
+		<!-- Навігація по сайту -->
 		<nav class="hidden md:flex space-x-8">
 			<a th:href="@{/}" class="text-brand-600 font-medium">Головна</a>
-			<a th:href="@{about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
-			<a th:href="@{contacts}" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
-			<a th:href="@{payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
+			<a th:href="@{/about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
+			<a th:href="@{/contacts}" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
+			<a th:href="@{/payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
 		</nav>
 
 		<!-- Іконки користувача -->
@@ -96,6 +96,7 @@
 
 					<!-- Шильдик знижки -->
 					<div th:if="${product.discount != null && product.discount > 0}"
+						 th:text="'Знижка ' + ${#numbers.formatDecimal(product.discount * 100, 1, 2) + '%'}"
 						 class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">
 						Знижка
 					</div>
@@ -105,7 +106,7 @@
 			<!-- Права колонка: Інформація та купівля -->
 			<div class="flex flex-col">
 				<div class="mb-2 flex justify-between items-start">
-					<span class="text-sm text-gray-500" th:text="'Артикул: ' + ${product.article}">Артикул: 12345</span>
+					<span class="text-sm text-gray-500" th:text="'Артикул: ' + ${product.article}">Артикул: Невідомо</span>
 					<span th:if="${product.isAvailable}" class="text-sm text-green-600 font-medium bg-green-50 px-2 py-1 rounded">В наявності</span>
 					<span th:unless="${product.isAvailable}" class="text-sm text-red-600 font-medium bg-red-50 px-2 py-1 rounded">Немає в наявності</span>
 				</div>
@@ -116,25 +117,35 @@
 				<div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
 					<!-- Якщо є знижка -->
 					<div th:if="${product.discount != null && product.discount > 0}" class="flex flex-col">
-						<span class="text-sm text-gray-500 line-through mb-1" th:text="${product.oldPrice()} + ' грн'">100.00 грн</span>
+						<span class="text-sm text-gray-500 line-through mb-1" th:text="${#numbers.formatDecimal(product.oldPrice(), 1, 2)} + ' грн'">100.00 грн (приклад)</span>
 						<div class="flex items-baseline gap-2">
-							<span class="text-4xl font-bold text-brand-600" th:text="${product.newPrice()} + ' грн'">90.00 грн</span>
+							<span class="text-4xl font-bold text-brand-600" th:text="${#numbers.formatDecimal(product.newPrice(), 1, 2)} + ' грн'">90.00 грн (приклад)</span>
 						</div>
 					</div>
 					<!-- Якщо знижки немає -->
 					<div th:unless="${product.discount != null && product.discount > 0}">
-						<span class="text-4xl font-bold text-gray-900" th:text="${product.oldPrice()} + ' грн'">100.00 грн</span>
+						<span class="text-4xl font-bold text-gray-900" th:text="${product.oldPrice()} + ' грн'">100.00 грн (приклад)</span>
 					</div>
 				</div>
 
 				<!-- Додавання в кошик -->
 				<form class="flex gap-4 mb-8" th:if="${product.isAvailable}">
 					<!-- Вибір кількості -->
-					<!--TODO: implement changing product quantity-->
 					<div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-32">
-						<button type="button" class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">-</button>
-						<input type="number" value="1" min="1" class="w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium" readonly>
-						<button type="button" class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">+</button>
+						<button type="button"
+								onclick="let input = this.nextElementSibling; if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;"
+								class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">-</button>
+
+						<input type="number"
+							   name="quantity"
+							   value="1"
+							   min="1"
+							   class="w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium"
+							   readonly>
+
+						<button type="button"
+								onclick="let input = this.previousElementSibling; input.value = parseInt(input.value) + 1;"
+								class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">+</button>
 					</div>
 
 					<button type="submit" class="flex-1 bg-brand-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-brand-700 transition-colors flex justify-center items-center gap-2 shadow-sm hover:shadow-md">
@@ -157,12 +168,29 @@
 	<!-- Секція характеристик -->
 	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8" th:if="${productAttributes != null and !productAttributes.isEmpty()}">
 		<h3 class="text-xl font-bold text-gray-900 mb-6">Характеристики</h3>
-		<!-- Таблиця з характеристиками товару (як загальними для всіх, так і специфічними для окремих товарів) -->
-		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-4">
-			<div th:each="attr : ${productAttributes}" class="flex justify-between items-end border-b border-gray-100 pb-2">
-				<span class="text-gray-500 mr-4" th:text="${attr.key}">Назва характеристики</span>
-				<span class="font-medium text-gray-900 text-right flex-shrink-0" th:text="${attr.value}">Значення</span>
+
+		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-20">
+
+			<!-- Ліва колонка: перша половина списку -->
+			<div class="flex flex-col gap-4">
+				<div th:each="attr, stat : ${productAttributes}"
+					 th:if="${stat.index < (stat.size + 1) / 2}"
+					 class="flex justify-between items-end border-b border-gray-100 pb-2">
+					<span class="text-gray-500 mr-4" th:text="${attr.key}">Назва характеристики</span>
+					<span class="font-medium text-gray-900 text-right flex-shrink-0" th:text="${attr.value}">Значення</span>
+				</div>
 			</div>
+
+			<!-- Права колонка: друга половина (решта) списку -->
+			<div class="flex flex-col gap-4 mt-4 md:mt-0">
+				<div th:each="attr, stat : ${productAttributes}"
+					 th:if="${stat.index >= (stat.size + 1) / 2}"
+					 class="flex justify-between items-end border-b border-gray-100 pb-2">
+					<span class="text-gray-500 mr-4" th:text="${attr.key}">Назва характеристики</span>
+					<span class="font-medium text-gray-900 text-right flex-shrink-0" th:text="${attr.value}">Значення</span>
+				</div>
+			</div>
+
 		</div>
 	</div>
 </main>
@@ -177,7 +205,8 @@
 				Knit&Sew
 			</h4>
 			<p class="text-gray-400 text-sm leading-relaxed">
-				Ваш надійний партнер у світі рукоділля. Ми пропонуємо найкращі матеріали для тих, хто створює красу своїми руками.
+				Ваш надійний партнер у світі рукоділля. Ми пропонуємо найкращі
+				матеріали для тих, хто створює красу своїми руками.
 			</p>
 		</div>
 

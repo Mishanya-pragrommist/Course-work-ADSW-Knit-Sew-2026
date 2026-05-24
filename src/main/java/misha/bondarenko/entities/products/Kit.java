@@ -62,11 +62,6 @@ public class Kit extends Item {
     }
 
     @Override
-    public boolean isAvailable() {
-        return this.isAvailable;
-    }
-
-    @Override
     public String renderName() {
         return "Набір \"" + name + "\" (" + components.size() + " комп.), " + article;
     }

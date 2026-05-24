@@ -53,11 +53,6 @@ public abstract class Item {
     /** Отримати знижку на товар/сет */
     public abstract BigDecimal getDiscount();
 
-    /** Чи в наявності товар
-     * @return true - так, false - ні
-     */
-    public abstract boolean isAvailable();
-
     /**
      * Для відображення повної назви товару, категорії або набору.<br>
      * Для товарів назва може виглядати як "Пряжа синя Alize 100г Акрил",

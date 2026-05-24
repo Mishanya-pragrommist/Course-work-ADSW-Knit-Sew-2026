@@ -60,11 +60,6 @@ public class Product extends Item {
         return discount;
     }
 
-    @Override
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
     protected String getBaseDetails() {
         return "артикул=" + article +
                 ", назва=" + name +

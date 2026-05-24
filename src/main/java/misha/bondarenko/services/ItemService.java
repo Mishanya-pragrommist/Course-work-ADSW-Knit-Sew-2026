@@ -128,11 +128,7 @@ public class ItemService {
         Map<String, String> attributes = new LinkedHashMap<>();
 
         attributes.put("Артикул", item.getArticle());
-        attributes.put("Ціна без знижок", item.getPurePrice().toString());
-        attributes.put("Знижка", String.valueOf(item.getDiscount()));
-        attributes.put("Загальна ціна", String.valueOf(item.getTotalPrice()));
-        attributes.put("В наявності", String.valueOf(item.isAvailable()));
-
+        
         // Якщо це звичайний товар, можемо дістати спільні для Product поля
         if (item instanceof Product product) {
             attributes.put("Бренд", product.getBrand());
@@ -179,7 +175,7 @@ public class ItemService {
         }
         else if (item instanceof GiftCertificate cert) {
             attributes.put("Тип", cert.getCertificateType());
-            attributes.put("Термін дії", String.valueOf(cert.getValidityMonths()));
+            attributes.put("Термін дії", cert.getValidityMonths() + " місяців");
             attributes.put("Умови використання", cert.getTermsOfUse());
         }
         // TODO: implement this for KIT

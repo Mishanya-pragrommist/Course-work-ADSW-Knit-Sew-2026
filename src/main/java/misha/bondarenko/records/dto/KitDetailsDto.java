@@ -1,12 +1,13 @@
 package misha.bondarenko.records.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 /**
- * DTO для відображення повної інформації про товар на його персональній сторінці.
+ * DTO для відображення повної інформації про набір на його персональній сторінці
  */
-public record ProductDetailsDto(
+public record KitDetailsDto(
         Long id,
         String article,              // Артикул
         String name,                 // Назва
@@ -25,12 +26,7 @@ public record ProductDetailsDto(
         // Медіа
         String imageURL,
 
-        // Інформація про виробника (опціонально, можна виводити над назвою)
-        String brand,
-
-        // === Специфічні характеристики ===
-        // Усі унікальні поля (склад, розмір, потужність тощо) лежать тут.
-        // Ключ - назва характеристики (напр., "Склад"), Значення - (напр., "100% бавовна").
-        Map<String, String> attributes
+        Map<String, String> attributes,
+        List<ProductCardDto> kitComponents
 )
 { }

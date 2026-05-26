@@ -18,7 +18,11 @@ public class Product extends Item {
 
     @Column(nullable = false)
     protected String supplier; // Постачальник
+
+    @Column(nullable = false)
     protected String brand;    // Бренд товару
+
+    @Column(nullable = false)
     protected String country;  // Країна виробник
 
     public Product(Long id,
@@ -48,16 +52,6 @@ public class Product extends Item {
             return price;
         }
         return price.subtract(price.multiply(discount));
-    }
-
-    @Override
-    public BigDecimal getPurePrice() {
-        return price;
-    }
-
-    @Override
-    public BigDecimal getDiscount() {
-        return discount;
     }
 
     protected String getBaseDetails() {

@@ -23,9 +23,6 @@ public class Kit extends Item {
     @JoinColumn(name = "kit_id")
     private List<KitComponent> components = new ArrayList<>();
 
-    /** Додаткова знижка саме за купівлю набором */
-    private BigDecimal kitDiscount = BigDecimal.ZERO;
-
     public Kit(Long id, String article, String name, String description,
                BigDecimal price, BigDecimal discount, MeasureUnit unit,
                int stockQuantity, boolean isAvailable, String imageUrl) {
@@ -45,20 +42,22 @@ public class Kit extends Item {
                 .multiply(BigDecimal.valueOf(comp.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        if (kitDiscount != null && kitDiscount.compareTo(BigDecimal.ZERO) > 0) {
-            return total.subtract(total.multiply(kitDiscount));
+        if (discount != null && discount.compareTo(BigDecimal.ZERO) > 0) {
+            return total.subtract(total.multiply(discount));
         }
         return total;
     }
 
+    /**
+     * Сума (ціна_товару * кількість), без урахування знижки
+     * @return загальна вартість набору без врахування знижки на набір
+     */
     @Override
-    public BigDecimal getPurePrice() {
-        return getTotalPrice();
-    }
-
-    @Override
-    public BigDecimal getDiscount() {
-        return kitDiscount;
+    public BigDecimal getPrice() {
+        return components.stream()
+                .map(comp -> comp.getItem().getTotalPrice()
+                        .multiply(BigDecimal.valueOf(comp.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
@@ -78,6 +77,7 @@ public class Kit extends Item {
             }
         }
         components.add(new KitComponent(null, item, quantity));
+        this.price = this.price.add(item.getPrice().multiply(BigDecimal.valueOf(quantity)));
     }
 
     /**

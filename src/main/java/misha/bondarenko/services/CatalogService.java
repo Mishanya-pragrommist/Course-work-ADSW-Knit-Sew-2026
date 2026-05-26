@@ -3,6 +3,7 @@ package misha.bondarenko.services;
 import misha.bondarenko.entities.products.Catalog;
 import misha.bondarenko.records.dto.CatalogCardDto;
 import misha.bondarenko.repositories.CatalogRepository;
+import misha.bondarenko.repositories.KitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,13 @@ import java.util.stream.Collectors;
 public class CatalogService {
 
     private CatalogRepository catalogRepository;
+    private KitRepository kitRepository;
 
     @Autowired
-    public void setCatalogRepository(CatalogRepository catalogRepository) {
+    public void setCatalogRepository(CatalogRepository catalogRepository,
+                                     KitRepository kitRepository) {
         this.catalogRepository = catalogRepository;
+        this.kitRepository = kitRepository;
     }
 
     // Maybe this method won't be useful
@@ -86,6 +90,7 @@ public class CatalogService {
     // ====== Deleting methods ======
 
     public void deleteAll() {
+        //kitRepository.deleteAll();
         catalogRepository.deleteAll();
     }
 }

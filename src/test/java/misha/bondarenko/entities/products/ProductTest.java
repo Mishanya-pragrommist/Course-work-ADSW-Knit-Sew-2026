@@ -1,245 +1,280 @@
-//package misha.bondarenko.entities.products;
-//
-//import misha.bondarenko.enums.MeasureUnit;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//
-//import java.math.BigDecimal;
-//import java.util.List;
-//
-//public class ProductTest {
-//    private Accessory accessory;
-//    private Book book;
-//    private Fabric fabric;
-//    private Filler filler;
-//    private GiftCertificate giftCertificate;
-//    private Kit kit;
-//    private Pattern pattern;
-//    private SewingThread sewingThread;
-//    private Tool tool;
-//    private Yarn yarn;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        // 1. Ініціалізація Фурнітури (Accessory)
-//        accessory = new Accessory(
-//                true,
-//                "ACC-CODE-01",
-//                "ART-ACC-881",
-//                "ТекстильОпт",
-//                "Prym",
-//                120,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("45.00"),
-//                BigDecimal.ZERO, // без знижки
-//                "Ґудзик декоративний",
-//                "Дерево",
-//                "25 мм",
-//                "коричневий"
-//        );
-//        accessory.setId(1L);
-//        accessory.setName("Дерев'яний ґудзик Prym");
-//        accessory.setDescription("Декоративний ґудзик для в'язаних кардиганів");
-//
-//        // 2. Ініціалізація Книги (Book)
-//        book = new Book(
-//                true,
-//                "BOOK-CODE-01",
-//                "ART-BOOK-102",
-//                "Книжковий Дистриб'ютор",
-//                "Видавництво КСД",
-//                15,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("420.00"),
-//                new BigDecimal("0.10"),
-//                "В'язання спицями: Велика енциклопедія", // 10% знижки
-//                "Елізабет Кент",
-//                "КСД",
-//                "978-617-12-1234-5",
-//                280,
-//                2024);
-//        book.setId(2L);
-//        book.setDescription("Покрокові інструкції та 300 візерунків для в'язання");
-//
-//        // 3. Ініціалізація Тканини (Fabric)
-//        fabric = new Fabric(
-//                true,
-//                "FAB-CODE-01",
-//                "ART-FAB-301",
-//                "ЛьонУкрТекстиль",
-//                "BrandTextile",
-//                250,
-//                MeasureUnit.METER,
-//                new BigDecimal("220.00"),
-//                new BigDecimal("0.05"), // 5% знижки
-//                "Льон",
-//                "100% натуральний льон",
-//                150,
-//                180,
-//                "натуральний сірий"
-//        );
-//        fabric.setId(3L);
-//        fabric.setName("Натуральний пом'якшений льон");
-//        fabric.setDescription("Тканина чудово підходить для літнього одягу");
-//
-//        // 4. Ініціалізація Наповнювача (Filler)
-//        filler = new Filler(
-//                true,
-//                "FIL-CODE-01",
-//                "ART-FIL-401",
-//                "ЕкоНаповнювачі",
-//                "Холофайбер Преміум",
-//                45,
-//                MeasureUnit.KG,
-//                new BigDecimal("180.00"),
-//                BigDecimal.ZERO,
-//                "Холофайбер",
-//                120,
-//                true, // Гіпоалергенний
-//                1.0
-//        );
-//        filler.setId(4L);
-//        filler.setName("Гіпоалергенний холофайбер");
-//        filler.setDescription("Високоякісний наповнювач для іграшок та подушок");
-//
-//        // 5. Ініціалізація Сертифіката (GiftCertificate)
-//        giftCertificate = new GiftCertificate(
-//                true,
-//                "CERT-CODE-01",
-//                "ART-CERT-500",
-//                "Knit&Sew Офіс",
-//                "Knit&Sew",
-//                1000,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("500.00"),
-//                BigDecimal.ZERO,
-//                "Електронний",
-//                12, // 12 місяців термін дії
-//                "Діє на весь асортимент офлайн та онлайн магазинів"
-//        );
-//        giftCertificate.setId(5L);
-//        giftCertificate.setName("Подарунковий сертифікат 500 грн");
-//        giftCertificate.setDescription("Електронний сертифікат з унікальним штрих-кодом");
-//
-//        // 6. Ініціалізація Схеми/Інструкції (Pattern)
-//        pattern = new Pattern(
-//                true,
-//                "PAT-CODE-01",
-//                "ART-PAT-551",
-//                "KnitDesign Studio",
-//                "Petrenko Design",
-//                9999,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("150.00"),
-//                BigDecimal.ZERO,
-//                "Ольга Петренко",
-//                "Середній",
-//                "Українська",
-//                "PDF"
-//        );
-//        pattern.setId(6L);
-//        pattern.setName("Схема в'язання светра 'Оверсайз'");
-//        pattern.setDescription("Детальний опис з відео-підказками складних моментів");
-//
-//        // 7. Ініціалізація Швейних ниток (SewingThread)
-//        sewingThread = new SewingThread(
-//                true,
-//                "THR-CODE-01",
-//                "ART-THR-201",
-//                "НиткиОпт",
-//                "Gutermann",
-//                800,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("85.00"),
-//                BigDecimal.ZERO,
-//                "Універсальна",
-//                "100% поліестер",
-//                "№40",
-//                200,
-//                "Чорний (col. 000)"
-//        );
-//        sewingThread.setId(7L);
-//        sewingThread.setName("Нитки швейні Gutermann №40");
-//        sewingThread.setDescription("Універсальні міцні нитки німецької якості");
-//
-//        // 8. Ініціалізація Інструмента (Tool)
-//        tool = new Tool(
-//                true,
-//                "TOL-CODE-01",
-//                "ART-TOL-110",
-//                "В'язальний Рай",
-//                "ChiaoGoo",
-//                60,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("490.00"),
-//                BigDecimal.ZERO,
-//                "Спиці кругові",
-//                "Хірургічна сталь",
-//                "3.5 мм (80 см)"
-//        );
-//        tool.setId(8L);
-//        tool.setName("Спиці кругові ChiaoGoo Red Lace 3.5 мм");
-//        tool.setDescription("Професійні спиці на супер-гнучкій металевій червоній волосіні");
-//
-//        // 9. Ініціалізація Пряжі (Yarn)
-//        yarn = new Yarn(
-//                true,
-//                "YAR-CODE-01",
-//                "ART-YAR-101",
-//                "ЯрнОптТорг",
-//                "Alize",
-//                350,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("120.00"),
-//                new BigDecimal("0.08"), // 8% знижки
-//                "51% акрил, 49% вовна",
-//                240,
-//                100,
-//                "LOT-88210",
-//                "Бордовий (col. 390)"
-//        );
-//        yarn.setId(9L);
-//        yarn.setName("Пряжа Alize Lanagold");
-//        yarn.setDescription("Класична напіввовняна пряжа середньої товщини");
-//
-//        // 10. Ініціалізація Набору (Kit)
-//        // Для Kit використовуємо Long ID згідно з твоїм класом
-//        kit = new Kit(100L, "Творчий старт", "Повний набір матеріалів для початківця", "https://",
-//                new BigDecimal("0.15")); // 15% загальна знижка набору
-//        kit.setName("Набір 'Творчий старт'");
-//        kit.setDescription("Ексклюзивний набір, що поєднує інструменти, тканину та нитки в одній коробці");
-//
-//        // Наповнюємо набір компонентами та задаємо кількість штук кожного товару
-//        kit.add(tool, 1);         // 1 шт. спиць ChiaoGoo
-//        kit.add(yarn, 3);         // 3 мотки бордової пряжі Alize
-//        kit.add(accessory, 10);   // 10 дерев'яних ґудзиків Prym
-//        kit.add(sewingThread, 2); // 2 котушки чорних ниток Gutermann
-//    }
-//
-//    @Test
-//    @DisplayName("Приклад назв елементів для відображення на вебсторінці")
-//    void renderNameTest() {
-//        List<Item> items = List.of(
-//                accessory,
-//                book,
-//                fabric,
-//                filler,
-//                giftCertificate,
-//                kit,
-//                pattern,
-//                sewingThread,
-//                tool,
-//                yarn
-//        );
-//        System.out.println("Назви товарів, готові для вставки на вебсторінку:\n");
-//        items.forEach(item -> System.out.println("\t" + item.renderName()));
-//    }
-//
-//    @Test
-//    @DisplayName("")
-//    void renderProductCard() {
-//
-//    }
-//
-//}
+package misha.bondarenko.entities.products;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class ProductTest {
+    private Accessory accessory;
+    private Book book;
+    private Equipment equipment;
+    private Fabric fabric;
+    private Filler filler;
+    private GiftCertificate giftCertificate;
+    private Kit kit;
+    private Pattern pattern;
+    private SewingThread sewingThread;
+    private Tool tool;
+    private Yarn yarn;
+
+    @BeforeEach
+    public void setUp() {
+        Random random = new Random();
+
+        // 1. Ініціалізація одиничних неподільних товарів (нащадків Product)
+
+        // Фурнітура: голки, маркери, ґудзики
+        accessory = new Accessory();
+        accessory.setId(random.nextLong(100));
+        accessory.setArticle("ACC-7701");
+        accessory.setName("Маркери для в'язання пластикові");
+        accessory.setDescription("Набір різнокольорових маркерів для петель замкненого типу, 30 шт.");
+        accessory.setPrice(new BigDecimal("85.00"));
+        accessory.setStockQuantity(15);
+        accessory.setAvailable(true);
+        accessory.setBrand("Clover");
+        accessory.setSupplier("ТОВ ПромТекс");
+        accessory.setCountry("Японія");
+        accessory.setAccessoryType("Маркери петель");
+        accessory.setMaterial("Пластик");
+        accessory.setSize("Універсальний");
+        accessory.setColor("Мікс");
+
+        // Книги та журнали з рукоділля
+        book = new Book();
+        book.setId(2L);
+        book.setArticle("BOK-1092");
+        book.setName("Енциклопедія сучасних візерунків");
+        book.setDescription("Покрокове керівництво з в'язання спицями та гачком з детальними кольоровими схемами.");
+        book.setPrice(new BigDecimal("450.00"));
+        book.setStockQuantity(4);
+        book.setAvailable(true);
+        book.setBrand("Клуб Сімейного Дозвілля");
+        book.setSupplier("Видавництво КСД");
+        book.setCountry("Україна");
+        book.setAuthor("Ганна Радченко");
+        book.setPublisher("КСД");
+        book.setIsbn("978-617-12-9950-2");
+        book.setPages(256);
+        book.setPublicationYear(2024);
+
+        equipment = new Equipment();
+        equipment.setId(random.nextLong(100));
+        equipment.setEquipmentType("Швейна машинка");
+        equipment.setDimensions("30*40*50 см");
+        equipment.setPrice(new BigDecimal("450.00"));
+        equipment.setStockQuantity(15);
+        equipment.setAvailable(true);
+        equipment.setBrand("Clover");
+        equipment.setSupplier("random supplier");
+        equipment.setArticle("EQT-9012");
+        equipment.setPowerWatt(600);
+        equipment.setOperationsCount(6);
+        equipment.setWarrantyMonths(18);
+
+        // Тканини
+        fabric = new Fabric();
+        fabric.setId(random.nextLong(100));
+        fabric.setArticle("FAB-2204");
+        fabric.setName("Льон натуральний пом'якшений");
+        fabric.setDescription("Преміальна лляна тканина для пошиття літнього одягу та домашнього текстилю.");
+        fabric.setPrice(new BigDecimal("320.00")); // ціна за метр
+        fabric.setStockQuantity(50);
+        fabric.setAvailable(true);
+        fabric.setBrand("BelLinen");
+        fabric.setSupplier("ІмпортТекстиль");
+        fabric.setCountry("Білорусь");
+        fabric.setFabricType("Льон");
+        fabric.setComposition("100% льон");
+        fabric.setWidthInCm(150); // см
+        fabric.setDensity(180); // г/м²
+        fabric.setColor("Натуральний сірий");
+
+        // Наповнювачі та ущільнювачі
+        filler = new Filler();
+        filler.setId(random.nextLong(100));
+        filler.setArticle("FIL-3401");
+        filler.setName("Холлофайбер первинний (кульки)");
+        filler.setDescription("Гіпоалергенний наповнювач для м'яких іграшок, подушок та бортиків.");
+        filler.setFillerType("Холлофайбер");
+        filler.setPrice(new BigDecimal("140.00")); // за пакування
+        filler.setStockQuantity(20);
+        filler.setAvailable(true);
+        filler.setBrand("УкрНаповнювач");
+        filler.setSupplier("Фабрика Комфорту");
+        filler.setCountry("Україна");
+        filler.setDensity(0); // Для пуху щільність не є ключовою, або вказується 0
+        filler.setHypoallergenic(true);
+        filler.setPackageWeightKg(1); // 1 кг
+
+        // Подарункові сертифікати
+        giftCertificate = new GiftCertificate();
+        giftCertificate.setId(random.nextLong(100));
+        giftCertificate.setArticle("CERT-500");
+        giftCertificate.setName("Подарунковий сертифікат Knit&Sew");
+        giftCertificate.setDescription("Електронний сертифікат на будь-які покупки в нашому онлайн-магазині.");
+        giftCertificate.setPrice(new BigDecimal("500.00"));
+        giftCertificate.setStockQuantity(999); // Безлімітний цифровий товар
+        giftCertificate.setAvailable(true);
+        giftCertificate.setBrand("Knit&Sew");
+        giftCertificate.setSupplier("Власний бренд");
+        giftCertificate.setCountry("Україна");
+        giftCertificate.setCertificateType("Електронний, PDF");
+        giftCertificate.setValidityMonths(12); // 1year
+
+        // Авторські інструкції та схеми для в'язання (електронні або друк)
+        pattern = new Pattern();
+        pattern.setId(random.nextLong(100));
+        pattern.setArticle("PAT-0045");
+        pattern.setName("Схема в'язання кардигана 'Oversize'");
+        pattern.setDescription("Детальний PDF-опис з відео-підказками для в'язання базового кардигана.");
+        pattern.setPrice(new BigDecimal("120.00"));
+        pattern.setStockQuantity(999);
+        pattern.setAvailable(true);
+        pattern.setBrand("Knitting_Design");
+        pattern.setSupplier("ФОП Бондаренко");
+        pattern.setCountry("Україна");
+        pattern.setAuthor("Марія Прохорова");
+        pattern.setDifficultyLevel("Середній");
+        pattern.setLanguage("Українська");
+        pattern.setFormat("Цифровий (PDF)");
+
+        // Швейні нитки
+        sewingThread = new SewingThread();
+        sewingThread.setId(random.nextLong(100));
+        sewingThread.setArticle("THR-4002");
+        sewingThread.setName("Нитка швейна Gutermann 100м");
+        sewingThread.setDescription("Універсальна високоякісна поліестерова нитка для будь-яких тканин.");
+        sewingThread.setPrice(new BigDecimal("65.00"));
+        sewingThread.setStockQuantity(45);
+        sewingThread.setAvailable(true);
+        sewingThread.setBrand("Gutermann");
+        sewingThread.setSupplier("Текс-Дизайн");
+        sewingThread.setCountry("Німеччина");
+        sewingThread.setThreadType("Універсальна");
+        sewingThread.setComposition("100% поліестер");
+        sewingThread.setThickness("№100");
+        sewingThread.setLengthInMeters(100);
+        sewingThread.setColor("Чорний (код 000)");
+
+        // Інструменти (спиці, гачки)
+        tool = new Tool();
+        tool.setId(random.nextLong(100));
+        tool.setArticle("TOL-8840");
+        tool.setName("Спиці кругові ChiaoGoo Red Lace");
+        tool.setDescription("Професійні металеві кругові спиці з червоною лескою без пам'яті.");
+        tool.setPrice(new BigDecimal("520.00"));
+        tool.setStockQuantity(8);
+        tool.setAvailable(true);
+        tool.setBrand("ChiaoGoo");
+        tool.setSupplier("Ланцюг Майстринь");
+        tool.setCountry("США/Китай");
+        tool.setToolType("Кругові спиці");
+        tool.setMaterial("Нержавіюча сталь");
+        tool.setSize("3.5 мм / 80 см");
+
+        // Пряжа
+        yarn = new Yarn();
+        yarn.setId(random.nextLong(100));
+        yarn.setArticle("YRN-5512");
+        yarn.setName("Пряжа Alize LanaGold Classic");
+        yarn.setDescription("Класична напіввовняна пряжа для затишних зимових речей.");
+        yarn.setPrice(new BigDecimal("115.00"));
+        yarn.setStockQuantity(30);
+        yarn.setAvailable(true);
+        yarn.setBrand("Alize");
+        yarn.setSupplier("ФОП ТекстильОпт");
+        yarn.setCountry("Туреччина");
+        yarn.setFiberContent("49% вовна, 51% акрил");
+        yarn.setWeightInGrams(100);
+        yarn.setLengthInMeters(240);
+        yarn.setDyeLot("LOT-77412");
+        yarn.setColor("Бордовий (код 57)");
+
+        // 2. Ініціалізація Композита (Набір для рукоділля - Kit)
+        // Створюємо набір "Зимовий затишок" зі знижкою 10% (0.10) на весь сет
+        kit = new Kit();
+        kit.setId(random.nextLong(100));
+        kit.setName("Набір для в'язання 'Зимовий Шарф'");
+        kit.setArticle("KIT-100");
+        kit.setPrice(BigDecimal.ZERO);
+        kit.setDescription("Повний комплект матеріалів та інструкцій для створення стильного теплого шарфа.");
+        kit.setDiscount(new BigDecimal("0.10"));
+
+        // Наповнюємо набір компонентами через твій метод add(Item item, int quantity)
+        // До складу входять: 3 мотки пряжі Yarn, 1 спиці Tool та 1 схема Pattern
+        kit.add(yarn, 3);
+        kit.add(tool, 1);
+        kit.add(pattern, 1);
+    }
+
+    @Test
+    @DisplayName("Утворення назв елементів для відображення на вебсторінці")
+    void renderNameTest() {
+        List<Item> items = List.of(
+                accessory,
+                book,
+                equipment,
+                fabric,
+                filler,
+                giftCertificate,
+                kit,
+                pattern,
+                sewingThread,
+                tool,
+                yarn
+        );
+        System.out.println("Назви товарів, готові для вставки на вебсторінку:\n");
+        items.forEach(item -> System.out.println(item.renderName()));
+
+        String[] names = new String[] {
+                "Маркери петель Clover, мікс, пластик, діаметр Універсальний, ACC-7701",
+                "Книга \"Енциклопедія сучасних візерунків\" - Ганна Радченко, видавництво КСД, 2024 р., BOK-1092",
+                "Швейна машинка Clover, 6 опер., 600W, гарантія: 18 міс., EQT-9012",
+                "Тканина льон BelLinen, натуральний сірий, 100% льон, ширина рул. 150 см, FAB-2204",
+                "Наповнювач Холлофайбер, УкрНаповнювач, 0 г/м², пакування 1.0 кг, FIL-3401",
+                "Подарунковий сертифікат, електронний, pdf, номіналом 500.00 грн, CERT-500",
+                "Набір \"Набір для в'язання 'Зимовий Шарф'\" (3 комп.), KIT-100",
+                "Схема в'язання кардигана 'Oversize' від автора Марія Прохорова, середній рівень, Цифровий (PDF), PAT-0045",
+                "Нитка Універсальна Gutermann, чорний (код 000), товщина №100, довжина 100м, THR-4002",
+                "Кругові спиці ChiaoGoo, нержавіюча сталь, розмір 3.5 мм / 80 см, TOL-8840",
+                "Пряжа Alize, бордовий (код 57), 49% вовна, 51% акрил, 100г, LOT-77412, YRN-5512"
+        };
+        for (int i = 0; i < names.length; i++) {
+            assertEquals(names[i].toLowerCase(), items.get(i).renderName().toLowerCase());
+        }
+    }
+
+    @Test
+    @DisplayName("Тестування роботи з ціною товару")
+    void testPriceCount() {
+        // It is enough to use only one object since methods to get price and discount
+        // is implemented in super class Product
+
+        BigDecimal basePrice = new BigDecimal("85.00");
+        BigDecimal discount = new BigDecimal("0.01");
+
+        assertEquals(basePrice, accessory.getPrice());
+
+        // 1) When discount is not set and getTotalPrice() is called which uses discount
+        // it should return the same result as getPrice()
+        assertEquals(basePrice, accessory.getTotalPrice());
+
+        accessory.setDiscount(new BigDecimal("0.01"));
+
+        // 2) When discount IS set, getTotalPrice should consider it
+        assertEquals(basePrice.subtract(basePrice.multiply(discount)), accessory.getTotalPrice());
+
+        // 3) When discount is set to null and getDiscount is called
+        // it should return BigDecimal.ZERO
+        accessory.setDiscount(null);
+        assertEquals(BigDecimal.ZERO, accessory.getDiscount());
+    }
+
+}

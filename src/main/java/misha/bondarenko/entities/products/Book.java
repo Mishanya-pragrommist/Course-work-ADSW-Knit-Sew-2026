@@ -1,6 +1,9 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.Pattern;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +11,7 @@ import lombok.Setter;
 import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  * Книги та друковані журнали з рукоділля
@@ -19,9 +23,16 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Book extends Product {
 
+    @Column(nullable = false)
     private String author; // Автор
+
+    @Column(nullable = false)
     private String publisher; // Видавництво
+
+    @Column(nullable = false)
     private String isbn; // Унікальний номер книги (ISBN)
+
+    @Size(min = 1)
     private int pages; // Кількість сторінок
     private int publicationYear; // Рік видання
 

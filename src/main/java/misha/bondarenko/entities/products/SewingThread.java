@@ -1,5 +1,6 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,17 +18,25 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class SewingThread extends Product {
 
+    @Column(nullable = false)
     private String threadType; // Тип нитки (наприклад: "Універсальна", "Армована", "Оверлочна")
+
+    @Column(nullable = false)
     private String composition; // Склад (наприклад: "100% поліестер", "Бавовна")
+
+    @Column(nullable = false)
     private String thickness; // Товщина/Номер (наприклад: "№40", "120")
+
     private int lengthInMeters; // Довжина намотування в метрах
+
+    @Column(nullable = false)
     private String color; // Колір або номер кольору за палітрою
 
-    public SewingThread(Long id, String name, String description, BigDecimal price, BigDecimal discount
-            , MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
+    public SewingThread(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+                        MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
                         String article, String supplier, String brand, String country,
                         String threadType, String composition, String thickness, int lengthInMeters, String color) {
-        super(id, article, name, description, price, discount, unit,
+        super(id, name, article, description, price, discount, unit,
                 stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
         this.threadType = threadType;
         this.composition = composition;

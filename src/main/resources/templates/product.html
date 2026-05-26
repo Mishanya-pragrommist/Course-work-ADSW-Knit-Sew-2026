@@ -123,7 +123,7 @@
 						</div>
 					</div>
 					<!-- Якщо знижки немає -->
-					<div th:unless="${product.discount != null && product.discount > 0}">
+					<div th:if="${product.discount == null || product.discount <= 0}">
 						<span class="text-4xl font-bold text-gray-900" th:text="${product.oldPrice()} + ' грн'">100.00 грн (приклад)</span>
 					</div>
 				</div>
@@ -133,7 +133,9 @@
 					<!-- Вибір кількості -->
 					<div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-32">
 						<button type="button"
-								onclick="let input = this.nextElementSibling; if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;"
+								onclick="
+								let input = this.nextElementSibling;
+								if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;"
 								class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">-</button>
 
 						<input type="number"
@@ -144,7 +146,8 @@
 							   readonly>
 
 						<button type="button"
-								onclick="let input = this.previousElementSibling; input.value = parseInt(input.value) + 1;"
+								onclick="let input = this.previousElementSibling;
+								input.value = parseInt(input.value) + 1;"
 								class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">+</button>
 					</div>
 
@@ -166,9 +169,11 @@
 	</div>
 
 	<!-- Секція характеристик -->
-	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8" th:if="${productAttributes != null and !productAttributes.isEmpty()}">
+	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
+		 th:if="${productAttributes != null and !productAttributes.isEmpty()}">
 		<h3 class="text-xl font-bold text-gray-900 mb-6">Характеристики</h3>
 
+		<!-- Таблиця з даними про товар -->
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-20">
 
 			<!-- Ліва колонка: перша половина списку -->
@@ -190,9 +195,78 @@
 					<span class="font-medium text-gray-900 text-right flex-shrink-0" th:text="${attr.value}">Значення</span>
 				</div>
 			</div>
-
 		</div>
 	</div>
+	<!-- Секція "Склад набору" (Відображається тільки якщо є компоненти) -->
+	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
+		 th:if="${product.kitComponents != null and !product.kitComponents.isEmpty()}">
+		<h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+			<i data-lucide="package" class="w-6 h-6 text-brand-500"></i>
+			Склад набору
+		</h3>
+
+		<div class="space-y-4">
+			<!-- Картка окремого компонента -->
+			<div th:each="comp : ${product.kitComponents}"
+				 class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-sm transition-all gap-4">
+
+				<!-- Інфо: Зображення + Назва -->
+				<div class="flex items-center gap-4 flex-1">
+					<div class="w-16 h-16 rounded-lg bg-white border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
+						<img th:if="${comp.getItem().imageUrl != null}"
+							 th:src="@{${comp.getItem().imageUrl}}"
+							 th:alt="${comp.getItem().name}" class="w-full h-full object-cover">
+						<i th:unless="${comp.getItem().imageUrl != null}" data-lucide="image" class="w-6 h-6 text-gray-300"></i>
+					</div>
+					<div>
+						<a class="font-semibold text-gray-800 line-clamp-2 sm:line-clamp-1"
+							th:text="${comp.getItem().name}"
+							th:href="@{/product/{id} (id=${comp.getItem().id}) }">
+							Назва компонента набору
+						</a>
+						<p class="text-sm text-gray-500 mt-1">
+							<span th:text="${#numbers.formatDecimal(comp.getItem().totalPrice, 1, 2)} + ' грн / шт.'">50 грн / шт.</span>
+						</p>
+					</div>
+				</div>
+
+				<!-- Панель керування компонентом -->
+				<div class="flex items-center gap-3 self-end sm:self-auto">
+					<!-- Вибір кількості (міні-версія) -->
+					<div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 w-28 bg-white">
+						<button type="button"
+								onclick="
+								let input = this.nextElementSibling;
+								if(parseInt(input.value) > 1)
+									input.value = parseInt(input.value) - 1;"
+								class="w-8 h-full bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors flex items-center justify-center">-</button>
+
+						<!-- Додано th:name щоб передавати на сервер змінені кількості -->
+						<input type="number"
+							   th:name="'component_' + ${comp.id}"
+							   th:value="${comp.quantity}"
+							   min="1"
+							   class="flex-1 w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium text-sm p-0"
+							   readonly>
+
+						<button type="button"
+								onclick="
+								let input = this.previousElementSibling;
+								input.value = parseInt(input.value) + 1;
+								"
+								class="w-8 h-full bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors flex items-center justify-center">+</button>
+					</div>
+
+					<!-- Кнопка видалення компонента -->
+					<button type="button" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Видалити з набору">
+						<i data-lucide="trash-2" class="w-5 h-5"></i>
+					</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
 </main>
 
 <!-- Футер -->

@@ -1,6 +1,8 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +21,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class GiftCertificate extends Product {
 
+    @Column(nullable = false)
     private String certificateType; // Тип (наприклад: "Електронний", "Пластикова картка")
+
+    @Size(min = 1)
     private int validityMonths; // Термін дії у місяцях
+
+    @Column(nullable = false, length = 100)
     private String termsOfUse; // Короткі умови використання (наприклад: "Діє на весь асортимент, крім акційних товарів")
 
     public GiftCertificate(Long id, String name, String description, BigDecimal price, BigDecimal discount,

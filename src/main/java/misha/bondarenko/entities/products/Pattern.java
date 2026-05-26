@@ -1,5 +1,6 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +23,14 @@ import java.math.BigDecimal;
 public class Pattern extends Product {
 
     private String author; // Автор схеми
+
+    @Column(nullable = false)
     private String difficultyLevel; // Рівень складності ("Початковий", "Середній", "Складний")
+
+    @Column(nullable = false)
     private String language; // Мова інструкції ("Українська", "Англійська")
+
+    @Column(nullable = false)
     private String format; // Формат ("PDF", "Друкований буклет")
 
     public Pattern(Long id, String name, String description, BigDecimal price, BigDecimal discount,
@@ -49,7 +56,7 @@ public class Pattern extends Product {
 
     @Override
     public String renderName() {
-        return name + " від автора " + author +
+        return name + " від автора " + author + ", " +
                 difficultyLevel.toLowerCase() + " рівень, " + format + ", " + article;
     }
 

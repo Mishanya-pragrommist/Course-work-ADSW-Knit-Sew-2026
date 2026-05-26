@@ -1,6 +1,9 @@
 package misha.bondarenko.records.dto;
 
+import misha.bondarenko.entities.products.KitComponent;
+
 import java.math.BigDecimal;
+import java.util.List;
 
 public record ProductCardDto(
         Long id,
@@ -11,6 +14,7 @@ public record ProductCardDto(
         BigDecimal discount,
         BigDecimal newPrice,
         boolean isAvailable,
-        String imageUrl
+        String imageUrl,
+        List<KitComponent> kitComponents // Якщо даний товар є набором
 )
 { }

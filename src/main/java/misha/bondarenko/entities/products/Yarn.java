@@ -1,6 +1,8 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import misha.bondarenko.enums.MeasureUnit;
 
@@ -16,11 +18,20 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Yarn extends Product {
 
+    @Column(nullable = false)
     private String fiberContent; // Склад волокна (100% меринос, 50% вовна, 50% акрил)
-    private int lengthInMeters; // Довжина нитки в метрах
+    private double lengthInMeters; // Довжина нитки в метрах
+
+    @Size(min = 1)
     private int weightInGrams; // Вага мотка в грамах
+
+    @Column(nullable = false)
     private String dyeLot; // Партія фарбування (Lot) - важливо для збігу відтінку
+
+    @Column(nullable = false)
     private String color; // Колір
+
+    @Column(nullable = false)
     private String toolsRecommended; // Рекомендовані інструменти
 
     public Yarn(Long id, String name, String description, BigDecimal price, BigDecimal discount,

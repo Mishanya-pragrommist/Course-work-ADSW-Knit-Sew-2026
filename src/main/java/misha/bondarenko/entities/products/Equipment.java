@@ -1,6 +1,8 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,11 +21,19 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Equipment extends Product {
 
+    @Column(nullable = false)
     private String equipmentType; // Тип обладнання
+    @Size(min = 1)
     private int warrantyMonths; // Гарантійний термін у місяцях
+
+    @Size(min = 1)
     private int powerWatt; // Споживана потужність у ватах
+
+    @Column(nullable = false)
     private String dimensions; // Габарити ("40x30x20 см")
     private double weightKg; // Вага в кілограмах
+
+    @Size(min = 1)
     private int operationsCount; // Кількість швейних/в'язальних операцій
 
     public Equipment(Long id, String name, String description, BigDecimal price, BigDecimal discount,
@@ -55,7 +65,7 @@ public class Equipment extends Product {
     @Override
     public String renderName() {
         return equipmentType + " " + brand + ", " + operationsCount + " опер., "
-                + powerWatt + "W, гарантія: " + warrantyMonths + " міс., " + ", " + article;
+                + powerWatt + "W, гарантія: " + warrantyMonths + " міс., " + article;
     }
 
 }

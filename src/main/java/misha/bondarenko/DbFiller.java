@@ -3,6 +3,7 @@ package misha.bondarenko;
 import misha.bondarenko.entities.products.*;
 import misha.bondarenko.enums.MeasureUnit;
 import misha.bondarenko.services.CatalogService;
+import misha.bondarenko.services.ItemService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +16,15 @@ public class DbFiller {
 
     @Bean
     @Transactional
-    public CommandLineRunner fillDatabase(CatalogService catalogService) {
-        boolean shouldWork = false;
+    public CommandLineRunner fillDatabase(CatalogService catalogService, ItemService itemService) {
+        boolean shouldWork = true;
         if (!shouldWork) return args -> {};
 
         return args -> {
+            // Clear database
+            itemService.deleteAll();
+            catalogService.deleteAll();
+
             // Fill with catalogs and products
 
             Catalog accessories = new Catalog(null, "Аксесуари", "Гудзики, бісер, прикраси для виробів тощо", "/images/buttons.jpg");
@@ -38,7 +43,7 @@ public class DbFiller {
             accessories.add(
                     new Accessory(null, "ART-301", "Ґудзик пластиковий 15мм", "Декоративний ґудзик для кардиганів",
                             new BigDecimal("15.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 500, true, "/images/btn1.jpg",
-                            "Бабуся Надія ТМ", "Prym", "Україна", "Ґудзик", "Пластик", "15мм", "Чорний"),
+                            "Бабуся Надія ТМ", "Prym", "Україна", "Гудзик", "Пластик", "15мм", "Чорний"),
                     new Accessory(null, "ART-302", "Маркер для петель", "Кольоровий пластиковий маркер для зручного в'язання",
                             new BigDecimal("85.00"), new BigDecimal("0.05"), MeasureUnit.UNIT, 200, true, "/images/markers.jpg",
                             "В'язальний Рай", "KnitPro", "Україна", "Маркери петель", "Пластик", "Універсальний", "Мікс"),
@@ -62,7 +67,14 @@ public class DbFiller {
                             "ШвачкаОпт", "Prym", "Німеччина", "Гудзик", "Метал", "17мм", "Бронза"),
                     new Accessory(null, "ART-309", "Нашивка 'Handmade'", "Шкіряна бірка для авторських виробів",
                             new BigDecimal("20.00"), new BigDecimal("0.10"), MeasureUnit.UNIT, 300, true, "/images/label.jpg",
-                            "В'язальний Рай", "HandmadeClub", "Україна", "Бірка", "Екошкіра", "3x1см", "Коричневий")
+                            "В'язальний Рай", "HandmadeClub", "Україна", "Бірка", "Екошкіра", "3x1см", "Коричневий"),
+                    new Accessory(null, "ART-310", "Нашивка 'Handmade'", "Пластикова бірка для авторських виробів",
+                            new BigDecimal("15.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 200, true, "/images/label.jpg",
+                            "В'язальний Рай", "HandmadeClub", "Україна", "Бірка", "Пластик", "3x1см", "білий"),
+                    new Accessory(null, "ART-311", "Гудзик металевий", "Металевий гудзик для одежі. Міцний, гарний та надійний",
+                            new BigDecimal("30.00"), BigDecimal.ZERO, MeasureUnit.UNIT, 130, true, "/images/label.jpg",
+                            "Бабуся Надія ТМ", "Prym", "Туреччина", "Гудзик", "залізо", "10мм", "металевий срібляний")
+
             );
 
             // --- 2. Книги (Book) - 9 шт ---
@@ -155,7 +167,11 @@ public class DbFiller {
                             "ART-608", "ТекстильОпт", "VelourTex", "Корея", "Велюр", "90% поліестер, 10% спандекс", 150, 220, "Чорний"),
                     new Fabric(null, "Муслін 2-шаровий дитячий", "Легка тканина для пелюшок та одягу",
                             new BigDecimal("210.00"), BigDecimal.ZERO, MeasureUnit.METER, 60, true, "/images/fab9.jpg",
-                            "ART-609", "ТекстильОпт", "BabyTex", "Туреччина", "Муслін", "100% бавовна", 135, 120, "М'ятний")
+                            "ART-609", "ТекстильОпт", "BabyTex", "Туреччина", "Муслін", "100% бавовна", 135, 120, "М'ятний"),
+                    new Fabric(null, "Велюр оксамитовий стрейч", "Підійде для виготовлення одягу для іграшок, пошиття колекційних суконь для ляльок, гаманців і фермуаров, так само підходить для обтягування домашніх меблів та аксесуарів, пошиття подушок.",
+                            new BigDecimal("60.00"), BigDecimal.ZERO, MeasureUnit.METER, 70, true, "/images/fab9.jpg",
+                            "ART-610", "ТекстильОпт", "BabyTex", "Україна", "Велюр", "бавовна 70%, поліестер та еластан 30%", 135, 120, "синій")
+
             );
 
             // --- 5. Наповнювачі (Filler) - 9 шт ---
@@ -252,33 +268,33 @@ public class DbFiller {
             );
 
             // --- 8. Нитки для шиття (SewingThread) - 9 шт ---
-            SewingThread thr1 = new SewingThread(null, "Нитки Gutermann універсальні чорні", "Універсальні міцні нитки",
-                    new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.METER, 300, true, "/images/thr1.jpg",
-                    "ART-1001", "НиткиОпт", "Gutermann", "Австрія","Універсальна", "100% поліестер", "№40", 200, "Чорний");
-            SewingThread thr2 = new SewingThread(null, "Нитки Gutermann універсальні білі", "Універсальні міцні нитки",
-                    new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.METER, 300, true, "/images/thr2.jpg",
-                    "ART-1002", "НиткиОпт", "Gutermann", "Австрія", "Універсальна", "100% поліестер", "№40", 200, "Білий");
-            SewingThread thr3 = new SewingThread(null, "Нитки вишивальні Madeira золоті", "Металізована нитка для вишивки",
-                    new BigDecimal("120.00"), new BigDecimal("0.05"), MeasureUnit.METER, 150, true, "/images/thr3.jpg",
-                    "ART-1003", "НиткиОпт", "Madeira", "Австрія", "Вишивальна", "Віскоза/Металік", "№40", 1000, "Золотий");
-            SewingThread thr4= new SewingThread(null, "Нитки вишивальні Madeira сріблясті", "Металізована нитка для вишивки",
-                    new BigDecimal("100.00"), new BigDecimal("0.05"), MeasureUnit.METER, 150, true, "/images/thr3.jpg",
-                    "ART-1004", "НиткиОпт", "Madeira", "Австрія","Вишивальна", "Віскоза/Металік", "№40", 1000, "Срібний");
-            SewingThread thr5 = new SewingThread(null, "Нитки армовані червоні", "Особливо міцні нитки для важких тканин",
-                    new BigDecimal("85.00"), BigDecimal.ZERO, MeasureUnit.METER, 200, true, "/images/thr4.jpg",
-                    "ART-1005", "НиткиОпт", "Ariadna", "Польща", "Армована", "Поліестер", "№30", 200, "Червоний");
-            SewingThread thr6 = new SewingThread(null, "Нитки армовані сині", "Особливо міцні нитки для джинсу",
-                    new BigDecimal("85.00"), BigDecimal.ZERO, MeasureUnit.METER, 0, false, "/images/thr5.jpg",
-                    "ART-1006", "НиткиОпт", "Ariadna", "Польща", "Армована", "Поліестер", "№30", 200, "Синій");
-            SewingThread thr7 = new SewingThread(null, "Нитки оверлочні текстуровані білі", "М'які нитки для оверлока",
-                    new BigDecimal("150.00"), BigDecimal.ZERO, MeasureUnit.METER, 120, true, "/images/thr6.jpg",
-                    "ART-1007", "НиткиОпт", "Euron", "Китай", "Оверлочна", "100% поліестер", "№150", 5000, "Білий");
-            SewingThread thr8 = new SewingThread(null, "Нитки оверлочні текстуровані чорні", "М'які нитки для оверлока",
-                    new BigDecimal("150.00"), BigDecimal.ZERO, MeasureUnit.METER, 0, false, "/images/thr7.jpg",
-                    "ART-1008", "НиткиОпт", "Euron", "Китай", "Оверлочна", "100% поліестер", "№150", 5000, "Чорний");
-            SewingThread thr9 = new SewingThread(null, "Нитки джинсові жовті", "Спеціальні товсті нитки для відстрочки джинсів",
-                    new BigDecimal("90.00"), BigDecimal.ZERO, MeasureUnit.METER, 80, true, "/images/thr8.jpg",
-                    "ART-1009", "НиткиОпт", "Gutermann", "Австрія", "Джинсова", "100% поліестер", "№30", 100, "Жовтий");
+            SewingThread thr1 = new SewingThread(null, "",
+                    "Універсальні міцні нитки", new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.METER, 300, true,
+                    "/images/thr1.jpg", "ART-1001", "НиткиОпт", "Gutermann", "Австрія", "Універсальна", "100% поліестер", "№40", 200, "Чорний");
+            SewingThread thr2 = new SewingThread(null, "",
+                    "Універсальні міцні нитки", new BigDecimal("75.00"), BigDecimal.ZERO, MeasureUnit.METER, 300, true,
+                    "/images/thr2.jpg", "ART-1002", "НиткиОпт", "Gutermann", "Австрія", "Універсальна", "100% поліестер", "№40", 200, "Білий");
+            SewingThread thr3 = new SewingThread(null, "",
+                    "Металізована нитка для вишивки", new BigDecimal("120.00"), new BigDecimal("0.05"), MeasureUnit.METER, 150, true,
+                    "/images/thr3.jpg", "ART-1003", "НиткиОпт", "Madeira", "Австрія", "Вишивальна", "Віскоза/Металік", "№40", 1000, "Золотий");
+            SewingThread thr4= new SewingThread(null, "",
+                    "Металізована нитка для вишивки", new BigDecimal("100.00"), new BigDecimal("0.05"), MeasureUnit.METER, 150, true,
+                    "/images/thr3.jpg", "ART-1004", "НиткиОпт", "Madeira", "Австрія", "Вишивальна", "Віскоза/Металік", "№40", 1000, "Срібний");
+            SewingThread thr5 = new SewingThread(null, "",
+                    "Особливо міцні нитки для важких тканин", new BigDecimal("85.00"), BigDecimal.ZERO, MeasureUnit.METER, 200, true,
+                    "/images/thr4.jpg", "ART-1005", "НиткиОпт", "Ariadna", "Польща", "Армована", "Поліестер", "№30", 200, "Червоний");
+            SewingThread thr6 = new SewingThread(null, "",
+                    "Особливо міцні нитки для джинсу", new BigDecimal("85.00"), BigDecimal.ZERO, MeasureUnit.METER, 0, false,
+                    "/images/thr5.jpg", "ART-1006", "НиткиОпт", "Ariadna", "Польща", "Армована", "Поліестер", "№30", 200, "Синій");
+            SewingThread thr7 = new SewingThread(null, "",
+                    "М'які нитки для оверлока", new BigDecimal("150.00"), BigDecimal.ZERO, MeasureUnit.METER, 120, true,
+                    "/images/thr6.jpg", "ART-1007", "НиткиОпт", "Euron", "Китай", "Оверлочна", "100% поліестер", "№150", 5000, "Білий");
+            SewingThread thr8 = new SewingThread(null, "",
+                    "М'які нитки для оверлока", new BigDecimal("150.00"), BigDecimal.ZERO, MeasureUnit.METER, 0, false,
+                    "/images/thr7.jpg", "ART-1008", "НиткиОпт", "Euron", "Китай", "Оверлочна", "100% поліестер", "№150", 5000, "Чорний");
+            SewingThread thr9 = new SewingThread(null, "",
+                    "Спеціальні товсті нитки для відстрочки джинсів", new BigDecimal("90.00"), BigDecimal.ZERO, MeasureUnit.METER, 80, true,
+                    "/images/thr8.jpg", "ART-1009", "НиткиОпт", "Gutermann", "Австрія", "Джинсова", "100% поліестер", "№30", 100, "Жовтий");
 
             sewingThreads.add(thr1, thr2, thr3, thr4, thr5, thr6, thr7, thr8, thr9);
 
@@ -345,38 +361,35 @@ public class DbFiller {
             yarns.add(yarn1, yarn2, yarn3, yarn4, yarn5, yarn6, yarn7, yarn8, yarn9);
 
             // --- 11. Набори (Kit) - 9 шт ---
-            Kit kit1 = new Kit(null, "ART-1301", "Набір 'Старт в'язання'", "Все необхідне для першого шарфа",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 20, true, "/images/kit1.jpg");
-            kit1.setKitDiscount(new BigDecimal("0.10")); // 10% знижка на набір
+            Kit kit1 = new Kit(null, "ART-1301", "Набір 'Старт в'язання'",
+                    "Все необхідне для першого шарфа", BigDecimal.ZERO, BigDecimal.ZERO,
+                    MeasureUnit.UNIT, 20, true, "/images/kit1.jpg");
             kit1.add(yarn1, 3); // 3 мотки пряжі
             kit1.add(tool2, 1); // 1 пара спиць
 
+
             Kit kit2 = new Kit(null, "ART-1302", "Набір 'Швачка-початківець'", "Базові нитки для шиття",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 15, true, "/images/kit2.jpg");
+                    BigDecimal.ZERO, new BigDecimal("0.10"), MeasureUnit.UNIT, 15, true, "/images/kit2.jpg");
             kit2.add(thr1, 2); // 2 котушки чорних ниток
             kit2.add(thr2, 2); // 2 котушки білих ниток
 
             Kit kit3 = new Kit(null, "ART-1303", "Набір 'Велика іграшка'", "Пряжа та наповнювач для амігурумі",
                     BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 10, true, "/images/kit3.jpg");
-            kit3.setKitDiscount(new BigDecimal("0.15")); // 15% знижка
             kit3.add(yarn3, 5); // 5 мотків пряжі
             kit3.add(tool1, 1); // гачок
 
             Kit kit4 = new Kit(null, "ART-1304", "Набір 'Теплі шкарпетки'", "Пряжа та спиці для теплих шкарпеток",
                     BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 25, true, "/images/kit4.jpg");
-            kit4.setKitDiscount(new BigDecimal("0.05"));
             kit4.add(yarn9, 2);
             kit4.add(tool6, 1);
 
             Kit kit5 = new Kit(null, "ART-1305", "Набір 'Шапка і снуд'", "Все для зимового комплекту",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/kit5.jpg");
-            kit5.setKitDiscount(new BigDecimal("0.10"));
+                    BigDecimal.ZERO, new BigDecimal("0.15"), MeasureUnit.UNIT, 0, false, "/images/kit5.jpg");
             kit5.add(yarn1, 4);
             kit5.add(tool5, 1);
 
             Kit kit6 = new Kit(null, "ART-1306", "Набір 'Літня сумка'", "Бавовняна пряжа та гачок",
                     BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 12, true, "/images/kit6.jpg");
-            kit6.setKitDiscount(new BigDecimal("0.12"));
             kit6.add(yarn3, 4);
             kit6.add(yarn4, 2);
             kit6.add(tool1, 1);
@@ -388,13 +401,11 @@ public class DbFiller {
 
             Kit kit8 = new Kit(null, "ART-1308", "Набір 'Ексклюзивна вишивка'", "Золоті та срібні нитки",
                     BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 18, true, "/images/kit8.jpg");
-            kit8.setKitDiscount(new BigDecimal("0.08"));
             kit8.add(thr3, 2);
             kit8.add(thr4, 2);
 
             Kit kit9 = new Kit(null, "ART-1309", "Набір 'Светр реглан'", "Мохер та спиці для невагомого светра",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 8, true, "/images/kit9.jpg");
-            kit9.setKitDiscount(new BigDecimal("0.20"));
+                    BigDecimal.ZERO, new BigDecimal("0.20"), MeasureUnit.UNIT, 8, true, "/images/kit9.jpg");
             kit9.add(yarn7, 5);
             kit9.add(tool2, 1);
 

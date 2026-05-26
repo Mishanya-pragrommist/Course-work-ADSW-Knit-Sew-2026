@@ -5,6 +5,7 @@ import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.repositories.CatalogRepository;
 import misha.bondarenko.repositories.ItemRepository;
+import misha.bondarenko.repositories.KitRepository;
 import misha.bondarenko.specifications.ProductSpecifications;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,11 +20,14 @@ import java.util.Map;
 public class ItemService {
     private final CatalogRepository catalogRepository;
     private final ItemRepository itemRepository;
+    private final KitRepository kitRepository;
 
     public ItemService(ItemRepository itemRepository,
-                       CatalogRepository catalogRepository) {
+                       CatalogRepository catalogRepository,
+                       KitRepository kitRepository) {
         this.itemRepository = itemRepository;
         this.catalogRepository = catalogRepository;
+        this.kitRepository = kitRepository;
     }
 
     public Item findItemById(long id) {
@@ -39,32 +43,31 @@ public class ItemService {
                 .orElseThrow(() -> new RuntimeException("Catalog not found"));
 
         return catalog.getChildren().stream()
-                .map(item -> new ProductCardDto(
-                        item.getId(),
-                        item.getArticle(),
-                        item.renderName(),
-                        item.getDescription(),
-                        item.getPurePrice(),
-                        item.getDiscount(),
-                        item.getTotalPrice(),
-                        item.isAvailable(),
-                        item.getImageUrl()
-                ))
+                .map(this::adaptProductToCardDto)
                 .toList();
     }
 
     public ProductCardDto getProductCardById(long id) {
-        Item item = findItemById(id);
+        return adaptProductToCardDto(findItemById(id));
+    }
+
+    /**
+     * Конвертувати товар до виду картки товару для передачі на сторінку
+     * @param item товар
+     * @return картка товару
+     */
+    private ProductCardDto adaptProductToCardDto(Item item) {
         return new ProductCardDto(
                 item.getId(),
                 item.getArticle(),
                 item.renderName(),
                 item.getDescription(),
-                item.getPurePrice(),
+                item.getPrice(), // Ціна без знижок
                 item.getDiscount(),
                 item.getTotalPrice(),
                 item.isAvailable(),
-                item.getImageUrl()
+                item.getImageUrl(),
+                item instanceof Kit kit ? kit.getComponents() : null
         );
     }
 
@@ -94,17 +97,7 @@ public class ItemService {
 
                     return passMin && passMax;
                 })
-                .map(item -> new ProductCardDto(
-                        item.getId(),
-                        item.getArticle(),
-                        item.renderName(),
-                        item.getDescription(),
-                        item.getPurePrice(),
-                        item.getDiscount(),
-                        item.getTotalPrice(),
-                        item.isAvailable(),
-                        item.getImageUrl()
-                ))
+                .map(this::adaptProductToCardDto)
                 .toList();
     }
 
@@ -120,7 +113,8 @@ public class ItemService {
 
     /**
      * Приводить товар до списку атрибутів та їхніх значень.
-     * Враховує також специфічні поля для кожного класу (наприклад, тип інструменту для Tool, вага мотка для Yarn тощо)
+     * Враховує також специфічні поля для кожного класу
+     * (наприклад, тип інструменту для Tool, вага мотка для Yarn тощо)
      * @param item товар для приведення
      * @return словник
      */
@@ -128,7 +122,7 @@ public class ItemService {
         Map<String, String> attributes = new LinkedHashMap<>();
 
         attributes.put("Артикул", item.getArticle());
-        
+
         // Якщо це звичайний товар, можемо дістати спільні для Product поля
         if (item instanceof Product product) {
             attributes.put("Бренд", product.getBrand());
@@ -178,12 +172,9 @@ public class ItemService {
             attributes.put("Термін дії", cert.getValidityMonths() + " місяців");
             attributes.put("Умови використання", cert.getTermsOfUse());
         }
-        // TODO: implement this for KIT
-//        else if (item instanceof Kit kit) {
-//            attributes.put("Тип", kit.getCertificateType());
-//            attributes.put("Термін дії", String.valueOf(kit.getValidityMonths()));
-//            attributes.put("Умови використання", kit.getTermsOfUse());
-//        }
+        else if (item instanceof Kit kit) {
+            attributes.put("Кількість компонентів", String.valueOf(kit.getComponents().size()));
+        }
 
         else if (item instanceof Pattern pattern) {
             attributes.put("Автор", pattern.getAuthor());
@@ -212,15 +203,13 @@ public class ItemService {
             attributes.put("Партія (Lot)", yarn.getDyeLot());
         }
 
-        // ... інші типи (Tool, Book, Accessory)
-        // TODO: implement mapping for every entity class
-
         return attributes;
     }
 
 
     // ====== Delete methods ======
     public void deleteAll() {
+        kitRepository.deleteAll();
         itemRepository.deleteAll();
     }
 }

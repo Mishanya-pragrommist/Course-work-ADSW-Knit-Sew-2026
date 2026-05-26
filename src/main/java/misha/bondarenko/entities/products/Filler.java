@@ -1,6 +1,8 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +22,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Filler extends Product {
 
+    @Column(nullable = false)
     private String fillerType; // Тип (наприклад: "Синтепух", "Флізелін", "Дублерин")
-    private Integer density; // Щільність (г/м2)
+
+    @Size(min = 1)
+    private int density; // Щільність (г/м2)
     private boolean isHypoallergenic; // Гіпоалергенність
     private double packageWeightKg; // Вага пакування в кілограмах
 

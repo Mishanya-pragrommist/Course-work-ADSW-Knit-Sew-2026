@@ -22,12 +22,14 @@ public class ProductController {
     public String getProductPage(@PathVariable Long id, Model model) {
         Map<String, String> productAttributes = itemService.getProductDetailsMap(id);
         ProductCardDto productCardDto = itemService.getProductCardById(id);
+
         if (productAttributes == null) {
             return "redirect:/"; // Або перенаправлення на сторінку 404
         }
 
         model.addAttribute("productAttributes", productAttributes);
         model.addAttribute("product", productCardDto);
+        System.out.println("Discount of product " + productCardDto.article() + " = " + productCardDto.discount());
         return "product";
     }
 }

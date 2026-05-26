@@ -1,5 +1,6 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.*;
 import misha.bondarenko.enums.MeasureUnit;
@@ -16,9 +17,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class Accessory extends Product {
 
+    @Column(nullable = false)
     private String accessoryType; // Тип аксесуара (наприклад "Маркер петель", "Ґудзик", "Голка")
+
+    @Column(nullable = false)
     private String material; // Матеріал (пластик, метал, дерево тощо)
+
+    @Column(nullable = false)
     private String size; // Розмір (15см, 5мм, №3 - розмір голки, тощо)
+
+    @Column(nullable = false)
     private String color; // Колір
 
     public Accessory(Long id, String article, String name, String description,

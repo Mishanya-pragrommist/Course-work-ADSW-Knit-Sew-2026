@@ -1,6 +1,8 @@
 package misha.bondarenko.entities.products;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import misha.bondarenko.enums.MeasureUnit;
 
@@ -13,12 +15,20 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class Fabric extends Product {
 
+    @Column(nullable = false)
     private String fabricType; // Тип тканини (бавовна, трикотаж, шовк тощо)
-    private String composition; // Склад (наприклад: "100% бавовна")
-    private int widthInCm; // Ширина рулону в сантиметрах
-    private int density; // Щільність тканини (г/м2)
-    private String color; // Колір або опис принту
 
+    @Column(nullable = false)
+    private String composition; // Склад (наприклад: "100% бавовна")
+
+    @Size(min = 1)
+    private int widthInCm; // Ширина рулону в сантиметрах
+
+    @Size(min = 1)
+    private int density; // Щільність тканини (г/м2)
+
+    @Column(nullable = false)
+    private String color; // Колір або опис принту
 
     public Fabric(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                   MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,

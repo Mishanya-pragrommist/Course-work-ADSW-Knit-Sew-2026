@@ -35,7 +35,7 @@ public class ProductTest {
         accessory.setArticle("ACC-7701");
         accessory.setName("Маркери для в'язання пластикові");
         accessory.setDescription("Набір різнокольорових маркерів для петель замкненого типу, 30 шт.");
-        accessory.setPrice(new BigDecimal("85.00"));
+        accessory.setBasePrice(new BigDecimal("85.00"));
         accessory.setStockQuantity(15);
         accessory.setAvailable(true);
         accessory.setBrand("Clover");
@@ -52,7 +52,7 @@ public class ProductTest {
         book.setArticle("BOK-1092");
         book.setName("Енциклопедія сучасних візерунків");
         book.setDescription("Покрокове керівництво з в'язання спицями та гачком з детальними кольоровими схемами.");
-        book.setPrice(new BigDecimal("450.00"));
+        book.setBasePrice(new BigDecimal("450.00"));
         book.setStockQuantity(4);
         book.setAvailable(true);
         book.setBrand("Клуб Сімейного Дозвілля");
@@ -68,7 +68,7 @@ public class ProductTest {
         equipment.setId(random.nextLong(100));
         equipment.setEquipmentType("Швейна машинка");
         equipment.setDimensions("30*40*50 см");
-        equipment.setPrice(new BigDecimal("450.00"));
+        equipment.setBasePrice(new BigDecimal("450.00"));
         equipment.setStockQuantity(15);
         equipment.setAvailable(true);
         equipment.setBrand("Clover");
@@ -84,7 +84,7 @@ public class ProductTest {
         fabric.setArticle("FAB-2204");
         fabric.setName("Льон натуральний пом'якшений");
         fabric.setDescription("Преміальна лляна тканина для пошиття літнього одягу та домашнього текстилю.");
-        fabric.setPrice(new BigDecimal("320.00")); // ціна за метр
+        fabric.setBasePrice(new BigDecimal("320.00")); // ціна за метр
         fabric.setStockQuantity(50);
         fabric.setAvailable(true);
         fabric.setBrand("BelLinen");
@@ -103,7 +103,7 @@ public class ProductTest {
         filler.setName("Холлофайбер первинний (кульки)");
         filler.setDescription("Гіпоалергенний наповнювач для м'яких іграшок, подушок та бортиків.");
         filler.setFillerType("Холлофайбер");
-        filler.setPrice(new BigDecimal("140.00")); // за пакування
+        filler.setBasePrice(new BigDecimal("140.00")); // за пакування
         filler.setStockQuantity(20);
         filler.setAvailable(true);
         filler.setBrand("УкрНаповнювач");
@@ -119,7 +119,7 @@ public class ProductTest {
         giftCertificate.setArticle("CERT-500");
         giftCertificate.setName("Подарунковий сертифікат Knit&Sew");
         giftCertificate.setDescription("Електронний сертифікат на будь-які покупки в нашому онлайн-магазині.");
-        giftCertificate.setPrice(new BigDecimal("500.00"));
+        giftCertificate.setBasePrice(new BigDecimal("500.00"));
         giftCertificate.setStockQuantity(999); // Безлімітний цифровий товар
         giftCertificate.setAvailable(true);
         giftCertificate.setBrand("Knit&Sew");
@@ -134,7 +134,7 @@ public class ProductTest {
         pattern.setArticle("PAT-0045");
         pattern.setName("Схема в'язання кардигана 'Oversize'");
         pattern.setDescription("Детальний PDF-опис з відео-підказками для в'язання базового кардигана.");
-        pattern.setPrice(new BigDecimal("120.00"));
+        pattern.setBasePrice(new BigDecimal("120.00"));
         pattern.setStockQuantity(999);
         pattern.setAvailable(true);
         pattern.setBrand("Knitting_Design");
@@ -151,7 +151,7 @@ public class ProductTest {
         sewingThread.setArticle("THR-4002");
         sewingThread.setName("Нитка швейна Gutermann 100м");
         sewingThread.setDescription("Універсальна високоякісна поліестерова нитка для будь-яких тканин.");
-        sewingThread.setPrice(new BigDecimal("65.00"));
+        sewingThread.setBasePrice(new BigDecimal("65.00"));
         sewingThread.setStockQuantity(45);
         sewingThread.setAvailable(true);
         sewingThread.setBrand("Gutermann");
@@ -169,7 +169,7 @@ public class ProductTest {
         tool.setArticle("TOL-8840");
         tool.setName("Спиці кругові ChiaoGoo Red Lace");
         tool.setDescription("Професійні металеві кругові спиці з червоною лескою без пам'яті.");
-        tool.setPrice(new BigDecimal("520.00"));
+        tool.setBasePrice(new BigDecimal("520.00"));
         tool.setStockQuantity(8);
         tool.setAvailable(true);
         tool.setBrand("ChiaoGoo");
@@ -185,7 +185,7 @@ public class ProductTest {
         yarn.setArticle("YRN-5512");
         yarn.setName("Пряжа Alize LanaGold Classic");
         yarn.setDescription("Класична напіввовняна пряжа для затишних зимових речей.");
-        yarn.setPrice(new BigDecimal("115.00"));
+        yarn.setBasePrice(new BigDecimal("115.00"));
         yarn.setStockQuantity(30);
         yarn.setAvailable(true);
         yarn.setBrand("Alize");
@@ -203,7 +203,6 @@ public class ProductTest {
         kit.setId(random.nextLong(100));
         kit.setName("Набір для в'язання 'Зимовий Шарф'");
         kit.setArticle("KIT-100");
-        kit.setPrice(BigDecimal.ZERO);
         kit.setDescription("Повний комплект матеріалів та інструкцій для створення стильного теплого шарфа.");
         kit.setDiscount(new BigDecimal("0.10"));
 
@@ -254,16 +253,16 @@ public class ProductTest {
     @Test
     @DisplayName("Тестування роботи з ціною товару")
     void testPriceCount() {
-        // It is enough to use only one object since methods to get price and discount
+        // It is enough to use only one object since methods to get basePrice and discount
         // is implemented in super class Product
 
         BigDecimal basePrice = new BigDecimal("85.00");
         BigDecimal discount = new BigDecimal("0.01");
 
-        assertEquals(basePrice, accessory.getPrice());
+        assertEquals(basePrice, accessory.getBasePrice());
 
         // 1) When discount is not set and getTotalPrice() is called which uses discount
-        // it should return the same result as getPrice()
+        // it should return the same result as getBasePrice()
         assertEquals(basePrice, accessory.getTotalPrice());
 
         accessory.setDiscount(new BigDecimal("0.01"));

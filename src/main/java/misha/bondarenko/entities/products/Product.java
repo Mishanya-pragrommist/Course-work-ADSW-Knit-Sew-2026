@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 public class Product extends Item {
 
     @Column(nullable = false)
+    protected BigDecimal basePrice;    // Ціна без знижки
+
+    @Column(nullable = false)
     protected String supplier; // Постачальник
 
     @Column(nullable = false)
@@ -29,7 +32,7 @@ public class Product extends Item {
                    String article,
                    String name,
                    String description,
-                   BigDecimal price,
+                   BigDecimal basePrice,
                    BigDecimal discount,
                    MeasureUnit unit,
                    int stockQuantity,
@@ -39,8 +42,9 @@ public class Product extends Item {
                    String supplier,
                    String brand,
                    String country) {
-        super(id, article, name, description, price, discount, unit,
+        super(id, article, name, description, discount, unit,
                 stockQuantity, isAvailable, imageUrl, parent);
+        this.basePrice = basePrice;
         this.supplier = supplier;
         this.brand = brand;
         this.country = country;
@@ -49,9 +53,9 @@ public class Product extends Item {
     @Override
     public BigDecimal getTotalPrice() {
         if (discount == null || discount.compareTo(BigDecimal.ZERO) == 0) {
-            return price;
+            return basePrice;
         }
-        return price.subtract(price.multiply(discount));
+        return basePrice.subtract(basePrice.multiply(discount));
     }
 
     protected String getBaseDetails() {
@@ -94,7 +98,7 @@ public class Product extends Item {
                 && brand.equals(product.brand)
                 && stockQuantity == product.stockQuantity
                 && unit.equals(product.unit)
-                && price.equals(product.price)
+                && basePrice.equals(product.basePrice)
                 && isAvailable == product.isAvailable;
     }
 }

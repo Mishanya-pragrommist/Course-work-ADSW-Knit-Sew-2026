@@ -1,7 +1,6 @@
 package misha.bondarenko.entities.products;
 
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Pattern;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,6 @@ import lombok.Setter;
 import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 /**
  * Книги та друковані журнали з рукоділля

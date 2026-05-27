@@ -31,9 +31,6 @@ public abstract class Item {
     protected String description;  // Опис товару
 
     @Column(nullable = false)
-    protected BigDecimal price;    // Ціна без знижки
-
-    @Column(nullable = false)
     protected BigDecimal discount; // Знижка
 
     @Enumerated(EnumType.STRING)
@@ -70,13 +67,8 @@ public abstract class Item {
     /** Отримання ціни елемента з урахуванням знижки */
     public abstract BigDecimal getTotalPrice();
 
-    /**
-     * Якщо знижка не встановлена вручну
-     * @return
-     */
-    public BigDecimal getDiscount() {
-        return discount == null ? BigDecimal.ZERO : discount;
-    }
+    /** Отримання ціни елемента без знижки */
+    public abstract BigDecimal getBasePrice();
 
     /**
      * Для відображення повної назви товару, категорії або набору.<br>

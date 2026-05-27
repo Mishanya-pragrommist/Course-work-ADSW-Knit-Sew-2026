@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import misha.bondarenko.entities.products.Product;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,4 +25,7 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("id ASC")
     private List<Product> products;
+
+    @Column(nullable = false)
+    private LocalDateTime creationDate;
 }

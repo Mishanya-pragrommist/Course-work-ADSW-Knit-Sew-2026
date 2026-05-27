@@ -124,7 +124,7 @@
 					</div>
 					<!-- Якщо знижки немає -->
 					<div th:if="${product.discount == null || product.discount <= 0}">
-						<span class="text-4xl font-bold text-gray-900" th:text="${product.oldPrice()} + ' грн'">100.00 грн (приклад)</span>
+						<span class="text-4xl font-bold text-gray-900" th:text="${#numbers.formatDecimal(product.oldPrice(), 1, 2)} + ' грн'">100.00 грн (приклад)</span>
 					</div>
 				</div>
 

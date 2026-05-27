@@ -362,50 +362,50 @@ public class DbFiller {
 
             // --- 11. Набори (Kit) - 9 шт ---
             Kit kit1 = new Kit(null, "ART-1301", "Набір 'Старт в'язання'",
-                    "Все необхідне для першого шарфа", BigDecimal.ZERO, BigDecimal.ZERO,
+                    "Все необхідне для першого шарфа", BigDecimal.ZERO,
                     MeasureUnit.UNIT, 20, true, "/images/kit1.jpg");
             kit1.add(yarn1, 3); // 3 мотки пряжі
             kit1.add(tool2, 1); // 1 пара спиць
 
 
             Kit kit2 = new Kit(null, "ART-1302", "Набір 'Швачка-початківець'", "Базові нитки для шиття",
-                    BigDecimal.ZERO, new BigDecimal("0.10"), MeasureUnit.UNIT, 15, true, "/images/kit2.jpg");
+                    new BigDecimal("0.10"), MeasureUnit.UNIT, 15, true, "/images/kit2.jpg");
             kit2.add(thr1, 2); // 2 котушки чорних ниток
             kit2.add(thr2, 2); // 2 котушки білих ниток
 
             Kit kit3 = new Kit(null, "ART-1303", "Набір 'Велика іграшка'", "Пряжа та наповнювач для амігурумі",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 10, true, "/images/kit3.jpg");
+                    BigDecimal.ZERO, MeasureUnit.UNIT, 10, true, "/images/kit3.jpg");
             kit3.add(yarn3, 5); // 5 мотків пряжі
             kit3.add(tool1, 1); // гачок
 
             Kit kit4 = new Kit(null, "ART-1304", "Набір 'Теплі шкарпетки'", "Пряжа та спиці для теплих шкарпеток",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 25, true, "/images/kit4.jpg");
+                    BigDecimal.ZERO, MeasureUnit.UNIT, 25, true, "/images/kit4.jpg");
             kit4.add(yarn9, 2);
             kit4.add(tool6, 1);
 
             Kit kit5 = new Kit(null, "ART-1305", "Набір 'Шапка і снуд'", "Все для зимового комплекту",
-                    BigDecimal.ZERO, new BigDecimal("0.15"), MeasureUnit.UNIT, 0, false, "/images/kit5.jpg");
+                    new BigDecimal("0.15"), MeasureUnit.UNIT, 0, false, "/images/kit5.jpg");
             kit5.add(yarn1, 4);
             kit5.add(tool5, 1);
 
             Kit kit6 = new Kit(null, "ART-1306", "Набір 'Літня сумка'", "Бавовняна пряжа та гачок",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 12, true, "/images/kit6.jpg");
+                    BigDecimal.ZERO, MeasureUnit.UNIT, 12, true, "/images/kit6.jpg");
             kit6.add(yarn3, 4);
             kit6.add(yarn4, 2);
             kit6.add(tool1, 1);
 
             Kit kit7 = new Kit(null, "ART-1307", "Набір 'Плюшевий ведмедик'", "Плюшева пряжа та наповнювач",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/kit7.jpg");
+                    BigDecimal.ZERO, MeasureUnit.UNIT, 0, false, "/images/kit7.jpg");
             kit7.add(yarn5, 3);
             kit7.add(yarn6, 1);
 
             Kit kit8 = new Kit(null, "ART-1308", "Набір 'Ексклюзивна вишивка'", "Золоті та срібні нитки",
-                    BigDecimal.ZERO, BigDecimal.ZERO, MeasureUnit.UNIT, 18, true, "/images/kit8.jpg");
+                    BigDecimal.ZERO, MeasureUnit.UNIT, 18, true, "/images/kit8.jpg");
             kit8.add(thr3, 2);
             kit8.add(thr4, 2);
 
             Kit kit9 = new Kit(null, "ART-1309", "Набір 'Светр реглан'", "Мохер та спиці для невагомого светра",
-                    BigDecimal.ZERO, new BigDecimal("0.20"), MeasureUnit.UNIT, 8, true, "/images/kit9.jpg");
+                    new BigDecimal("0.20"), MeasureUnit.UNIT, 8, true, "/images/kit9.jpg");
             kit9.add(yarn7, 5);
             kit9.add(tool2, 1);
 

@@ -22,18 +22,18 @@ public class ProductSpecifications {
 
             // ========= Порівняння цін з урахуванням знижок =========
 //            Кращий варіант, але при ньому фінальна ціна наборів (kit)
-//            рахується як null, бо в цьому класі ціна рахується динамічно і поле price не змінюється
+//            рахується як null, бо в цьому класі ціна рахується динамічно і поле basePrice не змінюється
 //
 //            Отже, для розв'язання проблеми створено
 //            stream-фільтрацію в сервісі. Так воно працюватиме
 //            і не вимагатиме надто складної логіки, хоча швидкодія дещо впаде
 
-//            Expression<BigDecimal> price = root.get("price");
+//            Expression<BigDecimal> basePrice = root.get("basePrice");
 //            Root<Product> productRoot = cb.treat(root, Product.class);
 //            Expression<BigDecimal> discount = productRoot.get("discount");
 //            Expression<BigDecimal> safeDiscount = cb.coalesce(discount, BigDecimal.ZERO);
-//            Expression<BigDecimal> discountAmount = cb.prod(price, safeDiscount);
-//            Expression<BigDecimal> finalPrice = cb.diff(price, discountAmount);
+//            Expression<BigDecimal> discountAmount = cb.prod(basePrice, safeDiscount);
+//            Expression<BigDecimal> finalPrice = cb.diff(basePrice, discountAmount);
 //
 //            if (filter.minPrice() != null) {
 //                predicates.add(cb.greaterThanOrEqualTo(finalPrice, filter.minPrice()));

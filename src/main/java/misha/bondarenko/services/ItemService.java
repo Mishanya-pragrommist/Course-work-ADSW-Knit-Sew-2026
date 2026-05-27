@@ -62,7 +62,7 @@ public class ItemService {
                 item.getArticle(),
                 item.renderName(),
                 item.getDescription(),
-                item.getPrice(), // Ціна без знижок
+                item.getBasePrice(), // Ціна без знижок
                 item.getDiscount(),
                 item.getTotalPrice(),
                 item.isAvailable(),

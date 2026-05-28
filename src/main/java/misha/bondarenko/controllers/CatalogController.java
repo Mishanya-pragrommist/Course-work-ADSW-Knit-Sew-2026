@@ -84,7 +84,8 @@ public class CatalogController {
 
 
     @GetMapping("/product/{id}")
-    public String getProductPage(@PathVariable Long id, Model model) {
+    public String getProductPage(@PathVariable Long id,
+                                 Model model) {
         Map<String, String> productAttributes = itemService.getProductDetailsMap(id);
         ProductCardDto productCardDto = itemService.getProductCardById(id);
 
@@ -94,7 +95,7 @@ public class CatalogController {
 
         model.addAttribute("productAttributes", productAttributes);
         model.addAttribute("product", productCardDto);
-        System.out.println("Discount of product " + productCardDto.article() + " = " + productCardDto.discount());
+        model.addAttribute("catalogName");
         return "product";
     }
 }

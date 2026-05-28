@@ -71,7 +71,7 @@
 			<li>
 				<div class="flex items-center">
 					<i data-lucide="chevron-right" class="w-4 h-4 mx-1"></i>
-					<a href="#" class="hover:text-brand-600 transition-colors">Каталог</a>
+					<a class="hover:text-brand-600 transition-colors">Каталог</a>
 				</div>
 			</li>
 			<li aria-current="page">
@@ -206,19 +206,19 @@
 				<!-- Інфо: Зображення + Назва -->
 				<div class="flex items-center gap-4 flex-1">
 					<div class="w-16 h-16 rounded-lg bg-white border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
-						<img th:if="${comp.getItem().imageUrl != null}"
-							 th:src="@{${comp.getItem().imageUrl}}"
-							 th:alt="${comp.getItem().name}" class="w-full h-full object-cover">
-						<i th:unless="${comp.getItem().imageUrl != null}" data-lucide="image" class="w-6 h-6 text-gray-300"></i>
+						<img th:if="${comp.product.imageUrl != null}"
+							 th:src="@{${comp.product.imageUrl}}"
+							 th:alt="${comp.product.name}" class="w-full h-full object-cover">
+						<i th:unless="${comp.product.imageUrl != null}" data-lucide="image" class="w-6 h-6 text-gray-300"></i>
 					</div>
 					<div>
 						<a class="font-semibold text-gray-800 line-clamp-2 sm:line-clamp-1"
-							th:text="${comp.getItem().name}"
-							th:href="@{/product/{id} (id=${comp.getItem().id}) }">
+							th:text="${comp.product.name}"
+							th:href="@{/product/{id} (id=${comp.product.id}) }">
 							Назва компонента набору
 						</a>
 						<p class="text-sm text-gray-500 mt-1">
-							<span th:text="${#numbers.formatDecimal(comp.getItem().totalPrice, 1, 2)} + ' грн / шт.'">50 грн / шт.</span>
+							<span th:text="${#numbers.formatDecimal(comp.product.newPrice, 1, 2)} + ' грн / шт.'">50 грн / шт.</span>
 						</p>
 					</div>
 				</div>
@@ -236,7 +236,7 @@
 
 						<!-- Додано th:name щоб передавати на сервер змінені кількості -->
 						<input type="number"
-							   th:name="'component_' + ${comp.id}"
+							   th:name="'component_' + ${comp.product.id}"
 							   th:value="${comp.quantity}"
 							   min="1"
 							   class="flex-1 w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium text-sm p-0"

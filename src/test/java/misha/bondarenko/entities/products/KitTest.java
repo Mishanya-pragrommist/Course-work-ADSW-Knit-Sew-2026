@@ -1,126 +1,83 @@
-//package misha.bondarenko.entities.products;
-//
-//import misha.bondarenko.enums.MeasureUnit;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.DisplayName;
-//import org.junit.jupiter.api.Test;
-//
-//import java.math.BigDecimal;
-//
-//import static org.assertj.core.api.Assertions.assertThat;
-//
-//public class KitTest {
-//
-//    private Fabric linenFabric;
-//    private Fabric cottonFabric;
-//    private Equipment sewingMachine;
-//
-//    private Kit winterKit;
-//    private Kit ecoKit;
-//
-//    @BeforeEach
-//    void setUp() {
-//        linenFabric = new Fabric(
-//                true,
-//                "FAB-001",
-//                "ART-101",
-//                "Постачальник Текстиль",
-//                "BrandTextile",
-//                100,
-//                MeasureUnit.METER,
-//                new BigDecimal("200.00"),
-//                new BigDecimal("0.10"), // 180.00 загалом
-//                "Льон",
-//                "100% льон",
-//                150,
-//                210,
-//                "Натуральний"
-//        );
-//        linenFabric.setName("Натуральний льон");
-//
-//        cottonFabric = new Fabric(
-//                true,
-//                "FAB-002",
-//                "ART-102",
-//                "Постачальник Текстиль",
-//                "BrandTextile",
-//                150,
-//                MeasureUnit.METER,
-//                new BigDecimal("100.00"),
-//                BigDecimal.ZERO, // Без знижки
-//                "Бавовна",
-//                "100% бавовна",
-//                140,
-//                150,
-//                "Синій"
-//        );
-//        cottonFabric.setName("Синя бавовна");
-//
-//        sewingMachine = new Equipment(
-//                true,
-//                "EQ-001",
-//                "ART-201",
-//                "Singer Corp",
-//                "Singer",
-//                10,
-//                MeasureUnit.UNIT,
-//                new BigDecimal("5000.00"),
-//                new BigDecimal("0.05"), // 5% знижки (фінальна ціна: 4750.00)
-//                "Швейна машина",
-//                24,
-//                85,
-//                "40x30x20 см",
-//                7.5,
-//                23
-//        );
-//        sewingMachine.setName("Швейна машина Singer 23");
-//
-//        // Ініціалізація наборів
-//        winterKit = new Kit(1L, "Зимовий набір", "Набір для зимового одягу", "https://www.li",
-//                new BigDecimal("0.10")); // Знижка набору 10%
-//        winterKit.setName("Зимовий набір");
-//
-//        ecoKit = new Kit(2L, "Еко набір", "https://www.livemaster.ru/topic/2214489-vidy-pryazhi-plyusy-i-minusy-razlinoj-pryazhi",
-//                "Екологічно чисті матеріали", BigDecimal.ZERO); // Без знижки
-//        ecoKit.setName("Еко набір");
-//
-//        // Наповнення наборів компонентами
-//        winterKit.add(linenFabric, sewingMachine); // Компоненти: 180.00 + 4750.00 = 4930.00
-//        ecoKit.add(cottonFabric, 2); // 2 штуки по 100 за кожну, загалом: 200.00
-//    }
-//
-//    @Test
-//    @DisplayName("Розрахунок ціни набору без знижки")
-//    void testKitPriceWithoutDiscount() {
-//        System.out.println(ecoKit.render(""));
-//        assertThat(ecoKit.getTotalPrice()).isEqualByComparingTo(new BigDecimal("200.00"));
-//    }
-//
-//    @Test
-//    @DisplayName("Розрахунок ціни набору з урахуванням знижки набору та знижок товарів")
-//    void testKitPriceWithDiscount() {
-//        // Сума компонентів: 180.00 (льон зі знижкою) + 4750.00 (машина зі знижкою) = 4930.00
-//        // Знижка набору: 10%
-//        // Очікувана ціна: 4930.00 - (4930.00 * 0.10) = 4437.00
-//        BigDecimal expectedPrice = new BigDecimal("4437.00");
-//        assertThat(winterKit.getTotalPrice()).isEqualByComparingTo(expectedPrice);
-//    }
-//
-//    @Test
-//    @DisplayName("Додавання та видалення компонентів із набору")
-//    void testKitAddAndRemoveComponents() {
-//        winterKit.add(sewingMachine);
-//        System.out.println("Kit before removing\n" + winterKit.render(""));
-//        // Початкова кількість компонентів у winterKit = 2 (якщо рахувати тільки класи),
-//        // та 3, якщо рахувати к-сть товарів;
-//        // початкова ціна з урахуванням знижок: 8712.00
-//        assertThat(winterKit.getChild(0)).isEqualTo(linenFabric);
-//        assertThat(winterKit.getChild(1)).isEqualTo(sewingMachine);
-//
-//        // Видаляємо льон, залишаються лише машини (ціна 8550.00 зі знижками)
-//        winterKit.remove(linenFabric);
-//        System.out.println("Kit after removing:\n" + winterKit.render(""));
-//
-//        assertThat(winterKit.getTotalPrice()).isEqualByComparingTo(new BigDecimal("8550.00"));
-//    }
-//}
+package misha.bondarenko.entities.products;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class KitTest {
+
+    private Yarn testYarn;
+    private Tool testTool;
+
+    @BeforeEach
+    void setUp() {
+        testYarn = TestKitFactory.createYarnBordova(); // Ціна: 120.00
+        testTool = TestKitFactory.createToolCircularSpokes(); // Ціна: 250.00
+    }
+
+    @Test
+    @DisplayName("1. Додавання/видалення товарів та динамічне оновлення вартості набору")
+    void testAddRemoveComponentsAndPriceUpdates() {
+        // Створюємо порожній набір без системної знижки
+        Kit dynamicKit = new Kit(null, "ART-DYNAMIC", "Динамічний набір",
+                "Опис", BigDecimal.ZERO, true, "/images/plugs/kit.png");
+
+        // Спочатку ціна має бути 0
+        assertEquals(0, BigDecimal.ZERO.compareTo(dynamicKit.getTotalPrice()),
+                "Порожній набір має коштувати 0");
+
+        // 1. Додаємо 2 мотки пряжі (2 * 120.00 = 240.00)
+        dynamicKit.add(testYarn, 2);
+        BigDecimal expectedPriceAfterAdd = new BigDecimal("240.00");
+        assertEquals(0, expectedPriceAfterAdd.compareTo(dynamicKit.getTotalPrice()),
+                "Ціна набору має оновитися після додавання пряжі");
+
+        // 2. Додаємо 1 інструмент (+ 250.00 = 490.00)
+        dynamicKit.add(testTool, 1);
+        BigDecimal expectedPriceAfterSecondAdd = new BigDecimal("490.00");
+        assertEquals(0, expectedPriceAfterSecondAdd.compareTo(dynamicKit.getTotalPrice()),
+                "Ціна набору має враховувати доданий інструмент");
+        dynamicKit.remove(testTool);
+
+        assertEquals(0, expectedPriceAfterAdd.compareTo(dynamicKit.getTotalPrice()),
+                "Ціна набору має зменшитися після видалення інструменту");
+    }
+
+    @Test
+    @DisplayName("2. Розрахунок вартості набору без знижки")
+    void testKitPriceCalculationWithoutDiscount() {
+        // Набір 'Старт в'язання' не має знижки
+        // Склад: 3 мотки пряжі (3 * 120.00 = 360.00) + 1 спиці (250.00) = 610.00
+        Kit kitWithoutDiscount = TestKitFactory.createKitStartKnitting();
+
+        BigDecimal expectedTotal = new BigDecimal("610.00");
+        assertEquals(0, expectedTotal.compareTo(kitWithoutDiscount.getTotalPrice()),
+                "Розрахунок вартості набору без знижки виконано некоректно");
+    }
+
+    @Test
+    @DisplayName("3. Розрахунок вартості набору з урахуванням системної знижки")
+    void testKitPriceCalculationWithDiscount() {
+        // Набір 'Швачка-початківець' має знижку 10% (0.10)
+        // Склад: 2 котушки чорні (2 * 75.00) + 2 білі (2 * 75.00) = 300.00 грн
+        // Знижка: 300.00 * 0.10 = 30.00 грн
+        // Ціна зі знижкою: 300.00 - 30.00 = 270.00 грн
+        Kit kitWithDiscount = TestKitFactory.createKitBeginnerSeamstress();
+
+        BigDecimal expectedTotalWithDiscount = new BigDecimal("270.00");
+        assertEquals(0, expectedTotalWithDiscount.compareTo(kitWithDiscount.getTotalPrice()),
+                "Алгоритм застосування знижки на набір працює неправильно");
+    }
+
+    @Test
+    @DisplayName("4. Тест методу renderName для генерації повної торгової назви")
+    void testRenderNameFormatting() {
+        Kit kit = TestKitFactory.createKitStartKnitting();
+        String expectedName = "Набір 'Старт в'язання' (2 комп.), ART-1301";
+        assertEquals(expectedName, kit.renderName());
+    }
+}

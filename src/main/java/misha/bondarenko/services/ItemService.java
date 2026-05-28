@@ -1,6 +1,7 @@
 package misha.bondarenko.services;
 
 import misha.bondarenko.entities.products.*;
+import misha.bondarenko.records.dto.KitComponentCardDto;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.repositories.CatalogRepository;
@@ -67,7 +68,9 @@ public class ItemService {
                 item.getTotalPrice(), // Ціна зі знижкою
                 item.isAvailable(), // Залежить від прапорця доступності та від к-сті залишків на складі
                 item.getImageUrl(),
-                item instanceof Kit kit ? kit.getComponents() : null
+                item instanceof Kit kit ? kit.getComponents().stream()
+                        .map(elem -> new KitComponentCardDto(this.adaptProductToCardDto(elem.getItem()), elem.getQuantity()))
+                        .toList() : null
         );
     }
 

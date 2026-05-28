@@ -17,7 +17,7 @@ public class DbFiller {
     @Bean
     @Transactional
     public CommandLineRunner fillDatabase(CatalogService catalogService, ItemService itemService) {
-        boolean shouldWork = true;
+        boolean shouldWork = false;
         if (!shouldWork) return args -> {};
 
         return args -> {

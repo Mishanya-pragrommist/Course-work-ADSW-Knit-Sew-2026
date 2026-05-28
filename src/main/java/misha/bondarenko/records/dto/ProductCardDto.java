@@ -15,6 +15,6 @@ public record ProductCardDto(
         BigDecimal newPrice,
         boolean isAvailable,
         String imageUrl,
-        List<KitComponent> kitComponents // Якщо даний товар є набором
+        List<KitComponentCardDto> kitComponents // Якщо даний товар є набором
 )
 { }

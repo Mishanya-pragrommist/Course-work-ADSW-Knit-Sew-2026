@@ -222,40 +222,6 @@
 						</p>
 					</div>
 				</div>
-
-				<!-- Панель керування компонентом -->
-				<div class="flex items-center gap-3 self-end sm:self-auto">
-					<!-- Вибір кількості (міні-версія) -->
-					<div class="flex items-center border border-gray-300 rounded-lg overflow-hidden h-10 w-28 bg-white">
-						<button type="button"
-								onclick="
-								let input = this.nextElementSibling;
-								if(parseInt(input.value) > 1)
-									input.value = parseInt(input.value) - 1;"
-								class="w-8 h-full bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors flex items-center justify-center">-</button>
-
-						<!-- Додано th:name щоб передавати на сервер змінені кількості -->
-						<input type="number"
-							   th:name="'component_' + ${comp.product.id}"
-							   th:value="${comp.quantity}"
-							   min="1"
-							   class="flex-1 w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium text-sm p-0"
-							   readonly>
-
-						<button type="button"
-								onclick="
-								let input = this.previousElementSibling;
-								input.value = parseInt(input.value) + 1;
-								"
-								class="w-8 h-full bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors flex items-center justify-center">+</button>
-					</div>
-
-					<!-- Кнопка видалення компонента -->
-					<button type="button" class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" title="Видалити з набору">
-						<i data-lucide="trash-2" class="w-5 h-5"></i>
-					</button>
-				</div>
-
 			</div>
 		</div>
 	</div>

@@ -1,10 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+	<meta charset="UTF-8">
+	<title>Кошик товарів | Knit&Sew</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						brand: {
+							50: '#fdf2f8',
+							100: '#fce7f3',
+							500: '#ec6648',
+							600: '#dd571d',
+							700: '#be1818',
+						}
+					}
+				}
+			}
+		}
+	</script>
 </head>
-<body>
-$END$
+<body class="bg-gray-50 text-gray-900 flex flex-col min-h-screen">
+
+<header class="bg-white shadow-sm sticky top-0 z-50">
+	<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+		<a th:href="@{/}" class="text-2xl font-bold text-brand-600 flex items-center gap-2">
+			<i data-lucide="scissors" class="w-6 h-6"></i>
+			Knit&Sew
+		</a>
+
+		<!-- Навігація по сайту -->
+		<nav class="hidden md:flex space-x-8">
+			<a th:href="@{/}" class="text-gray-600 hover:text-brand-600 transition-colors">Головна</a>
+			<a th:href="@{/about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
+			<a th:href="@{/contacts}" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
+			<a th:href="@{/payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
+		</nav>
+
+		<div class="flex items-center space-x-5">
+			<button class="text-gray-500 hover:text-brand-600 transition-colors">
+				<i data-lucide="user" class="w-6 h-6"></i>
+			</button>
+			<a th:href="@{/cart}" class="text-gray-500 hover:text-brand-600 transition-colors relative">
+				<i data-lucide="shopping-cart" class="w-6 h-6"></i>
+				<!-- Індикатор кількості товарів поруч з кошиком -->
+				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
+					  id="cart-badge"
+					  th:text="0"></span>
+			</a>
+		</div>
+	</div>
+</header>
+
+<main class="flex-grow container mx-auto px-4 py-8">
+	<h1 class="text-3xl font-bold mb-8 flex items-center gap-3">
+		<i data-lucide="shopping-bag" class="text-orange-600"></i>
+		Ваш кошик
+	</h1>
+
+	<div id="empty-cart-view" class="hidden text-center py-16 bg-white rounded-lg shadow-sm border border-gray-100">
+		<div class="w-20 h-20 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
+			<i data-lucide="shopping-cart" class="w-10 h-10"></i>
+		</div>
+		<h2 class="text-xl font-semibold mb-2">У вашому кошику ще нічого немає</h2>
+		<p class="text-gray-500 mb-6">Перейдіть до каталогу, щоб обрати найкращу пряжу чи набори для рукоділля.</p>
+		<!--TODO: implement returning back to catalog where user came from-->
+		<a th:href="@{/catalog}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded shadow transition-colors">
+			<i data-lucide="arrow-left" class="w-4 h-4"></i> Повернутися до каталогу
+		</a>
+	</div>
+
+	<div id="main-cart-view" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+		<div class="lg:grid-cols-3 lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+			<div class="p-6 border-b border-gray-100 bg-gray-50">
+				<div class="grid grid-cols-12 text-sm font-bold text-gray-500 uppercase tracking-wider">
+					<div class="col-span-6">Товар</div>
+					<div class="col-span-2 text-center">Ціна</div>
+					<div class="col-span-2 text-center">Кількість</div>
+					<div class="col-span-2 text-right">Сума</div>
+				</div>
+			</div>
+
+			<div id="cart-items-container" class="divide-y divide-gray-100">
+			</div>
+		</div>
+
+		<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 h-fit sticky top-6">
+			<h3 class="text-lg font-bold border-b border-gray-100 pb-4 mb-4">Підсумок замовлення</h3>
+
+			<div class="space-y-3 text-sm mb-6">
+				<div class="flex justify-between text-gray-600">
+					<span>Всього товарів:</span>
+					<span id="summary-items-count" class="font-medium text-gray-900">0 шт.</span>
+				</div>
+				<div class="flex justify-between text-gray-600">
+					<span>Доставка:</span>
+					<span class="text-green-600 font-medium">За тарифами перевізника</span>
+				</div>
+				<hr class="border-gray-100 my-2">
+				<div class="flex justify-between text-base font-bold text-gray-900">
+					<span>До сплати:</span>
+					<span id="summary-total-price" class="text-xl text-orange-600">0.00 грн</span>
+				</div>
+			</div>
+
+			<button type="button" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
+				<span>Оформити замовлення</span>
+				<i data-lucide="chevron-right" class="w-5 h-5"></i>
+			</button>
+		</div>
+
+	</div>
+</main>
+
+<footer class="bg-gray-800 text-gray-400 py-6 mt-12 border-t border-gray-700">
+	<div class="container mx-auto px-4 text-center text-sm">
+		&copy; 2026 Knit&Sew. Курсовий проєкт з АППЗ. Всі права захищено.
+	</div>
+</footer>
+
+<script th:src="@{/js/cart-badge.js}"></script> <script>
+	document.addEventListener('DOMContentLoaded', () => {
+		lucide.createIcons();
+		renderCartPage();
+	});
+
+	function renderCartPage() {
+		// Зчитуємо масив кошика з LocalStorage
+		const cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
+
+		const emptyView = document.getElementById('empty-cart-view');
+		const mainView = document.getElementById('main-cart-view');
+		const itemsContainer = document.getElementById('cart-items-container');
+
+		// Перевіряємо чи порожній кошик, і показуємо потрібний блок
+		if (cart.length === 0) {
+			emptyView.classList.remove('hidden');
+			mainView.classList.add('hidden');
+			return;
+		}
+
+		emptyView.classList.add('hidden');
+		mainView.classList.remove('hidden');
+		itemsContainer.innerHTML = ''; // Очищуємо контейнер перед рендером
+
+		let totalOrderPrice = 0;
+		let totalOrderItems = 0;
+
+		// 3. Перебираємо кожен товар і створюємо для нього HTML-рядок
+		cart.forEach(item => {
+			const itemSubtotal = item.price * item.quantity;
+			totalOrderPrice += itemSubtotal;
+			totalOrderItems += item.quantity;
+
+			const itemRow = document.createElement('div');
+			itemRow.className = "grid grid-cols-12 items-center p-6 text-sm hover:bg-gray-50/50 transition-colors";
+			itemRow.innerHTML = `
+                    <div class="col-span-6 flex items-center gap-3">
+                        <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded flex items-center justify-center font-bold flex-shrink-0">
+                            ${item.name.charAt(0)}
+                        </div>
+                        <div>
+                            <span class="font-semibold text-gray-900 block">${item.name}</span>
+                        </div>
+                    </div>
+                    <div class="col-span-2 text-center font-medium text-gray-600">
+                        ${item.price.toFixed(2)} грн
+                    </div>
+                    <div class="col-span-2 text-center text-gray-800 font-semibold bg-gray-100 py-1 px-2 rounded w-fit mx-auto">
+                        ${item.quantity} шт
+                    </div>
+                    <div class="col-span-2 text-right font-bold text-gray-900">
+                        ${itemSubtotal.toFixed(2)} грн
+                    </div>
+                `;
+			itemsContainer.appendChild(itemRow);
+		});
+
+		// 4. Оновлюємо праву панель підсумків замовлення
+		document.getElementById('summary-items-count').innerText = `${totalOrderItems} шт.`;
+		document.getElementById('summary-total-price').innerText = `${totalOrderPrice.toFixed(2)} грн`;
+	}
+</script>
 </body>
 </html>

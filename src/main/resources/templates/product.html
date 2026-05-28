@@ -48,13 +48,13 @@
 			<button class="text-gray-500 hover:text-brand-600 transition-colors">
 				<i data-lucide="user" class="w-6 h-6"></i>
 			</button>
-			<button class="text-gray-500 hover:text-brand-600 transition-colors relative">
+			<a th:href="@{/cart}" class="text-gray-500 hover:text-brand-600 transition-colors relative">
 				<i data-lucide="shopping-cart" class="w-6 h-6"></i>
 				<!-- Індикатор кількості товарів поруч з кошиком -->
 				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
 					  id="cart-badge"
 					  th:text="0"></span>
-			</button>
+			</a>
 		</div>
 	</div>
 </header>

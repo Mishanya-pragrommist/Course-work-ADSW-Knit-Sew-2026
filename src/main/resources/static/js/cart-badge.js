@@ -12,7 +12,9 @@ function updateCartBadge() {
     const totalItemsCount = cart.reduce((total, item) => total + item.quantity, 0);
 
     // Оновлюємо текст всередині індикатора
-    badge.innerText = totalItemsCount.toString();
+    if (badge.innerText !== totalItemsCount.toString()) {
+        badge.innerText = totalItemsCount.toString();
+    }
 
     // Якщо кошик порожній, ховаємо індикатор
     if (totalItemsCount === 0) {

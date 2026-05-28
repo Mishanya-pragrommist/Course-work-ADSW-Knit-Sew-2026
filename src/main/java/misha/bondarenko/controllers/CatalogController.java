@@ -25,7 +25,7 @@ public class CatalogController {
         this.itemService = itemService;
     }
 
-    @GetMapping("/catalog/{catId}/")
+    @GetMapping("/catalog/{catId}")
     public String showProducts(@PathVariable String catId,
                                ProductFilter productFilter,
                                Model model) {
@@ -83,11 +83,13 @@ public class CatalogController {
     }
 
 
-    @GetMapping("/product/{id}")
-    public String getProductPage(@PathVariable Long id,
+    @GetMapping("/catalog/{catId}/product/{id}")
+    public String getProductPage(@PathVariable Long catId,
+                                 @PathVariable Long id,
                                  Model model) {
         Map<String, String> productAttributes = itemService.getProductDetailsMap(id);
         ProductCardDto productCardDto = itemService.getProductCardById(id);
+        CatalogCardDto catalogCardDto = catalogService.getCatalogCardById(catId);
 
         if (productAttributes == null) {
             return "redirect:/"; // Або перенаправлення на сторінку 404
@@ -95,7 +97,7 @@ public class CatalogController {
 
         model.addAttribute("productAttributes", productAttributes);
         model.addAttribute("product", productCardDto);
-        model.addAttribute("catalogName");
+        model.addAttribute("catalog", catalogCardDto);
         return "product";
     }
 }

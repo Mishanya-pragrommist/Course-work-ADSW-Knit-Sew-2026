@@ -308,7 +308,7 @@
 				<!-- Картка товару -->
 				<div th:each="product : ${products}" class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
 
-					<a th:href="@{/product/{id}(id=${product.id})}" class="aspect-[4/3] bg-gray-100 relative overflow-hidden flex items-center justify-center block">
+					<a th:href="@{/catalog/{catId}/product/{id}(catId=${catalog.id}, id=${product.id})}" class="aspect-[4/3] bg-gray-100 relative overflow-hidden flex items-center justify-center block">
 								<span th:if="${product.discount != null && product.discount > 0}"
 									 class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10"
 									 th:text="'-' + ${#numbers.formatDecimal(product.discount * 100, 1, 2)} + '%'">-10%</span>

@@ -70,7 +70,9 @@
 			<li>
 				<div class="flex items-center">
 					<i data-lucide="chevron-right" class="w-4 h-4 mx-1"></i>
-					<a class="hover:text-brand-600 transition-colors">Каталог</a>
+					<a th:href="@{/catalog/{id} (id=${catalog.id})}"
+					   th:text="${catalog.name}"
+						class="hover:text-brand-600 transition-colors">Каталог</a>
 				</div>
 			</li>
 			<li aria-current="page">

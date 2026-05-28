@@ -23,10 +23,6 @@ public class ProductSpecifications {
             // ========= Порівняння цін з урахуванням знижок =========
 //            Кращий варіант, але при ньому фінальна ціна наборів (kit)
 //            рахується як null, бо в цьому класі ціна рахується динамічно і поле basePrice не змінюється
-//
-//            Отже, для розв'язання проблеми створено
-//            stream-фільтрацію в сервісі. Так воно працюватиме
-//            і не вимагатиме надто складної логіки, хоча швидкодія дещо впаде
 
 //            Expression<BigDecimal> basePrice = root.get("basePrice");
 //            Root<Product> productRoot = cb.treat(root, Product.class);
@@ -41,6 +37,10 @@ public class ProductSpecifications {
 //            if (filter.maxPrice() != null) {
 //                predicates.add(cb.lessThanOrEqualTo(finalPrice, filter.maxPrice()));
 //            }
+
+//            Отже, для розв'язання проблеми створено
+//            stream-фільтрацію в сервісі. Так воно працюватиме
+//            і не вимагатиме надто складної логіки, хоча швидкодія дещо впаде
 
             if (filter.article() != null) {
                 predicates.add(cb.like(root.get("article"), "%" + filter.article().toLowerCase() + "%"));
@@ -151,9 +151,6 @@ public class ProductSpecifications {
             }
 
             // Обладнання
-            if (filter.minOperationsCount() != null) {
-                predicates.add(cb.greaterThanOrEqualTo(cb.treat(root, Equipment.class).get("operationsCount"), filter.minOperationsCount()));
-            }
             if (filter.maxWeightKg() != null) {
                 predicates.add(cb.lessThanOrEqualTo(cb.treat(root, Equipment.class).get("weightKg"), filter.maxWeightKg()));
             }

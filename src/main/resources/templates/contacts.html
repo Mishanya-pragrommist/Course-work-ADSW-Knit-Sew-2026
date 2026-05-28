@@ -50,7 +50,7 @@
 			<button class="text-gray-500 hover:text-brand-600 transition-colors relative">
 				<i data-lucide="shopping-cart" class="w-6 h-6"></i>
 				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
-					  th:text="0"></span>
+					  id="cart-badge">0</span>
 			</button>
 		</div>
 	</div>
@@ -201,5 +201,6 @@
 <script>
 	lucide.createIcons();
 </script>
+<script th:src="@{/js/cart-badge.js}"></script>
 </body>
 </html>

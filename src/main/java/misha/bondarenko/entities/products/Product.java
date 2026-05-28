@@ -28,6 +28,11 @@ public class Product extends Item {
     @Column(nullable = false)
     protected String country;  // Країна виробник
 
+    @Enumerated(EnumType.STRING)
+    protected MeasureUnit unit;    // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
+
+    protected int stockQuantity;   // Кількість на складі
+
     public Product(Long id,
                    String article,
                    String name,
@@ -42,12 +47,29 @@ public class Product extends Item {
                    String supplier,
                    String brand,
                    String country) {
-        super(id, article, name, description, discount, unit,
-                stockQuantity, isAvailable, imageUrl, parent);
+        super(id, article, name, description, discount, isAvailable, imageUrl, parent);
+        this.unit = unit;
+        this.stockQuantity = stockQuantity;
         this.basePrice = basePrice;
         this.supplier = supplier;
         this.brand = brand;
         this.country = country;
+    }
+
+    /**
+     * Якщо кількість на складі нульова, автоматично встановити доступність як false.
+     * При цьому не слід змінювати доступність товару при зміненні кількості на складі,
+     * оскільки товар може бути, наприклад, виключеним з продажу
+     * @param stockQuantity кількість на складі
+     */
+    public void setStockQuantity(int stockQuantity) {
+        this.stockQuantity = stockQuantity;
+        if (stockQuantity == 0) {
+            this.isAvailable = false;
+        }
+        if (stockQuantity < 0) {
+            throw new IllegalArgumentException("Stock quantity cannot be negative");
+        }
     }
 
     @Override
@@ -92,10 +114,10 @@ public class Product extends Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return  name.equals(product.name)
+        return  name.equalsIgnoreCase(product.name)
                 && discount.equals(product.discount)
-                && supplier.equals(product.supplier)
-                && brand.equals(product.brand)
+                && supplier.equalsIgnoreCase(product.supplier)
+                && brand.equalsIgnoreCase(product.brand)
                 && stockQuantity == product.stockQuantity
                 && unit.equals(product.unit)
                 && basePrice.equals(product.basePrice)

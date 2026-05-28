@@ -32,9 +32,9 @@ public class SewingThread extends Product {
     @Column(nullable = false)
     private String color; // Колір або номер кольору за палітрою
 
-    public SewingThread(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+    public SewingThread(Long id, String article, String name, String description, BigDecimal price, BigDecimal discount,
                         MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                        String article, String supplier, String brand, String country,
+                        String supplier, String brand, String country,
                         String threadType, String composition, String thickness, int lengthInMeters, String color) {
         super(id, name, article, description, price, discount, unit,
                 stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);

@@ -15,36 +15,11 @@ import java.util.stream.Collectors;
 public class CatalogService {
 
     private CatalogRepository catalogRepository;
-    private KitRepository kitRepository;
 
     @Autowired
-    public void setCatalogRepository(CatalogRepository catalogRepository,
-                                     KitRepository kitRepository) {
+    public void setCatalogRepository(CatalogRepository catalogRepository) {
         this.catalogRepository = catalogRepository;
-        this.kitRepository = kitRepository;
     }
-
-    // Maybe this method won't be useful
-    public List<Catalog> getAllCatalogs() {
-        return catalogRepository.findAll();
-    }
-
-
-    public Catalog getCatalogById(Long id) {
-        return catalogRepository.findById(id).orElse(null);
-    }
-
-    @Transactional
-    public String getCatalogsString() {
-        List<Catalog> list = catalogRepository.findAll();
-        return list.stream().map(
-                catalog -> catalog.render("") + "\n").collect(Collectors.joining());
-    }
-
-    public List<Catalog> getCatalogsByName(String name) {
-        return catalogRepository.findByName(name);
-    }
-
 
     // --- Render methods ---
 
@@ -76,7 +51,7 @@ public class CatalogService {
     }
 
 
-    // --- Saving methods ---
+    // ====== Saving methods ======
 
     public void save(Catalog catalog) {
         catalogRepository.save(catalog);
@@ -90,7 +65,6 @@ public class CatalogService {
     // ====== Deleting methods ======
 
     public void deleteAll() {
-        //kitRepository.deleteAll();
         catalogRepository.deleteAll();
     }
 }

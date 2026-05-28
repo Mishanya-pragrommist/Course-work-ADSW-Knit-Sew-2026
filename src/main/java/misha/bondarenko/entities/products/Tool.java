@@ -26,11 +26,11 @@ public class Tool extends Product {
     @Column(nullable = false)
     private String size;     // Розмір або діаметр (наприклад: "3.5 мм", "80 см")
 
-    public Tool(Long id, String name, String description, BigDecimal price, BigDecimal discount,
+    public Tool(Long id, String article, String name, String description, BigDecimal price, BigDecimal discount,
                 MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
-                String article, String supplier, String brand, String country,
+                String supplier, String brand, String country,
                 String toolType, String material, String size) {
-        super(id, name, article, description, price, discount, unit,
+        super(id, article, name, description, price, discount, unit,
                 stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
         this.toolType = toolType;
         this.material = material;

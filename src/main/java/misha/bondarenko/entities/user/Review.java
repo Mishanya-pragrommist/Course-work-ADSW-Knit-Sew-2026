@@ -1,12 +1,12 @@
 package misha.bondarenko.entities.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 /**
  * Відгук на товар, набор, магазин в цілому тощо
@@ -24,6 +24,17 @@ public class Review {
 
     private String text;
 
+//    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+//    private User user;
 
+    /**
+     * Час створення відгуку
+     */
+    @Column(nullable = false)
+    private LocalDateTime creationDate;
 
+    @Size(min = 1, max = 5)
+    @Column(nullable = false)
+    private int rating;
 }

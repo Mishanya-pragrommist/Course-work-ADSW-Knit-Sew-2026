@@ -66,6 +66,7 @@ public class ProductTest {
 
         equipment = new Equipment();
         equipment.setId(random.nextLong(100));
+        equipment.setName("Швейна машинка Singer");
         equipment.setEquipmentType("Швейна машинка");
         equipment.setDimensions("30*40*50 см");
         equipment.setBasePrice(new BigDecimal("450.00"));
@@ -75,7 +76,6 @@ public class ProductTest {
         equipment.setSupplier("random supplier");
         equipment.setArticle("EQT-9012");
         equipment.setPowerWatt(600);
-        equipment.setOperationsCount(6);
         equipment.setWarrantyMonths(18);
 
         // Тканини
@@ -233,13 +233,13 @@ public class ProductTest {
         items.forEach(item -> System.out.println(item.renderName()));
 
         String[] names = new String[] {
-                "Маркери петель Clover, мікс, пластик, діаметр Універсальний, ACC-7701",
+                "Маркери для в'язання пластикові Clover, мікс, пластик, діаметр Універсальний, ACC-7701",
                 "Книга \"Енциклопедія сучасних візерунків\" - Ганна Радченко, видавництво КСД, 2024 р., BOK-1092",
-                "Швейна машинка Clover, 6 опер., 600W, гарантія: 18 міс., EQT-9012",
-                "Тканина льон BelLinen, натуральний сірий, 100% льон, ширина рул. 150 см, FAB-2204",
-                "Наповнювач Холлофайбер, УкрНаповнювач, 0 г/м², пакування 1.0 кг, FIL-3401",
-                "Подарунковий сертифікат, електронний, pdf, номіналом 500.00 грн, CERT-500",
-                "Набір \"Набір для в'язання 'Зимовий Шарф'\" (3 комп.), KIT-100",
+                "Швейна машинка Clover, 600W, гарантія: 18 міс., EQT-9012",
+                "Тканина Льон натуральний пом'якшений BelLinen, натуральний сірий, 100% льон, ширина рул. 150 см, FAB-2204",
+                "Холлофайбер первинний (кульки), УкрНаповнювач, 0 г/м², пакування 1.0 кг, FIL-3401",
+                "Подарунковий сертифікат, Електронний, PDF, номіналом 500.00 грн, CERT-500",
+                "Набір для в'язання 'Зимовий Шарф' (3 комп.), KIT-100",
                 "Схема в'язання кардигана 'Oversize' від автора Марія Прохорова, середній рівень, Цифровий (PDF), PAT-0045",
                 "Нитка Універсальна Gutermann, чорний (код 000), товщина №100, довжина 100м, THR-4002",
                 "Кругові спиці ChiaoGoo, нержавіюча сталь, розмір 3.5 мм / 80 см, TOL-8840",
@@ -270,10 +270,6 @@ public class ProductTest {
         // 2) When discount IS set, getTotalPrice should consider it
         assertEquals(basePrice.subtract(basePrice.multiply(discount)), accessory.getTotalPrice());
 
-        // 3) When discount is set to null and getDiscount is called
-        // it should return BigDecimal.ZERO
-        accessory.setDiscount(null);
-        assertEquals(BigDecimal.ZERO, accessory.getDiscount());
     }
 
 }

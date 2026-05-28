@@ -52,6 +52,7 @@
 				<i data-lucide="shopping-cart" class="w-6 h-6"></i>
 				<!-- Індикатор кількості товарів поруч з кошиком -->
 				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
+					  id="cart-badge"
 					  th:text="0"></span>
 			</button>
 		</div>
@@ -131,29 +132,21 @@
 				<!-- Додавання в кошик -->
 				<form class="flex gap-4 mb-8" th:if="${product.isAvailable}">
 					<!-- Вибір кількості -->
-					<div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-32">
-						<button type="button"
-								onclick="
-								let input = this.nextElementSibling;
-								if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;"
-								class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">-</button>
-
-						<input type="number"
-							   name="quantity"
-							   value="1"
-							   min="1"
-							   class="w-full text-center border-none focus:ring-0 appearance-none bg-white font-medium"
-							   readonly>
-
-						<button type="button"
-								onclick="let input = this.previousElementSibling;
-								input.value = parseInt(input.value) + 1;"
-								class="px-3 py-3 bg-gray-50 hover:bg-gray-100 text-gray-600 transition-colors">+</button>
+					<div class="flex items-center border border-gray-300 rounded">
+						<button type="button" onclick="changeQuantity(-1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">-</button>
+						<input type="number" id="cart-quantity" name="quantity" value="1" min="1" readonly
+							   class="w-12 text-center bg-transparent border-none focus:outline-none">
+						<button type="button" onclick="changeQuantity(1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">+</button>
 					</div>
 
-					<button type="submit" class="flex-1 bg-brand-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-brand-700 transition-colors flex justify-center items-center gap-2 shadow-sm hover:shadow-md">
-						<i data-lucide="shopping-cart" class="w-5 h-5"></i>
-						До кошика
+					<button type="button"
+							th:data-id="${product.id}"
+							th:data-name="${product.name}"
+							th:data-price="${product.newPrice}"
+							onclick="handleAddToCart(this)"
+							class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2">
+						<i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
+						<span>Додати в кошик</span>
 					</button>
 				</form>
 
@@ -323,5 +316,6 @@
 <script>
 	lucide.createIcons();
 </script>
+<script th:src="@{/js/cart-badge.js}"></script>
 </body>
 </html>

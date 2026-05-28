@@ -64,20 +64,23 @@ public class ItemService {
                 item.getDescription(),
                 item.getBasePrice(), // Ціна без знижок
                 item.getDiscount(),
-                item.getTotalPrice(),
-                item.isAvailable(),
+                item.getTotalPrice(), // Ціна зі знижкою
+                item.isAvailable(), // Залежить від прапорця доступності та від к-сті залишків на складі
                 item.getImageUrl(),
                 item instanceof Kit kit ? kit.getComponents() : null
         );
     }
 
-    public List<ProductCardDto> getProductCardsDtoFiltered(Long catalogId, ProductFilter filter, String sortBy, String direction) {
+    public List<ProductCardDto> getProductCardsDtoFiltered(Long catalogId,
+                                                           ProductFilter filter,
+                                                           String sortBy,
+                                                           String direction) {
         Catalog catalog = catalogRepository.findById(catalogId)
                 .orElseThrow(() -> new RuntimeException("Catalog not found"));
 
         Sort sort = Sort.unsorted();
         if (sortBy != null && !sortBy.isBlank()) {
-            sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+            sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         }
 
         // Об'єднуємо динамічний фільтр користувача з прив'язкою до конкретного батьківського каталогу
@@ -149,7 +152,6 @@ public class ItemService {
         else if (item instanceof Equipment eq) {
             attributes.put("Тип обладнання", eq.getEquipmentType());
             attributes.put("Потужність", eq.getPowerWatt() + " Вт");
-            attributes.put("Кількість операцій", String.valueOf(eq.getOperationsCount()));
             attributes.put("Габарити", eq.getDimensions());
             attributes.put("Вага", eq.getWeightKg() + " кг");
             attributes.put("Гарантія", eq.getWarrantyMonths() + " міс.");

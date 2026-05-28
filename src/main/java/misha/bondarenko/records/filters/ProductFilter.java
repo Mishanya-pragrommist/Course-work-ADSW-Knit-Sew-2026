@@ -35,8 +35,7 @@ public record ProductFilter(
         String dyeLot,           // Yarn
 
         // Обладнання (Equipment)
-        Integer minOperationsCount,
-        Integer maxWeightKg,
+        Integer maxWeightKg,     // Integer, бо може бути null
 
         // Література та Схеми (Book / Pattern)
         String author,           // Для Book, Pattern

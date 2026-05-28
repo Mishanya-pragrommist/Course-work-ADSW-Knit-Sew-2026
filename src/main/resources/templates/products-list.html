@@ -49,7 +49,8 @@
 			</button>
 			<button class="text-gray-500 hover:text-brand-600 transition-colors relative">
 				<i data-lucide="shopping-cart" class="w-6 h-6"></i>
-				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">0</span>
+				<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
+					id="cart-badge">0</span>
 			</button>
 		</div>
 	</div>
@@ -223,10 +224,6 @@
 						</div>
 
 						<!-- Специфічне для Обладнання -->
-						<div th:if="${categoryName == 'Обладнання'}">
-							<label for="minOperCount" class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Мін. кількість операцій</label>
-							<input id="minOperCount" type="number" th:field="*{minOperationsCount}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
-						</div>
 						<div th:if="${categoryName == 'Обладнання'}">
 							<label for="maxWeightKg" class="block text-xs text-gray-500 mb-1 uppercase tracking-wider font-semibold">Макс. вага (кг)</label>
 							<input id="maxWeightKg" type="number" step="0.1" th:field="*{maxWeightKg}" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-brand-100 focus:border-brand-500 transition-colors">
@@ -423,5 +420,6 @@
 </footer>
 
 <script>lucide.createIcons();</script>
+<script th:src="@{/js/cart-badge.js}"></script>
 </body>
 </html>

@@ -33,13 +33,10 @@ public class Equipment extends Product {
     private String dimensions; // Габарити ("40x30x20 см")
     private double weightKg; // Вага в кілограмах
 
-    @Size(min = 1)
-    private int operationsCount; // Кількість швейних/в'язальних операцій
-
     public Equipment(Long id, String name, String description, BigDecimal price, BigDecimal discount,
                      MeasureUnit unit, int stockQuantity, boolean isAvailable, String imageUrl,
                      String article, String supplier, String brand, String country, String equipmentType,
-                     int warrantyMonths, int powerWatt, String dimensions, double weightKg, int operationsCount) {
+                     int warrantyMonths, int powerWatt, String dimensions, double weightKg) {
 
         super(id, article, name, description, price, discount, unit,
                 stockQuantity, isAvailable, imageUrl, null, supplier, brand, country);
@@ -48,7 +45,6 @@ public class Equipment extends Product {
         this.powerWatt = powerWatt;
         this.dimensions = dimensions;
         this.weightKg = weightKg;
-        this.operationsCount = operationsCount;
     }
 
     @Override
@@ -59,12 +55,12 @@ public class Equipment extends Product {
                 ", потужність=" + powerWatt + " Вт" +
                 ", габарити=" + dimensions +
                 ", вага=" + weightKg + " кг" +
-                ", кількість операцій=" + operationsCount + "]";
+                "]";
     }
 
     @Override
     public String renderName() {
-        return equipmentType + " " + brand + ", " + operationsCount + " опер., "
+        return equipmentType + " " + brand + ", "
                 + powerWatt + "W, гарантія: " + warrantyMonths + " міс., " + article;
     }
 

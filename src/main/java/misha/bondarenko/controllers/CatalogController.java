@@ -33,7 +33,7 @@ public class CatalogController {
             CatalogCardDto catalogCard = catalogService.getCatalogCardById(id);
             List<ProductCardDto> productCardDtoList = itemService.getProductCardsDto(id);
 
-            // Передаємо маркер категорії (назву або спеціальний enum/код)
+            // Передаємо назву категорії
             model.addAttribute("categoryName", catalogCard.name());
 
             // Порожній фільтр для збору даних з форми
@@ -43,7 +43,7 @@ public class CatalogController {
 
             // Для дебагу
             System.out.println("Size of list: " + productCardDtoList.size());
-            System.out.println(productCardDtoList.get(0).article());
+            System.out.println(productCardDtoList.get(0).name());
             return "products-list";
         }
         catch (Exception e) {

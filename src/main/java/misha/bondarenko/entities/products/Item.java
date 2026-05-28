@@ -33,10 +33,6 @@ public abstract class Item {
     @Column(nullable = false)
     protected BigDecimal discount; // Знижка
 
-    @Enumerated(EnumType.STRING)
-    protected MeasureUnit unit;    // Одиниця вимірювання кількості на складі (поштучно, в метрах, в грамах тощо)
-
-    protected int stockQuantity;   // Кількість на складі
     protected boolean isAvailable; // Наявність товару
 
     protected String imageUrl;     // Посилання на зображення
@@ -47,22 +43,6 @@ public abstract class Item {
     protected Catalog parent;
 
     // ============ Базові методи товару ============
-
-    /**
-     * Якщо кількість на складі нульова, автоматично встановити доступність як false.
-     * При цьому не слід змінювати доступність товару при зміненні кількості на складі,
-     * оскільки товар може бути, наприклад, виключеним з продажу
-     * @param stockQuantity кількість на складі
-     */
-    public void setStockQuantity(int stockQuantity) {
-        this.stockQuantity = stockQuantity;
-        if (stockQuantity == 0) {
-            this.isAvailable = false;
-        }
-        if (stockQuantity < 0) {
-            throw new IllegalArgumentException("Stock quantity cannot be negative");
-        }
-    }
 
     /** Отримання ціни елемента з урахуванням знижки */
     public abstract BigDecimal getTotalPrice();

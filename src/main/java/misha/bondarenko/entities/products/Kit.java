@@ -24,11 +24,9 @@ public class Kit extends Item {
     private List<KitComponent> components = new ArrayList<>();
 
     public Kit(Long id, String article, String name, String description,
-               BigDecimal discount, MeasureUnit unit,
-               int stockQuantity, boolean isAvailable, String imageUrl) {
+               BigDecimal discount, boolean isAvailable, String imageUrl) {
 
-        super(id, article, name, description, discount, unit,
-                stockQuantity, isAvailable, imageUrl, null);
+        super(id, article, name, description, discount, isAvailable, imageUrl, null);
     }
 
     /**
@@ -55,7 +53,7 @@ public class Kit extends Item {
 
     @Override
     public String renderName() {
-        return "Набір \"" + name + "\" (" + components.size() + " комп.), " + article;
+        return name + " (" + components.size() + " комп.), " + article;
     }
 
     /**

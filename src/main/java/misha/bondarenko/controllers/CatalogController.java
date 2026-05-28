@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class CatalogController {
@@ -79,5 +80,21 @@ public class CatalogController {
 
         // Повертаємо назву шаблону (наприклад, сторінку каталогу з оновленими товарами)
         return "products-list";
+    }
+
+
+    @GetMapping("/product/{id}")
+    public String getProductPage(@PathVariable Long id, Model model) {
+        Map<String, String> productAttributes = itemService.getProductDetailsMap(id);
+        ProductCardDto productCardDto = itemService.getProductCardById(id);
+
+        if (productAttributes == null) {
+            return "redirect:/"; // Або перенаправлення на сторінку 404
+        }
+
+        model.addAttribute("productAttributes", productAttributes);
+        model.addAttribute("product", productCardDto);
+        System.out.println("Discount of product " + productCardDto.article() + " = " + productCardDto.discount());
+        return "product";
     }
 }

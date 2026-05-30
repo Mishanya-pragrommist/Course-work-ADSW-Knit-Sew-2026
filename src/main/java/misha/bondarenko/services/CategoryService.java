@@ -1,24 +1,23 @@
 package misha.bondarenko.services;
 
-import misha.bondarenko.entities.products.Catalog;
-import misha.bondarenko.records.dto.CatalogCardDto;
-import misha.bondarenko.repositories.CatalogRepository;
-import misha.bondarenko.repositories.KitRepository;
+import misha.bondarenko.entities.products.Category;
+import misha.bondarenko.records.dto.CategoryCardDto;
+import misha.bondarenko.repositories.CategoryRepository;
+import misha.bondarenko.services.interfaces.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class CatalogService {
+public class CategoryService implements ICategoryService {
 
-    private CatalogRepository catalogRepository;
+    private CategoryRepository categoryRepository;
 
     @Autowired
-    public void setCatalogRepository(CatalogRepository catalogRepository) {
-        this.catalogRepository = catalogRepository;
+    public void setCategoryRepository(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
     }
 
     // --- Render methods ---
@@ -27,9 +26,9 @@ public class CatalogService {
      * Отримати список об'єктів для подальшого представлення каталогів у вигляді карток
      * @return запис з назвою, описом каталогу та посиланням на зображення
      */
-    public List<CatalogCardDto> getCatalogCards() {
-        return catalogRepository.findAll().stream()
-                .map(catalog -> new CatalogCardDto(
+    public List<CategoryCardDto> getCategoryCards() {
+        return categoryRepository.findAll().stream()
+                .map(catalog -> new CategoryCardDto(
                         catalog.getId(),
                         catalog.getName(), // Або renderName(), якщо логіка формування назви складна
                         catalog.getImageUrl() // Припускаємо, що це поле вже додано до БД
@@ -42,29 +41,29 @@ public class CatalogService {
      * @param id номер каталогу для представлення
      * @return запис з назвою, описом каталогом та посиланням на зображення
      */
-    public CatalogCardDto getCatalogCardById(Long id) {
-        Catalog catalog = catalogRepository.findById(id).orElse(null);
-        if (catalog == null) {
-            throw new RuntimeException("Catalog not found");
+    public CategoryCardDto getCategoryCardById(Long id) {
+        Category category = categoryRepository.findById(id).orElse(null);
+        if (category == null) {
+            throw new RuntimeException("Category not found");
         }
-        return new CatalogCardDto(catalog.getId(), catalog.getName(), catalog.getImageUrl());
+        return new CategoryCardDto(category.getId(), category.getName(), category.getImageUrl());
     }
 
 
     // ====== Saving methods ======
 
-    public void save(Catalog catalog) {
-        catalogRepository.save(catalog);
+    public void save(Category category) {
+        categoryRepository.save(category);
     }
 
-    public void saveAll(Catalog... catalogs) {
-        catalogRepository.saveAll(List.of(catalogs));
+    public void saveAll(Category... categories) {
+        categoryRepository.saveAll(List.of(categories));
     }
 
 
     // ====== Deleting methods ======
 
     public void deleteAll() {
-        catalogRepository.deleteAll();
+        categoryRepository.deleteAll();
     }
 }

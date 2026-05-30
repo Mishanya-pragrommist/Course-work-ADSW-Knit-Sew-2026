@@ -1,10 +1,12 @@
 package misha.bondarenko.controllers;
 
-import misha.bondarenko.records.dto.CatalogCardDto;
+import misha.bondarenko.records.dto.CategoryCardDto;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
-import misha.bondarenko.services.CatalogService;
+import misha.bondarenko.services.CategoryService;
 import misha.bondarenko.services.ItemService;
+import misha.bondarenko.services.interfaces.ICategoryService;
+import misha.bondarenko.services.interfaces.IItemService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,28 +20,26 @@ import java.util.Map;
 @Controller
 public class CatalogController {
 
-    private final CatalogService catalogService;
-    private final ItemService itemService;
-    public CatalogController(CatalogService catalogService, ItemService itemService) {
-        this.catalogService = catalogService;
+    private final ICategoryService categoryService;
+    private final IItemService itemService;
+
+    public CatalogController(ICategoryService categoryService, IItemService itemService) {
+        this.categoryService = categoryService;
         this.itemService = itemService;
     }
 
-    @GetMapping("/catalog/{catId}")
+    @GetMapping("/category/{catId}")
     public String showProducts(@PathVariable String catId,
                                ProductFilter productFilter,
                                Model model) {
         try {
             Long id = Long.parseLong(catId);
-            CatalogCardDto catalogCard = catalogService.getCatalogCardById(id);
+            CategoryCardDto categoryCard = categoryService.getCategoryCardById(id);
             List<ProductCardDto> productCardDtoList = itemService.getProductCardsDto(id);
-
-            // Передаємо назву категорії
-            model.addAttribute("categoryName", catalogCard.name());
 
             // Порожній фільтр для збору даних з форми
             model.addAttribute("filter", productFilter);
-            model.addAttribute("catalog", catalogCard);
+            model.addAttribute("category", categoryCard);
             model.addAttribute("products", productCardDtoList);
 
             // Для дебагу
@@ -52,7 +52,7 @@ public class CatalogController {
         }
     }
 
-    @GetMapping("/catalog/{id}/filter")
+    @GetMapping("/category/{id}/filter")
     public String filterProducts(@PathVariable String id,
                                  @ModelAttribute ProductFilter filter,
                                  @RequestParam(required = false, defaultValue = "name") String sortBy,
@@ -60,7 +60,7 @@ public class CatalogController {
                                  Model model) {
 
         Long catalogId = Long.valueOf(id);
-        CatalogCardDto catalogCardById = catalogService.getCatalogCardById(catalogId);
+        CategoryCardDto categoryCardById = categoryService.getCategoryCardById(catalogId);
         System.out.println(filter.minPrice() + " " +  filter.maxPrice() + " " + filter.accessoryType());
         // Отримуємо відфільтровані та відсортовані картки
         List<ProductCardDto> products = itemService.getProductCardsDtoFiltered(
@@ -70,9 +70,9 @@ public class CatalogController {
         // Передаємо результати та поточний стан фільтрів на фронтенд
         model.addAttribute("products", products);
         model.addAttribute("filter", filter);
-        model.addAttribute("catalog", catalogCardById);
+        model.addAttribute("category", categoryCardById);
 
-        model.addAttribute("categoryName", catalogCardById.name());
+        model.addAttribute("categoryName", categoryCardById.name());
 
         // Передаємо параметри сортування для підсвічування активних кнопок у UI
         model.addAttribute("sortBy", sortBy);
@@ -83,13 +83,13 @@ public class CatalogController {
     }
 
 
-    @GetMapping("/catalog/{catId}/product/{id}")
+    @GetMapping("/category/{catId}/product/{id}")
     public String getProductPage(@PathVariable Long catId,
                                  @PathVariable Long id,
                                  Model model) {
         Map<String, String> productAttributes = itemService.getProductDetailsMap(id);
         ProductCardDto productCardDto = itemService.getProductCardById(id);
-        CatalogCardDto catalogCardDto = catalogService.getCatalogCardById(catId);
+        CategoryCardDto categoryCardDto = categoryService.getCategoryCardById(catId);
 
         if (productAttributes == null) {
             return "redirect:/"; // Або перенаправлення на сторінку 404
@@ -97,7 +97,7 @@ public class CatalogController {
 
         model.addAttribute("productAttributes", productAttributes);
         model.addAttribute("product", productCardDto);
-        model.addAttribute("catalog", catalogCardDto);
+        model.addAttribute("category", categoryCardDto);
         return "product";
     }
 }

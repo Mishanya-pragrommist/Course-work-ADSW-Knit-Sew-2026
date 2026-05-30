@@ -4,9 +4,10 @@ import misha.bondarenko.entities.products.*;
 import misha.bondarenko.records.dto.KitComponentCardDto;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
-import misha.bondarenko.repositories.CatalogRepository;
+import misha.bondarenko.repositories.CategoryRepository;
 import misha.bondarenko.repositories.ItemRepository;
 import misha.bondarenko.repositories.KitRepository;
+import misha.bondarenko.services.interfaces.IItemService;
 import misha.bondarenko.specifications.ProductSpecifications;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,20 +19,20 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ItemService {
-    private final CatalogRepository catalogRepository;
+public class ItemService implements IItemService {
+    private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
     private final KitRepository kitRepository;
 
     public ItemService(ItemRepository itemRepository,
-                       CatalogRepository catalogRepository,
+                       CategoryRepository categoryRepository,
                        KitRepository kitRepository) {
         this.itemRepository = itemRepository;
-        this.catalogRepository = catalogRepository;
+        this.categoryRepository = categoryRepository;
         this.kitRepository = kitRepository;
     }
 
-    public Item findItemById(long id) {
+    public Item findItemById(Long id) {
         return itemRepository.findById(id).orElse(null);
     }
 
@@ -40,15 +41,15 @@ public class ItemService {
     }
 
     public List<ProductCardDto> getProductCardsDto(Long catalogId) {
-        Catalog catalog = catalogRepository.findById(catalogId)
-                .orElseThrow(() -> new RuntimeException("Catalog not found"));
+        Category category = categoryRepository.findById(catalogId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        return catalog.getChildren().stream()
+        return category.getChildren().stream()
                 .map(this::adaptProductToCardDto)
                 .toList();
     }
 
-    public ProductCardDto getProductCardById(long id) {
+    public ProductCardDto getProductCardById(Long id) {
         return adaptProductToCardDto(findItemById(id));
     }
 
@@ -78,18 +79,19 @@ public class ItemService {
                                                            ProductFilter filter,
                                                            String sortBy,
                                                            String direction) {
-        Catalog catalog = catalogRepository.findById(catalogId)
-                .orElseThrow(() -> new RuntimeException("Catalog not found"));
+        Category category = categoryRepository.findById(catalogId)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
 
         Sort sort = Sort.unsorted();
         if (sortBy != null && !sortBy.isBlank()) {
-            sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+            sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
+                    : Sort.by(sortBy).ascending();
         }
 
         // Об'єднуємо динамічний фільтр користувача з прив'язкою до конкретного батьківського каталогу
         Specification<Item> spec = Specification
                 .where(ProductSpecifications.withFilter(filter))
-                .and((root, query, cb) -> cb.equal(root.get("parent"), catalog));
+                .and((root, query, cb) -> cb.equal(root.get("parent"), category));
 
         return itemRepository.findAll(spec, sort)
                 .stream()
@@ -112,7 +114,7 @@ public class ItemService {
      * @param id номер товару для пошуку
      * @return словник з парами "атрибут-значення"
      */
-    public Map<String, String> getProductDetailsMap(long id) {
+    public Map<String, String> getProductDetailsMap(Long id) {
         Item item = findItemById(id);
         return extractAttributes(item);
     }

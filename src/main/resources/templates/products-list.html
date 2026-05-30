@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Назва вкладки динамічно підставляється з моделі -->
-	<title th:text="${catalog.name} + ' - Knit&Sew'">Категорія - Knit&Sew</title>
+	<title th:text="${category.name} + ' - Knit&Sew'">Категорія - Knit&Sew</title>
 	<script src="https://cdn.tailwindcss.com"></script>
 	<script src="https://unpkg.com/lucide@latest"></script>
 	<script>
@@ -63,9 +63,9 @@
 		<nav class="text-sm text-gray-500 mb-2 flex items-center gap-2">
 			<a th:href="@{/}" class="hover:text-brand-600 transition-colors">Головна</a>
 			<i data-lucide="chevron-right" class="w-4 h-4"></i>
-			<span class="text-gray-800 font-medium" th:text="${catalog.name}">Назва категорії</span>
+			<span class="text-gray-800 font-medium" th:text="${category.name}">Назва категорії</span>
 		</nav>
-		<h1 class="text-3xl font-bold text-gray-900" th:text="${catalog.name}">Назва категорії</h1>
+		<h1 class="text-3xl font-bold text-gray-900" th:text="${category.name}">Назва категорії</h1>
 	</div>
 </div>
 
@@ -75,7 +75,8 @@
 
 		<!-- Бічна панель: фільтри -->
 		<aside class="w-full lg:w-1/4">
-			<form th:action="@{/catalog/{id}/filter(id=${catalog.id})}" th:object="${filter}" method="get" class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
+			<form th:action="@{/category/{id}/filter(id=${category.id})}" th:object="${filter}" method="get"
+				  class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8">
 
 				<div class="flex items-center justify-between mb-6">
 					<h3 class="font-bold text-xl text-gray-900 flex items-center gap-2">
@@ -273,7 +274,7 @@
 							Застосувати
 						</button>
 
-						<a th:href="@{/catalog/{id}/(id=${catalog.id})}"
+						<a th:href="@{/category/{id}/(id=${category.id})}"
 						   class="w-full flex justify-center items-center gap-2 text-center bg-white text-gray-600 font-semibold py-3 rounded-lg border border-gray-300 hover:bg-gray-50 hover:text-gray-900 transition-all">
 							<i data-lucide="x" class="w-4 h-4"></i>
 							Скинути фільтри
@@ -308,7 +309,7 @@
 				<!-- Картка товару -->
 				<div th:each="product : ${products}" class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 group flex flex-col h-full">
 
-					<a th:href="@{/catalog/{catId}/product/{id}(catId=${catalog.id}, id=${product.id})}" class="aspect-[4/3] bg-gray-100 relative overflow-hidden flex items-center justify-center block">
+					<a th:href="@{/category/{catId}/product/{id}(catId=${category.id}, id=${product.id})}" class="aspect-[4/3] bg-gray-100 relative overflow-hidden flex items-center justify-center block">
 								<span th:if="${product.discount != null && product.discount > 0}"
 									 class="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-md z-10"
 									 th:text="'-' + ${#numbers.formatDecimal(product.discount * 100, 1, 2)} + '%'">-10%</span>
@@ -421,6 +422,6 @@
 </footer>
 
 <script>lucide.createIcons();</script>
-<script th:src="@{/js/cart-badge.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
 </body>
 </html>

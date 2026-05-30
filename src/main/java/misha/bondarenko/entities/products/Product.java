@@ -43,7 +43,7 @@ public class Product extends Item {
                    int stockQuantity,
                    boolean isAvailable,
                    String imageUrl,
-                   Catalog parent,
+                   Category parent,
                    String supplier,
                    String brand,
                    String country) {

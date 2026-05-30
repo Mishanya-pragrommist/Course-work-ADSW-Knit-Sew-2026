@@ -4,11 +4,13 @@ package misha.bondarenko.enums;
  * Статус замовлення
  */
 public enum OrderStatus {
+    // «Нове», «Зібрано», «Доставляється», «Доставлено», «Оплачено», «Скасовано»
     NEW("Нове"),
-    PROCESSING("В обробці"),
+    PACKED("Зібрано"),
+    DELIVERING("Доставляється"),
     DELIVERED("Доставлено"),
-    FINISHED("Завершено"),
-    RETURNED("Повернуто");
+    PAID("Оплачено"),
+    CANCELED("Скасовано");
 
     final String title;
     OrderStatus(String title) {

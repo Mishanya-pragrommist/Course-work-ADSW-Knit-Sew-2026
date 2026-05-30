@@ -2,7 +2,7 @@ package misha.bondarenko;
 
 import misha.bondarenko.entities.products.*;
 import misha.bondarenko.enums.MeasureUnit;
-import misha.bondarenko.services.CatalogService;
+import misha.bondarenko.services.CategoryService;
 import misha.bondarenko.services.ItemService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -16,28 +16,28 @@ public class DbFiller {
 
     @Bean
     @Transactional
-    public CommandLineRunner fillDatabase(CatalogService catalogService, ItemService itemService) {
-        boolean shouldWork = false;
+    public CommandLineRunner fillDatabase(CategoryService categoryService, ItemService itemService) {
+        boolean shouldWork = true;
         if (!shouldWork) return args -> {};
 
         return args -> {
             // Clear database
             itemService.deleteAll();
-            catalogService.deleteAll();
+            categoryService.deleteAll();
 
             // Fill with catalogs and products
 
-            Catalog accessories = new Catalog(null, "Аксесуари", "Гудзики, бісер, прикраси для виробів тощо", "/images/buttons.jpg");
-            Catalog books = new Catalog(null, "Книги з рукоділля", "Книги про в'язання іграшок, шиття одежі, прикрашання виробів тощо", "/images/book.jpg");
-            Catalog equipment = new Catalog(null, "Обладнання", "Швейні машинки та ще щось", "/images/sewing_machine.jpg");
-            Catalog fabrics = new Catalog(null, "Тканина", "Різна тканина для різних цілей", "/images/multi-color-fabric-texture-samples.jpg");
-            Catalog fillers = new Catalog(null, "Наповнювачі", "Синтепух, вата, пір'я - все для наповнення", "/images/filler.jpg");
-            Catalog giftCertificates = new Catalog(null, "Подарункові сертифікати", "Сертифікати, щоб радувати близьких та друзів", "/images/gift_certificate.jpg");
-            Catalog patterns = new Catalog(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/pattern.jpg");
-            Catalog sewingThreads = new Catalog(null, "Нитки для шиття", "Різноманітні нитки для шиття та вишивання", "/images/sewing_threads.jpg");
-            Catalog tools = new Catalog(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/knitting-tools-table.jpg");
-            Catalog yarns = new Catalog(null, "Пряжа", "Пряжа для в'язання", "/images/image1.jpeg");
-            Catalog kits = new Catalog(null, "Набори", "Готові набори для в'язання та шиття", "/images/kit.jpg");
+            Category accessories = new Category(null, "Аксесуари", "Гудзики, бісер, прикраси для виробів тощо", "/images/buttons.jpg");
+            Category books = new Category(null, "Книги з рукоділля", "Книги про в'язання іграшок, шиття одежі, прикрашання виробів тощо", "/images/book.jpg");
+            Category equipment = new Category(null, "Обладнання", "Швейні машинки та ще щось", "/images/sewing_machine.jpg");
+            Category fabrics = new Category(null, "Тканина", "Різна тканина для різних цілей", "/images/multi-color-fabric-texture-samples.jpg");
+            Category fillers = new Category(null, "Наповнювачі", "Синтепух, вата, пір'я - все для наповнення", "/images/filler.jpg");
+            Category giftCertificates = new Category(null, "Подарункові сертифікати", "Сертифікати, щоб радувати близьких та друзів", "/images/gift_certificate.jpg");
+            Category patterns = new Category(null, "Схеми", "Схеми в'язання, шиття тощо", "/images/pattern.jpg");
+            Category sewingThreads = new Category(null, "Нитки для шиття", "Різноманітні нитки для шиття та вишивання", "/images/sewing_threads.jpg");
+            Category tools = new Category(null, "Інструменти", "Інструменти для шиття, в'язання; також допоміжні приладдя", "/images/knitting-tools-table.jpg");
+            Category yarns = new Category(null, "Пряжа", "Пряжа для в'язання", "/images/image1.jpeg");
+            Category kits = new Category(null, "Набори", "Готові набори для в'язання та шиття", "/images/kit.jpg");
 
             // --- 1. Аксесуари (Accessory) - 9 шт ---
             accessories.add(
@@ -412,7 +412,7 @@ public class DbFiller {
 
             kits.add(kit1, kit2, kit3, kit4, kit5, kit6, kit7, kit8, kit9);
 
-            catalogService.saveAll(
+            categoryService.saveAll(
                     yarns,
                     tools,
                     accessories,

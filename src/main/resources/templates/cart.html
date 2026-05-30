@@ -55,10 +55,17 @@
 </header>
 
 <main class="flex-grow container mx-auto px-4 py-8">
-	<h1 class="text-3xl font-bold mb-8 flex items-center gap-3">
-		<i data-lucide="shopping-bag" class="text-orange-600"></i>
-		Ваш кошик
-	</h1>
+	<div class="flex items-center gap-4 mb-8">
+		<a th:href="${backUrl}"
+		   class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg shadow-sm hover:bg-gray-50 hover:text-orange-600 hover:border-orange-200 transition-all duration-200">
+			<i data-lucide="arrow-left" class="w-4.5 h-4.5"></i>
+			<span>Назад</span>
+		</a>
+
+		<h1 class="text-3xl font-bold flex items-center gap-3">
+			<i data-lucide="shopping-bag" class="text-orange-600"></i> Ваш кошик
+		</h1>
+	</div>
 
 	<div id="empty-cart-view" class="hidden text-center py-16 bg-white rounded-lg shadow-sm border border-gray-100">
 		<div class="w-20 h-20 bg-orange-50 text-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -66,9 +73,9 @@
 		</div>
 		<h2 class="text-xl font-semibold mb-2">У вашому кошику ще нічого немає</h2>
 		<p class="text-gray-500 mb-6">Перейдіть до каталогу, щоб обрати найкращу пряжу чи набори для рукоділля.</p>
-		<!--TODO: implement returning back to catalog where user came from-->
-		<a th:href="@{/catalog}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded shadow transition-colors">
-			<i data-lucide="arrow-left" class="w-4 h-4"></i> Повернутися до каталогу
+
+		<a th:href="${backUrl}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded shadow transition-colors">
+			<i data-lucide="arrow-left" class="w-4 h-4"></i> Повернутися до попередньої сторінки
 		</a>
 	</div>
 
@@ -77,10 +84,11 @@
 		<div class="lg:grid-cols-3 lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
 			<div class="p-6 border-b border-gray-100 bg-gray-50">
 				<div class="grid grid-cols-12 text-sm font-bold text-gray-500 uppercase tracking-wider">
-					<div class="col-span-6">Товар</div>
+					<div class="col-span-5">Товар</div>
 					<div class="col-span-2 text-center">Ціна</div>
 					<div class="col-span-2 text-center">Кількість</div>
 					<div class="col-span-2 text-right">Сума</div>
+					<div class="col-span-1 text-right">Дія</div>
 				</div>
 			</div>
 
@@ -122,68 +130,11 @@
 	</div>
 </footer>
 
-<script th:src="@{/js/cart-badge.js}"></script> <script>
+<script th:src="@{/js/cart.js}"></script> <script>
 	document.addEventListener('DOMContentLoaded', () => {
 		lucide.createIcons();
 		renderCartPage();
 	});
-
-	function renderCartPage() {
-		// Зчитуємо масив кошика з LocalStorage
-		const cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-
-		const emptyView = document.getElementById('empty-cart-view');
-		const mainView = document.getElementById('main-cart-view');
-		const itemsContainer = document.getElementById('cart-items-container');
-
-		// Перевіряємо чи порожній кошик, і показуємо потрібний блок
-		if (cart.length === 0) {
-			emptyView.classList.remove('hidden');
-			mainView.classList.add('hidden');
-			return;
-		}
-
-		emptyView.classList.add('hidden');
-		mainView.classList.remove('hidden');
-		itemsContainer.innerHTML = ''; // Очищуємо контейнер перед рендером
-
-		let totalOrderPrice = 0;
-		let totalOrderItems = 0;
-
-		// 3. Перебираємо кожен товар і створюємо для нього HTML-рядок
-		cart.forEach(item => {
-			const itemSubtotal = item.price * item.quantity;
-			totalOrderPrice += itemSubtotal;
-			totalOrderItems += item.quantity;
-
-			const itemRow = document.createElement('div');
-			itemRow.className = "grid grid-cols-12 items-center p-6 text-sm hover:bg-gray-50/50 transition-colors";
-			itemRow.innerHTML = `
-                    <div class="col-span-6 flex items-center gap-3">
-                        <div class="w-10 h-10 bg-orange-100 text-orange-600 rounded flex items-center justify-center font-bold flex-shrink-0">
-                            ${item.name.charAt(0)}
-                        </div>
-                        <div>
-                            <span class="font-semibold text-gray-900 block">${item.name}</span>
-                        </div>
-                    </div>
-                    <div class="col-span-2 text-center font-medium text-gray-600">
-                        ${item.price.toFixed(2)} грн
-                    </div>
-                    <div class="col-span-2 text-center text-gray-800 font-semibold bg-gray-100 py-1 px-2 rounded w-fit mx-auto">
-                        ${item.quantity} шт
-                    </div>
-                    <div class="col-span-2 text-right font-bold text-gray-900">
-                        ${itemSubtotal.toFixed(2)} грн
-                    </div>
-                `;
-			itemsContainer.appendChild(itemRow);
-		});
-
-		// 4. Оновлюємо праву панель підсумків замовлення
-		document.getElementById('summary-items-count').innerText = `${totalOrderItems} шт.`;
-		document.getElementById('summary-total-price').innerText = `${totalOrderPrice.toFixed(2)} грн`;
-	}
 </script>
 </body>
 </html>

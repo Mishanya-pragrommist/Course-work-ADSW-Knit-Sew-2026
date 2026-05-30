@@ -6,7 +6,7 @@ package misha.bondarenko.records.dto;
  * @param name назва каталогу
  * @param imageUrl посилання на зображення
  */
-public record CatalogCardDto(
+public record CategoryCardDto(
         Long id,
         String name,
         String imageUrl

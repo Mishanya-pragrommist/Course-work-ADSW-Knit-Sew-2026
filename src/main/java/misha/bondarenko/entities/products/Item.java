@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 
@@ -40,7 +39,7 @@ public abstract class Item {
     /** Батьківський каталог */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
-    protected Catalog parent;
+    protected Category parent;
 
     // ============ Базові методи товару ============
 

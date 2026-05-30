@@ -13,10 +13,10 @@
 //
 //class CatalogTest {
 //
-//    private Catalog rootCatalog;
-//    private Catalog fabricCategory;
-//    private Catalog equipmentCategory;
-//    private Catalog kitCategory;
+//    private Category rootCatalog;
+//    private Category fabricCategory;
+//    private Category equipmentCategory;
+//    private Category kitCategory;
 //
 //    private Fabric linenFabric;
 //    private Fabric cottonFabric;
@@ -27,10 +27,10 @@
 //
 //    @BeforeEach
 //    void setUp() {
-//        rootCatalog = new Catalog(1L, "Головний каталог", "Кореневий каталог Knit&Sew", "http");
-//        fabricCategory = new Catalog(2L, "Тканини", "Категорія тканин", "https://aura");
-//        equipmentCategory = new Catalog(3L, "Обладнання", "Швейне та в'язальне обладнання", "https://aurayarns.");
-//        kitCategory = new Catalog(4L, "Набори", "Готові набори для в'язання", "https://a");
+//        rootCatalog = new Category(1L, "Головний каталог", "Кореневий каталог Knit&Sew", "http");
+//        fabricCategory = new Category(2L, "Тканини", "Категорія тканин", "https://aura");
+//        equipmentCategory = new Category(3L, "Обладнання", "Швейне та в'язальне обладнання", "https://aurayarns.");
+//        kitCategory = new Category(4L, "Набори", "Готові набори для в'язання", "https://a");
 //
 //        linenFabric = new Fabric(
 //                true,

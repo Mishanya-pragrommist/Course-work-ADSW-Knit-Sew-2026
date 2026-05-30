@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Catalog {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Catalog {
     @OrderBy("id ASC")
     private final List<Item> children = new ArrayList<>();
 
-    public Catalog(Long id, String name, String description, String imageUrl) {
+    public Category(Long id, String name, String description, String imageUrl) {
         this.id = id;
         this.name = name;
         this.description = description;

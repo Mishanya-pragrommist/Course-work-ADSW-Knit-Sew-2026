@@ -144,7 +144,7 @@
 							th:data-id="${product.id}"
 							th:data-name="${product.name}"
 							th:data-price="${product.newPrice}"
-							th:data-imageUrl="${product.imageUrl}"
+							th:data-image="${product.imageUrl}"
 							onclick="handleAddToCart(this)"
 							class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2">
 						<i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
@@ -284,6 +284,7 @@
 <script>
 	lucide.createIcons();
 </script>
-<script th:src="@{/js/cart.js}"></script>
+<script th:src="@{/js/cart-badge.js}"></script>
+<script th:src="@{/js/cart-logic.js}"></script>
 </body>
 </html>

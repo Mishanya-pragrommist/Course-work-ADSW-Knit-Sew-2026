@@ -14,7 +14,7 @@ import java.math.BigDecimal;
  * Завдяки цьому якщо дані про цей товар зміняться (ціна, назва, артикул),
  * в історії все одно будуть дані на момент створення замовлення
  */
-@Entity
+//@Entity
 @Getter
 @Setter
 @AllArgsConstructor

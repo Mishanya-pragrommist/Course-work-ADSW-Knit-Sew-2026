@@ -324,7 +324,7 @@
 							<span th:unless="${product.isAvailable}" class="text-xs font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded-md">Немає в наявності</span>
 						</div>
 
-						<a th:href="@{/product/{id}(id=${product.id})}"
+						<a th:href="@{/category/{catId}/product/{id}(catId=${category.id}, id=${product.id})}"
 						   class="font-medium text-gray-800 hover:text-brand-600 transition-colors mb-4 flex-grow"
 						   th:text="${product.name}">Назва товару (renderName)</a>
 
@@ -422,6 +422,6 @@
 </footer>
 
 <script>lucide.createIcons();</script>
-<script th:src="@{/js/cart-badge.js}"></script>
+<script th:src="@{/js/cart.js}"></script>
 </body>
 </html>

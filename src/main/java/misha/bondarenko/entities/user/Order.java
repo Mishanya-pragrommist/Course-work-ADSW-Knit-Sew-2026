@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Замовлення
  */
-@Entity
+//@Entity
 @Getter
 @Setter
 @AllArgsConstructor

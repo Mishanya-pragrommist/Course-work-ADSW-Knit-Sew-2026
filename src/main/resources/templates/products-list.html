@@ -335,9 +335,15 @@
 							</div>
 
 							<button th:disabled="${!product.isAvailable}"
+									th:data-category-id="${category.id}"
+									th:data-product-id="${product.id}"
+									th:data-name="${product.name}"
+									th:data-price="${product.newPrice}"
+									th:data-image="${product.imageUrl}"
+									data-state="add" onclick="handleAddToCart(this)"
 									class="p-2.5 rounded-full transition-colors"
 									th:classappend="${product.isAvailable ? 'bg-brand-50 text-brand-600 hover:bg-brand-500 hover:text-white'
-									: 'bg-gray-100 text-gray-400 cursor-not-allowed'}"
+        							: 'bg-gray-100 text-gray-400 cursor-not-allowed'}"
 									th:title="${product.isAvailable ? 'Додати до кошика' : 'На жаль, товар недоступний'}">
 
 								<i data-lucide="shopping-cart" class="w-5 h-5"></i>

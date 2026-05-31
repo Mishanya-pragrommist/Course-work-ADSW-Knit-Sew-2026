@@ -142,12 +142,11 @@
 
 					<button type="button"
 							id="add-to-cart-btn"
-							th:data-id="${product.id}"
+							th:data-category-id="${category.id}"
+							th:data-product-id="${product.id}"
 							th:data-name="${product.name}"
 							th:data-price="${product.newPrice}"
 							th:data-image="${product.imageUrl}"
-							th:data-category_id="${category.id}"
-							th:data-product_id="${product.id}"
 							data-state="add"
 							onclick="handleAddToCart(this)"
 							class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2">

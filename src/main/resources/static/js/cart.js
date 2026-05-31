@@ -32,6 +32,57 @@ document.addEventListener('DOMContentLoaded', () => {
 // Додавання, зміна кількості та видалення товарів (CRUD над кошиком)
 // =======================================================
 
+// Головна функція, яка керує двома станами кнопки:
+// + стан "Додати до кошика"
+// + стан "Перейти до кошика"
+function handleAddToCart(button) {
+    if (button.dataset.state === 'go') {
+        window.location.href = '/Knit_and_Sew/cart';
+        return;
+    }
+
+    const categoryId = parseInt(button.getAttribute('data-category-id'));
+    const productId = parseInt(button.getAttribute('data-product-id'));
+    const itemName = button.getAttribute('data-name');
+    const itemPrice = parseFloat(button.getAttribute('data-price'));
+    const itemImage = button.getAttribute('data-image');
+
+    const quantityInput = document.getElementById('cart-quantity');
+
+    // Якщо інпут існує на сторінці — беремо його value,
+    // якщо інпуту немає (це каталог) — ставимо 1 штуку
+    const chosenQuantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
+
+    let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
+    const existingItem = cart.find(item => item.id === itemId);
+
+    if (existingItem) {
+        existingItem.quantity += chosenQuantity;
+    }
+    else {
+        cart.push({
+            categoryId: categoryId,
+            productId: productId,
+            name: itemName,
+            price: itemPrice,
+            quantity: chosenQuantity,
+            image: itemImage
+        });
+    }
+
+    localStorage.setItem('knit_sew_cart', JSON.stringify(cart));
+
+    // Оновлюємо лічильник у шапці сайту
+    updateCartBadge();
+
+    showMiniNotification(`Додано до кошика: ${itemName} (${chosenQuantity} шт.)`);
+
+    // Трансформуємо в "Перейти до кошика" тільки якщо це велика кнопка на сторінці товару
+    if (button.id === 'add-to-cart-btn') {
+        morphButtonToGoToCart(button);
+    }
+}
+
 // Для зміни кількості в інпуті на сторінці деталей з товаром
 function changeQuantity(amount) {
     const quantityInput = document.getElementById('cart-quantity');
@@ -51,7 +102,7 @@ function changeQuantity(amount) {
 // Змінити кількість вибраного товару на сторінці Кошик
 function updateItemQuantity(itemId, amount) {
     let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-    const itemIndex = cart.findIndex(item => item.id === Number.parseInt(itemId));
+    const itemIndex = cart.findIndex(item => parseInt(item.productId) === parseInt(itemId));
 
     if (itemIndex !== -1) {
         cart[itemIndex].quantity += amount;
@@ -67,59 +118,14 @@ function updateItemQuantity(itemId, amount) {
     }
 }
 
-// Головна функція, яка керує двома станами кнопки:
-// + стан "Додати до кошика"
-// + стан "Перейти до кошика"
-function handleAddToCart(button) {
-    // Якщо кнопка вже в стані "go", просто перенаправляємо користувача
-    if (button.dataset.state === 'go') {
-        window.location.href = '/Knit_and_Sew/cart';
-        return;
-    }
-
-    // Стандартна логіка додавання до кошика
-
-    const itemId = button.getAttribute('data-id');
-    const itemName = button.getAttribute('data-name');
-    const itemPrice = parseFloat(button.getAttribute('data-price'));
-    const itemImage = button.getAttribute('data-image');
-    const categoryId = button.dataset.categoryId;
-    const productId = button.dataset.productId;
-
-    const quantityInput = document.getElementById('cart-quantity');
-    const chosenQuantity = parseInt(quantityInput.value) || 1;
-
-    let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-    const existingItem = cart.find(item => item.id === itemId);
-
-    if (existingItem) {
-        existingItem.quantity += chosenQuantity;
-    }
-    else {
-        cart.push({
-            id: itemId,
-            name: itemName,
-            price: itemPrice,
-            quantity: chosenQuantity,
-            image: itemImage,
-            categoryId: categoryId,
-            productId: productId
-        });
-    }
-
-    localStorage.setItem('knit_sew_cart', JSON.stringify(cart));
-
-    // Оновлюємо бейджик у шапці
-    updateCartBadge();
-    showMiniNotification(`Додано до кошика: ${itemName}`);
-    morphButtonToGoToCart(button);
-}
-
 // Повністю видалити товар із кошика
 function removeFromCart(itemId) {
     itemId = Number(itemId);
     let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-    const newCart = cart.filter(item => item.id !== itemId);
+
+    console.log("updateItemQuantity() for ID:", itemId, " type ", typeof itemId);
+    console.log("Поточний кошик у пам'яті:", cart);
+    const newCart = cart.filter(item => parseInt(item.productId) !== itemId);
 
     if (newCart.length === cart.length) return;
 
@@ -190,7 +196,6 @@ function renderCartPage() {
         totalOrderPrice += itemSubtotal;
         totalOrderItems += item.quantity;
 
-
         const itemRow = document.createElement('div');
         itemRow.className = "grid grid-cols-12 items-center p-6 text-sm hover:bg-gray-50/50 transition-colors";
         itemRow.innerHTML = `
@@ -208,14 +213,14 @@ function renderCartPage() {
     
                     <div class="col-span-2 flex items-center justify-center">
                         <div class="flex items-center border border-gray-300 rounded bg-white shadow-sm">
-                            <button type="button" onclick="updateItemQuantity('${item.id}', -1)"
+                            <button type="button" onclick="updateItemQuantity('${item.productId}', -1)"
                                     class="px-2.5 py-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold rounded-l border-r border-gray-200 transition-colors">
                                 -
                             </button>
                             <span class="w-10 text-center font-semibold text-gray-800 text-sm select-none">
                                 ${item.quantity}
                             </span>
-                            <button type="button" onclick="updateItemQuantity('${item.id}', 1)"
+                            <button type="button" onclick="updateItemQuantity('${item.productId}', 1)"
                                     class="px-2.5 py-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold rounded-r border-l border-gray-200 transition-colors">
                                 +
                             </button>
@@ -227,7 +232,7 @@ function renderCartPage() {
                             </div>
                             
                             <div class="col-span-1 text-right">
-                               <button type="button" onclick="removeFromCart('${item.id}')"
+                               <button type="button" onclick="removeFromCart('${item.productId}')"
                                      class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200"
                                      title="Видалити товар">
                                   <i data-lucide="trash-2" class="w-5 h-5"></i>

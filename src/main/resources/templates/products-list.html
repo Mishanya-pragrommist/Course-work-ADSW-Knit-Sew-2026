@@ -37,7 +37,7 @@
 		</a>
 		<!-- Навігація по сайту -->
 		<nav class="hidden md:flex space-x-8">
-			<a th:href="@{/}" class="text-brand-600 font-medium">Головна</a>
+			<a th:href="@{/}" class="text-brand-600 font-medium">Каталоги</a>
 			<a th:href="@{/about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
 			<a th:href="@{/contacts}" class="text-gray-600 hover:text-brand-600 transition-colors">Контакти</a>
 			<a th:href="@{/payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
@@ -335,12 +335,14 @@
 							</div>
 
 							<button th:disabled="${!product.isAvailable}"
+									th:data-add-to-cart-btn-mini
 									th:data-category-id="${category.id}"
 									th:data-product-id="${product.id}"
 									th:data-name="${product.name}"
 									th:data-price="${product.newPrice}"
 									th:data-image="${product.imageUrl}"
-									data-state="add" onclick="handleAddToCart(this)"
+									data-state="add"
+									onclick="handleAddToCart(this)"
 									class="p-2.5 rounded-full transition-colors"
 									th:classappend="${product.isAvailable ? 'bg-brand-50 text-brand-600 hover:bg-brand-500 hover:text-white'
         							: 'bg-gray-100 text-gray-400 cursor-not-allowed'}"

@@ -13,20 +13,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Якщо товар вже в кошику, кнопка "Додати до кошика" змінюється на "Перейти до кошика"
 
+    const cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
+
+    // Кнопка на детальній сторінці товару (якщо вона є)
     const addToCartBtn = document.getElementById('add-to-cart-btn');
 
-    // Якщо така кнопка взагалі є на сторінці
     if (addToCartBtn) {
-        const currentProductId = addToCartBtn.getAttribute('data-id');
-        const cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-
-        const isAlreadyInCart = cart.some(item => item.id === currentProductId);
-
-        if (isAlreadyInCart) {
+        const currentProductId = addToCartBtn.getAttribute('data-product-id');
+        if (cart.some(item => parseInt(item.productId) === parseInt(currentProductId))) {
             morphButtonToGoToCart(addToCartBtn);
         }
     }
+
+    // Знаходимо абсолютно всі кнопки на сторінці каталогу
+    const catalogButtons = document.querySelectorAll('[add-to-cart-btn-mini]');
+    console.log(catalogButtons);
+    catalogButtons.forEach(button => {
+        const buttonProductId = button.getAttribute('data-product-id');
+        // Якщо цей товар уже є в кошику — миттєво робимо кнопку зеленою зі стрілочкою
+        if (cart.some(item => item.productId === buttonProductId)) {
+            morphButtonToGoToCart(button);
+        }
+    });
 });
+
 
 // =======================================================
 // Додавання, зміна кількості та видалення товарів (CRUD над кошиком)
@@ -54,7 +64,7 @@ function handleAddToCart(button) {
     const chosenQuantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
 
     let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-    const existingItem = cart.find(item => item.id === itemId);
+    const existingItem = cart.find(item => item.id === productId);
 
     if (existingItem) {
         existingItem.quantity += chosenQuantity;
@@ -250,30 +260,39 @@ function renderCartPage() {
 }
 
 // Допоміжна функція для трансформації зовнішнього вигляду
-// та стану кнопки "Додати до кошика" на сторінці деталей про товар
+// та стану кнопки "Додати до кошика"
+// на сторінці деталей про товар та на сторінці каталогу
 function morphButtonToGoToCart(button) {
     if (!button) return;
 
-    button.dataset.state = 'go';
+    // Спільні налаштування для обох типів кнопок
+    button.dataset.state = 'go'; // переводимо в стан переходу
+    button.setAttribute('title', 'Перейти до кошика'); // оновлюємо підказку під мишкою
 
-    // Змінюємо текст всередині кнопки
-    const textSpan = button.querySelector('span');
-    if (textSpan) {
-        textSpan.innerText = 'Перейти до кошика';
+    // Диференціюємо стилі залежно від того, де знаходиться кнопка
+    if (button.id === 'add-to-cart-btn') {
+        // Логіка для великої кнопки зі сторінки детальної картки товару
+        const textSpan = button.querySelector('span');
+        if (textSpan) {
+            textSpan.innerText = 'Перейти до кошика';
+        }
+        button.className = "px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2";
     }
-
-    // Змінюємо іконку на стрілочку вправо
-    const icon = button.querySelector('i');
-    if (icon) {
-        icon.setAttribute('data-lucide', 'arrow-right');
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons(); // Перемальовуємо Lucide іконку на льоту
+    else {
+        // Нова логіка для КРУГЛОЇ кнопки-іконки у списку каталогу
+        // Повністю перезаписуємо класи Tailwind на зелені фірмові
+        button.className = "p-2.5 rounded-full transition-colors bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg flex items-center justify-center";
+        // Заміна іконки візка на стрілочку вправо
+        const icon = button.querySelector('i');
+        if (icon) {
+            icon.setAttribute('data-lucide', 'arrow-right');
+            icon.className = "w-5 h-5 text-white pointer-events-none"; // гарантуємо білий колір і захист від кліків
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons(); // перемальовуємо іконку Lucide на льоту
+            }
         }
     }
 
-    // Опціонально: змінюємо колір кнопки, наприклад, на зелений чи спокійніший сірий,
-    // щоб користувач візуально зрозумів, що товар уже успішно додано.
-    button.className = "px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2";
 }
 
 // Відображення сповіщення про додавання товару

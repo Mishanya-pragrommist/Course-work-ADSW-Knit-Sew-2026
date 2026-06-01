@@ -81,6 +81,7 @@
 
 	<div id="main-cart-view" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
 
+		<!-- Таблиця з товарами, доданими в Кошик -->
 		<div class="lg:grid-cols-3 lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
 			<div class="p-6 border-b border-gray-100 bg-gray-50">
 				<div class="grid grid-cols-12 text-sm font-bold text-gray-500 uppercase tracking-wider">
@@ -96,6 +97,7 @@
 			</div>
 		</div>
 
+		<!-- Підсумок замовлення (загальна к-сть товарів + загальна ціна) -->
 		<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 h-fit sticky top-6">
 			<h3 class="text-lg font-bold border-b border-gray-100 pb-4 mb-4">Підсумок замовлення</h3>
 
@@ -115,6 +117,7 @@
 				</div>
 			</div>
 
+			<!--TODO: implement order processing (a big task, ik. this is the place to start with)-->
 			<button type="button" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
 				<span>Оформити замовлення</span>
 				<i data-lucide="chevron-right" class="w-5 h-5"></i>
@@ -124,9 +127,53 @@
 	</div>
 </main>
 
-<footer class="bg-gray-800 text-gray-400 py-6 mt-12 border-t border-gray-700">
-	<div class="container mx-auto px-4 text-center text-sm">
-		&copy; 2026 Knit&Sew. Курсовий проєкт з АППЗ. Всі права захищено.
+<!-- Футер -->
+<footer class="bg-gray-900 text-gray-300 py-12 mt-auto">
+	<div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+		<!-- Блок 1 -->
+		<div>
+			<h4 class="text-white text-xl font-bold mb-4 flex items-center gap-2">
+				<i data-lucide="scissors" class="w-5 h-5"></i>
+				Knit&Sew
+			</h4>
+			<p class="text-gray-400 text-sm leading-relaxed">
+				Ваш надійний партнер у світі рукоділля. Ми пропонуємо найкращі матеріали для тих, хто створює красу своїми руками.
+			</p>
+		</div>
+
+		<!-- Блок 2 -->
+		<div>
+			<h4 class="text-white text-lg font-semibold mb-4">Покупцям</h4>
+			<ul class="space-y-2 text-sm">
+				<li><a th:href="@{payment-delivery}" class="hover:text-white transition-colors">Оплата і доставка</a></li>
+				<li><a href="#" class="hover:text-white transition-colors">Подарункові сертифікати</a></li>
+				<li><a href="#" class="hover:text-white transition-colors">Часті питання (FAQ)</a></li>
+			</ul>
+		</div>
+
+		<!-- Блок 3 -->
+		<div>
+			<h4 class="text-white text-lg font-semibold mb-4">Контакти</h4>
+			<ul class="space-y-3 text-sm">
+				<li class="flex items-center gap-3">
+					<i data-lucide="phone" class="w-4 h-4 text-brand-500"></i>
+					+38 (099) 123-45-67
+				</li>
+				<li class="flex items-center gap-3">
+					<i data-lucide="mail" class="w-4 h-4 text-brand-500"></i>
+					support@knitnsew.ua
+				</li>
+				<li class="flex items-center gap-3">
+					<i data-lucide="map-pin" class="w-4 h-4 text-brand-500"></i>
+					м. Київ, вул. Творча, 12
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Копірайт -->
+	<div class="container mx-auto px-4 mt-12 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+		&copy; 2026 Knit&Sew. Всі права захищені.
 	</div>
 </footer>
 

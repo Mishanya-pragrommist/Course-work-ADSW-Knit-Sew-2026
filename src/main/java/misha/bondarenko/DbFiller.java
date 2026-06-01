@@ -2,8 +2,10 @@ package misha.bondarenko;
 
 import misha.bondarenko.entities.products.*;
 import misha.bondarenko.enums.MeasureUnit;
+import misha.bondarenko.services.AiService;
 import misha.bondarenko.services.CategoryService;
 import misha.bondarenko.services.ItemService;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +19,7 @@ public class DbFiller {
     @Bean
     @Transactional
     public CommandLineRunner fillDatabase(CategoryService categoryService, ItemService itemService) {
-        boolean shouldWork = true;
+        boolean shouldWork = false;
         if (!shouldWork) return args -> {};
 
         return args -> {

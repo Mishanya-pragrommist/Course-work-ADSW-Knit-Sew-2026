@@ -11,13 +11,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     updateCartBadge();
 
-    // Якщо товар вже в кошику, кнопка "Додати до кошика" змінюється на "Перейти до кошика"
+    // Якщо товар вже в кошику, кнопки "Додати до кошика" змінюються на "Перейти до кошика"
 
     const cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
 
-    // Кнопка на детальній сторінці товару (якщо вона є)
+    // Кнопка на детальній сторінці товару
     const addToCartBtn = document.getElementById('add-to-cart-btn');
-
     if (addToCartBtn) {
         const currentProductId = addToCartBtn.getAttribute('data-product-id');
         if (cart.some(item => parseInt(item.productId) === parseInt(currentProductId))) {
@@ -26,12 +25,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Знаходимо абсолютно всі кнопки на сторінці каталогу
-    const catalogButtons = document.querySelectorAll('[add-to-cart-btn-mini]');
-    console.log(catalogButtons);
+    const catalogButtons = document.querySelectorAll('[data-add-to-cart-btn-mini]');
+
     catalogButtons.forEach(button => {
+        console.log("button.id: ", button.getAttribute('data-product-id'));
+
         const buttonProductId = button.getAttribute('data-product-id');
-        // Якщо цей товар уже є в кошику — миттєво робимо кнопку зеленою зі стрілочкою
-        if (cart.some(item => item.productId === buttonProductId)) {
+        // Якщо цей товар уже є в кошику, робимо кнопку зеленою зі стрілочкою
+        if (cart.some(item => parseInt(item.productId) === parseInt(buttonProductId))) {
             morphButtonToGoToCart(button);
         }
     });
@@ -88,9 +89,7 @@ function handleAddToCart(button) {
     showMiniNotification(`Додано до кошика: ${itemName} (${chosenQuantity} шт.)`);
 
     // Трансформуємо в "Перейти до кошика" тільки якщо це велика кнопка на сторінці товару
-    if (button.id === 'add-to-cart-btn') {
-        morphButtonToGoToCart(button);
-    }
+    morphButtonToGoToCart(button);
 }
 
 // Для зміни кількості в інпуті на сторінці деталей з товаром
@@ -263,11 +262,14 @@ function renderCartPage() {
 // та стану кнопки "Додати до кошика"
 // на сторінці деталей про товар та на сторінці каталогу
 function morphButtonToGoToCart(button) {
+    console.log("adsjk;lasdjkf;lka s ", button.id);
     if (!button) return;
 
     // Спільні налаштування для обох типів кнопок
     button.dataset.state = 'go'; // переводимо в стан переходу
     button.setAttribute('title', 'Перейти до кошика'); // оновлюємо підказку під мишкою
+
+
 
     // Диференціюємо стилі залежно від того, де знаходиться кнопка
     if (button.id === 'add-to-cart-btn') {
@@ -279,9 +281,9 @@ function morphButtonToGoToCart(button) {
         button.className = "px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2";
     }
     else {
-        // Нова логіка для КРУГЛОЇ кнопки-іконки у списку каталогу
-        // Повністю перезаписуємо класи Tailwind на зелені фірмові
+        // Повністю перезаписуємо класи Tailwind на зелені
         button.className = "p-2.5 rounded-full transition-colors bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg flex items-center justify-center";
+
         // Заміна іконки візка на стрілочку вправо
         const icon = button.querySelector('i');
         if (icon) {

@@ -14,6 +14,7 @@ import java.util.List;
  * @param discount знижка
  * @param newPrice загальна ціна товару з урахуванням знижки
  * @param isAvailable чи доступний товар для продажу
+ * @param stockQuantity кількість товару на складі
  * @param imageUrl посилання на зображення в папці /static/images/
  * @param kitComponents складові набору товарів. Якщо передається звичайний Product, kitComponents = null
  */
@@ -25,6 +26,7 @@ public record ProductCardDto(
         BigDecimal oldPrice,
         BigDecimal discount,
         BigDecimal newPrice,
+        int stockQuantity,
         boolean isAvailable,
         String imageUrl,
         List<KitComponentCardDto> kitComponents

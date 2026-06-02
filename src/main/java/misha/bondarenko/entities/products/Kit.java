@@ -33,14 +33,15 @@ public class Kit extends Item {
     /**
      * Кількість можливих динамічних наборів розраховується як мінімальна кількість доступних товарів
      */
+    // TODO: fix this method because it always returns initial value of min
     @Override
     public int getStockQuantity() {
         if (components.isEmpty()) { return 0; }
 
-        int min = 0;
+        int min = 1;
         for (KitComponent component : components) {
             int currentMin = component.getItem().getStockQuantity();
-            if (currentMin < min) {
+            if (currentMin <= min) {
                 min = currentMin;
             }
         }

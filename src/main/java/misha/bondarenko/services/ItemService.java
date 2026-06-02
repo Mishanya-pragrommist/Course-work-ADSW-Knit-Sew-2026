@@ -78,6 +78,7 @@ public class ItemService implements IItemService {
                 item.getBasePrice(), // Ціна без знижок
                 item.getDiscount(),
                 item.getTotalPrice(), // Ціна зі знижкою
+                item.getStockQuantity(),
                 item.isAvailable(), // Залежить від прапорця доступності та від к-сті залишків на складі
                 item.getImageUrl(),
                 item instanceof Kit kit ? kit.getComponents().stream()
@@ -155,6 +156,7 @@ public class ItemService implements IItemService {
         Map<String, String> attributes = new LinkedHashMap<>();
 
         attributes.put("Артикул", item.getArticle());
+        attributes.put("Кількість на складі",  String.valueOf(item.getStockQuantity()));
 
         // Якщо це звичайний товар, можемо дістати спільні для Product поля
         if (item instanceof Product product) {

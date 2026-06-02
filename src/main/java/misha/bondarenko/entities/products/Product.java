@@ -73,6 +73,11 @@ public class Product extends Item {
     }
 
     @Override
+    public int getStockQuantity() {
+        return stockQuantity;
+    }
+
+    @Override
     public BigDecimal getTotalPrice() {
         if (discount == null || discount.compareTo(BigDecimal.ZERO) == 0) {
             return basePrice;

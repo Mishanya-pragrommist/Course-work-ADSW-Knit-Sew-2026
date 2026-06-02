@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Упс! Щось пішло не так | Knit&Sew</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<script th:inline="javascript">
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						brand: {
+							light: '#ffedd5',
+							primary: '#ea580c',
+							dark: '#c2410c'
+						}
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body class="bg-stone-50 text-stone-800 flex flex-col min-h-screen">
+
+<main class="flex-grow flex items-center justify-center px-4 py-16">
+	<div class="max-w-lg w-full text-center bg-white p-8 rounded-2xl shadow-md border border-stone-100">
+
+		<div class="w-24 h-24 mx-auto mb-6 flex items-center justify-center bg-red-50 rounded-full text-red-600">
+			<i data-lucide="alert-triangle" class="w-12 h-12"></i>
+		</div>
+
+		<h1 class="text-5xl font-extrabold text-stone-900 mb-2" th:text="${status}">500</h1>
+		<h2 class="text-xl font-bold text-red-600 mb-4" th:text="${error}">Помилка сервера</h2>
+
+		<p class="text-stone-600 mb-6 leading-relaxed">
+			Сталася непередбачувана технічна помилка у роботі вузла застосунку.
+			Наші майстри вже зшивають код до купи, щоб усе запрацювало.
+		</p>
+
+		<div class="mb-8 text-left bg-stone-100 p-4 rounded-xl text-xs font-mono text-stone-700 overflow-x-auto border border-stone-200">
+			<p class="font-bold mb-1">Деталі для розробника:</p>
+			<p th:text="'Повідомлення: ' + ${message}">Повідомлення про помилку відсутнє</p>
+			<p th:text="'Шлях запиту: ' + ${path}">/example-path</p>
+		</div>
+
+		<div class="flex gap-3 justify-center">
+			<a th:href="@{/}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-brand-primary hover:bg-brand-dark text-white rounded-xl font-medium shadow-sm transition-all duration-200">
+				<i data-lucide="home" class="w-4 h-4"></i>
+				Повернутися на головну
+			</a>
+		</div>
+	</div>
+</main>
+
+<script>
+	lucide.createIcons();
+</script>
+</body>
+</html>

@@ -8,10 +8,11 @@ import misha.bondarenko.enums.MeasureUnit;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
- * Набір для рукоділля. Не може (і не має) містити вкладені набори
+ * Набір для рукоділля. Не може містити вкладені набори
  */
 @Entity
 @Getter
@@ -27,6 +28,23 @@ public class Kit extends Item {
                BigDecimal discount, boolean isAvailable, String imageUrl) {
 
         super(id, article, name, description, discount, isAvailable, imageUrl, null);
+    }
+
+    /**
+     * Кількість можливих динамічних наборів розраховується як мінімальна кількість доступних товарів
+     */
+    @Override
+    public int getStockQuantity() {
+        if (components.isEmpty()) { return 0; }
+
+        int min = 0;
+        for (KitComponent component : components) {
+            int currentMin = component.getItem().getStockQuantity();
+            if (currentMin < min) {
+                min = currentMin;
+            }
+        }
+        return min;
     }
 
     /**

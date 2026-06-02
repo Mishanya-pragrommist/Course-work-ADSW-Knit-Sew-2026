@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface IItemService {
-    public Item findItemById(Long id);
+    Item findItemById(Long id);
 
-    public Item findItemByName(String name);
+    Item findItemByName(String name);
 
-    public List<ProductCardDto> getProductCardsDto(Long catalogId);
+    List<ProductCardDto> getProductCardsDto(Long catalogId);
 
     ProductCardDto getProductCardById(Long id);
 

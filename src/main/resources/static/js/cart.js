@@ -9,31 +9,27 @@
 
 // Оновлення бейджика для кошика та стану кнопки при кожному завантаженні сторінки
 document.addEventListener('DOMContentLoaded', () => {
-    updateCartBadge();
-
-    // Якщо товар вже в кошику, кнопки "Додати до кошика" змінюються на "Перейти до кошика"
+    if (typeof updateCartBadge === 'function') updateCartBadge();
 
     const cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
 
-    // Кнопка на детальній сторінці товару
-    const addToCartBtn = document.getElementById('add-to-cart-btn');
-    if (addToCartBtn) {
-        const currentProductId = addToCartBtn.getAttribute('data-product-id');
-        if (cart.some(item => parseInt(item.productId) === parseInt(currentProductId))) {
-            morphButtonToGoToCart(addToCartBtn);
+    // 1. Перевіряємо поодиноку велику кнопку на сторінці детального перегляду товару
+    const detailBtn = document.getElementById('add-to-cart-btn');
+    if (detailBtn) {
+        const productId = detailBtn.dataset.productId;
+        if (cart.some(item => parseInt(item.productId) === parseInt(productId))) {
+            morphButtonToGoToCart(detailBtn); // Автоматично заблокує кнопки і змінить колір при рефреші!
         }
     }
 
-    // Знаходимо абсолютно всі кнопки на сторінці каталогу
-    const catalogButtons = document.querySelectorAll('[data-add-to-cart-btn-mini]');
-
-    catalogButtons.forEach(button => {
-        console.log("button.id: ", button.getAttribute('data-product-id'));
-
-        const buttonProductId = button.getAttribute('data-product-id');
-        // Якщо цей товар уже є в кошику, робимо кнопку зеленою зі стрілочкою
-        if (cart.some(item => parseInt(item.productId) === parseInt(buttonProductId))) {
-            morphButtonToGoToCart(button);
+    // 2. Перевіряємо сітку кнопок на сторінці каталогу
+    const catalogButtons = document.querySelectorAll('[data-state="add"]');
+    catalogButtons.forEach(btn => {
+        if (btn.id !== 'add-to-cart-btn') { // ігноруємо головну, якщо вона в цьому списку
+            const productId = btn.dataset.productId;
+            if (cart.some(item => parseInt(item.productId) === parseInt(productId))) {
+                morphButtonToGoToCart(btn);
+            }
         }
     });
 });
@@ -43,53 +39,80 @@ document.addEventListener('DOMContentLoaded', () => {
 // Додавання, зміна кількості та видалення товарів (CRUD над кошиком)
 // =======================================================
 
+// Функція зміни виду кнопок та блокування елементів керування кількістю
+String.prototype.trim = function() { return this.replace(/^\s+|\s+$/g,""); };
+
 // Головна функція, яка керує двома станами кнопки:
 // + стан "Додати до кошика"
 // + стан "Перейти до кошика"
-function handleAddToCart(button) {
+async function handleAddToCart(button) {
+    if (!button) return;
+
+    // Якщо кнопка вже в стані переходу, перенаправляємо в кошик
     if (button.dataset.state === 'go') {
         window.location.href = '/Knit_and_Sew/cart';
         return;
     }
 
-    const categoryId = parseInt(button.getAttribute('data-category-id'));
-    const productId = parseInt(button.getAttribute('data-product-id'));
-    const itemName = button.getAttribute('data-name');
-    const itemPrice = parseFloat(button.getAttribute('data-price'));
-    const itemImage = button.getAttribute('data-image');
+    const productId = button.dataset.productId;
+    const itemName = button.dataset.name;
+    const itemPrice = parseFloat(button.dataset.price);
+    const itemImage = button.dataset.image;
+    const categoryId = button.dataset.categoryId;
 
+    // Визначаємо кількість: якщо є інпут кількості (на сторінці товару), беремо з нього,
+    // інакше (в каталозі) — 1 шт
     const quantityInput = document.getElementById('cart-quantity');
+    const chosenQuantity = quantityInput ? parseInt(quantityInput.value) : 1;
 
-    // Якщо інпут існує на сторінці — беремо його value,
-    // якщо інпуту немає (це каталог) — ставимо 1 штуку
-    const chosenQuantity = quantityInput ? (parseInt(quantityInput.value) || 1) : 1;
-
+    // Зчитуємо поточний кошик, щоб врахувати вже додану кількість цього товару
     let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-    const existingItem = cart.find(item => item.id === productId);
+    const existingItem = cart.find(item => parseInt(item.productId) === parseInt(productId));
+    const currentInCartQuantity = existingItem ? existingItem.quantity : 0;
 
-    if (existingItem) {
-        existingItem.quantity += chosenQuantity;
+    // Загальна кількість, яку користувач сумарно хоче мати в кошику
+    let finalRequestedQuantity = currentInCartQuantity + chosenQuantity;
+
+    try {
+        // Асинхронний запит до Spring Boot для валідації залишків на складі
+        const response = await fetch(`/Knit_and_Sew/api/products/${productId}/check-stock?quantity=${finalRequestedQuantity}`);
+        const data = await response.json();
+
+        console.log("final requested quantity: ", finalRequestedQuantity);
+        console.log(data);
+        if (data.currentStock < finalRequestedQuantity) {
+            const message = `Недостатньо товару на складі! Доступно: ${data.currentStock} шт.`
+                + (currentInCartQuantity > 0 ? `(У вас в кошику вже: ${currentInCartQuantity} шт.)` : ``) ;
+            showMiniNotification(message, 'error');
+            return;
+        }
+
+        // Якщо перевірка успішна — зберігаємо в LocalStorage
+        if (existingItem) {
+            existingItem.quantity += chosenQuantity;
+        }
+        else {
+            cart.push({
+                productId: productId,
+                name: itemName,
+                price: itemPrice,
+                quantity: chosenQuantity,
+                image: itemImage,
+                categoryId: categoryId
+            });
+        }
+
+        localStorage.setItem('knit_sew_cart', JSON.stringify(cart));
+
+        updateCartBadge(); // Оновлюємо лічильник у шапці сайту
+        showMiniNotification('Товар успішно додано до кошика!', 'success'); // Виводимо зелене сповіщення про успіх
+        morphButtonToGoToCart(button); // Переводимо кнопку в стан "Перейти до кошика" та вимикаємо +/-
+
     }
-    else {
-        cart.push({
-            categoryId: categoryId,
-            productId: productId,
-            name: itemName,
-            price: itemPrice,
-            quantity: chosenQuantity,
-            image: itemImage
-        });
+    catch (error) {
+        console.error("Помилка валідації складу:", error);
+        showMiniNotification("Помилка з'єднання з сервером під час перевірки складу", "error");
     }
-
-    localStorage.setItem('knit_sew_cart', JSON.stringify(cart));
-
-    // Оновлюємо лічильник у шапці сайту
-    updateCartBadge();
-
-    showMiniNotification(`Додано до кошика: ${itemName} (${chosenQuantity} шт.)`);
-
-    // Трансформуємо в "Перейти до кошика" тільки якщо це велика кнопка на сторінці товару
-    morphButtonToGoToCart(button);
 }
 
 // Для зміни кількості в інпуті на сторінці деталей з товаром
@@ -262,14 +285,11 @@ function renderCartPage() {
 // та стану кнопки "Додати до кошика"
 // на сторінці деталей про товар та на сторінці каталогу
 function morphButtonToGoToCart(button) {
-    console.log("adsjk;lasdjkf;lka s ", button.id);
     if (!button) return;
 
     // Спільні налаштування для обох типів кнопок
-    button.dataset.state = 'go'; // переводимо в стан переходу
-    button.setAttribute('title', 'Перейти до кошика'); // оновлюємо підказку під мишкою
-
-
+    button.dataset.state = 'go';
+    button.setAttribute('title', 'Перейти до кошика');
 
     // Диференціюємо стилі залежно від того, де знаходиться кнопка
     if (button.id === 'add-to-cart-btn') {
@@ -281,20 +301,36 @@ function morphButtonToGoToCart(button) {
         button.className = "px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2";
     }
     else {
-        // Повністю перезаписуємо класи Tailwind на зелені
+        // Логіка для круглої кнопки в каталозі товарів
         button.className = "p-2.5 rounded-full transition-colors bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg flex items-center justify-center";
-
-        // Заміна іконки візка на стрілочку вправо
         const icon = button.querySelector('i');
         if (icon) {
             icon.setAttribute('data-lucide', 'arrow-right');
-            icon.className = "w-5 h-5 text-white pointer-events-none"; // гарантуємо білий колір і захист від кліків
-            if (typeof lucide !== 'undefined') {
-                lucide.createIcons(); // перемальовуємо іконку Lucide на льоту
-            }
+            icon.className = "w-5 h-5 text-white pointer-events-none";
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
     }
 
+    // Автоматичний пошук кнопок +/- на сторінці за їхніми фіксованими ID
+    const increaseQuantityBtn = document.getElementById('increase-quantity-btn');
+    const decreaseQuantityBtn = document.getElementById('decrease-quantity-btn');
+
+    if (increaseQuantityBtn && decreaseQuantityBtn) {
+        // Блокуємо функціонально
+        increaseQuantityBtn.disabled = true;
+        decreaseQuantityBtn.disabled = true;
+
+        // Додаємо візуальний ефект заблокованості (напівпрозорість та курсор заборони)
+        increaseQuantityBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        decreaseQuantityBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+        // Додатково блокуємо сам інпут введення кількості, якщо він є
+        const quantityInput = document.getElementById('cart-quantity');
+        if (quantityInput) {
+            quantityInput.disabled = true;
+            quantityInput.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    }
 }
 
 // Відображення сповіщення про додавання товару

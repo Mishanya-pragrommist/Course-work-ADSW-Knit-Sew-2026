@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Сторінку не знайдено | Knit&Sew</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/lucide@latest"></script>
+	<script th:inline="javascript">
+		tailwind.config = {
+			theme: {
+				extend: {
+					colors: {
+						brand: {
+							light: '#ffedd5',
+							primary: '#ea580c', /* bg-orange-600 */
+							dark: '#c2410c'     /* bg-orange-700 */
+						}
+					}
+				}
+			}
+		}
+	</script>
+</head>
+<body class="bg-stone-50 text-stone-800 flex flex-col min-h-screen">
+
+<main class="flex-grow flex items-center justify-center px-4 py-16">
+	<div class="max-w-md w-full text-center bg-white p-8 rounded-2xl shadow-md border border-stone-100">
+
+		<div class="relative w-32 h-32 mx-auto mb-6 flex items-center justify-center bg-orange-50 rounded-full text-brand-primary">
+			<i data-lucide="scissors" class="w-12 h-12 absolute -top-1 -right-1 rotate-45 text-orange-400"></i>
+			<i data-lucide="help-circle" class="w-16 h-16 animate-bounce"></i>
+		</div>
+
+		<h1 class="text-7xl font-extrabold text-brand-primary mb-2">404</h1>
+		<h2 class="text-2xl font-bold text-stone-900 mb-4">Ниточка обірвалася...</h2>
+
+		<p class="text-stone-600 mb-8 leading-relaxed">
+			На жаль, сторінку, яку ви шукаєте, не знайдено. Можливо, вона переїхала або адреса була введена з помилкою.
+		</p>
+
+		<div class="flex flex-col sm:flex-row gap-3 justify-center">
+			<a href="javascript:history.back()" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-stone-300 rounded-xl font-medium text-stone-700 hover:bg-stone-100 transition-all duration-200">
+				<i data-lucide="arrow-left" class="w-4 h-4"></i>
+				Назад
+			</a>
+			<a th:href="@{/}" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-primary hover:bg-brand-dark text-white rounded-xl font-medium shadow-sm hover:shadow transition-all duration-200">
+				<i data-lucide="home" class="w-4 h-4"></i>
+				На головну
+			</a>
+		</div>
+	</div>
+</main>
+
+<script>
+	// Ініціалізація іконок
+	lucide.createIcons();
+</script>
+<script th:src="@{/js/cart-badge.js}"></script>
+</body>
+</html>

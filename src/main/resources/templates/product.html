@@ -123,10 +123,10 @@
 				<form class="flex gap-4 mb-8" th:if="${product.isAvailable}">
 					<!-- Вибір кількості -->
 					<div class="flex items-center border border-gray-300 rounded">
-						<button type="button" onclick="changeQuantity(-1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">-</button>
+						<button id="increase-quantity-btn" type="button" onclick="changeQuantity(-1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">-</button>
 						<input type="number" id="cart-quantity" name="quantity" value="1" min="1" readonly
 							   class="w-12 text-center bg-transparent border-none focus:outline-none">
-						<button type="button" onclick="changeQuantity(1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">+</button>
+						<button id="decrease-quantity-btn" type="button" onclick="changeQuantity(1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">+</button>
 					</div>
 
 					<button type="button"
@@ -140,7 +140,7 @@
 							onclick="handleAddToCart(this)"
 							class="px-6 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2">
 						<i data-lucide="shopping-cart" class="w-5 h-5 text-white"></i>
-						<span>Додати в кошик</span>
+						<span>Додати до кошика</span>
 					</button>
 				</form>
 

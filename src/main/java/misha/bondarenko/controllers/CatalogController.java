@@ -3,8 +3,6 @@ package misha.bondarenko.controllers;
 import misha.bondarenko.records.dto.CategoryCardDto;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
-import misha.bondarenko.services.CategoryService;
-import misha.bondarenko.services.ItemService;
 import misha.bondarenko.services.interfaces.ICategoryService;
 import misha.bondarenko.services.interfaces.IItemService;
 import org.springframework.stereotype.Controller;
@@ -37,14 +35,10 @@ public class CatalogController {
             CategoryCardDto categoryCard = categoryService.getCategoryCardById(id);
             List<ProductCardDto> productCardDtoList = itemService.getProductCardsDto(id);
 
-            // Порожній фільтр для збору даних з форми
-            model.addAttribute("filter", productFilter);
+            model.addAttribute("filter", productFilter); // Порожній фільтр для збору даних з форми
             model.addAttribute("category", categoryCard);
             model.addAttribute("products", productCardDtoList);
 
-            // Для дебагу
-            System.out.println("Size of list: " + productCardDtoList.size());
-            System.out.println(productCardDtoList.get(0).name());
             return "products-list";
         }
         catch (Exception e) {
@@ -61,8 +55,8 @@ public class CatalogController {
 
         Long catalogId = Long.valueOf(id);
         CategoryCardDto categoryCardById = categoryService.getCategoryCardById(catalogId);
-        System.out.println(filter.minPrice() + " " +  filter.maxPrice() + " " + filter.accessoryType());
-        // Отримуємо відфільтровані та відсортовані картки
+        System.out.println("sort by: " + sortBy + ", direction: " + direction);
+
         List<ProductCardDto> products = itemService.getProductCardsDtoFiltered(
                 catalogId, filter, sortBy, direction
         );
@@ -72,13 +66,10 @@ public class CatalogController {
         model.addAttribute("filter", filter);
         model.addAttribute("category", categoryCardById);
 
-        model.addAttribute("categoryName", categoryCardById.name());
-
-        // Передаємо параметри сортування для підсвічування активних кнопок у UI
+        // Передаємо параметри сортування
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("direction", direction);
 
-        // Повертаємо назву шаблону (наприклад, сторінку каталогу з оновленими товарами)
         return "products-list";
     }
 

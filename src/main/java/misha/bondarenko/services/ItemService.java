@@ -9,14 +9,15 @@ import misha.bondarenko.repositories.ItemRepository;
 import misha.bondarenko.repositories.KitRepository;
 import misha.bondarenko.services.interfaces.IItemService;
 import misha.bondarenko.specifications.ProductSpecifications;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @Service
 public class ItemService implements IItemService {
@@ -40,6 +41,11 @@ public class ItemService implements IItemService {
         return itemRepository.findByName(name).orElse(null);
     }
 
+    /**
+     * Отримати список карток товарів з певної категорії для відображення сітки товарів
+     * @param catalogId номер категорії для пошуку
+     * @return повний список карток товарів
+     */
     public List<ProductCardDto> getProductCardsDto(Long catalogId) {
         Category category = categoryRepository.findById(catalogId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
@@ -49,6 +55,11 @@ public class ItemService implements IItemService {
                 .toList();
     }
 
+    /**
+     * Отримати картку вибраного товару
+     * @param id номер шуканого товару
+     * @return картка товару
+     */
     public ProductCardDto getProductCardById(Long id) {
         return adaptProductToCardDto(findItemById(id));
     }
@@ -75,6 +86,14 @@ public class ItemService implements IItemService {
         );
     }
 
+    /**
+     * Відфільтрувати та сортувати картки товарів з вибраного каталогу
+     * @param catalogId номер каталогу для пошуку товарів
+     * @param filter фільтр (враховує загальні та специфічні атрибути)
+     * @param sortBy критерій сортування (за ціною, за новизною тощо)
+     * @param direction напрямок сортування (від найменшого до найбільшого та навпаки)
+     * @return відфільтрований та відсортований список карток товарів
+     */
     public List<ProductCardDto> getProductCardsDtoFiltered(Long catalogId,
                                                            ProductFilter filter,
                                                            String sortBy,
@@ -82,21 +101,15 @@ public class ItemService implements IItemService {
         Category category = categoryRepository.findById(catalogId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        Sort sort = Sort.unsorted();
-        if (sortBy != null && !sortBy.isBlank()) {
-            sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending()
-                    : Sort.by(sortBy).ascending();
-        }
-
-        // Об'єднуємо динамічний фільтр користувача з прив'язкою до конкретного батьківського каталогу
         Specification<Item> spec = Specification
                 .where(ProductSpecifications.withFilter(filter))
                 .and((root, query, cb) -> cb.equal(root.get("parent"), category));
 
-        return itemRepository.findAll(spec, sort)
+        Stream<ProductCardDto> stream = itemRepository.findAll(spec)
                 .stream()
                 .filter(item -> {
-                    // Викликаємо поліморфний метод (для Kit він просумує компоненти,
+                    // Викликаємо поліморфний метод
+                    // (для Kit він просумує компоненти,
                     // для Product - застосує знижку)
                     BigDecimal actualPrice = item.getTotalPrice();
 
@@ -105,8 +118,20 @@ public class ItemService implements IItemService {
 
                     return passMin && passMax;
                 })
-                .map(this::adaptProductToCardDto)
-                .toList();
+                .map(this::adaptProductToCardDto);
+
+        // Динамічне сортування (може бути розширене в майбутньому)
+        assert sortBy != null;
+        if (sortBy.equals("totalPrice")) {
+            // За загальною ціною (базова ціна та знижка)
+            Comparator<ProductCardDto> priceComparator = Comparator.comparing(ProductCardDto::newPrice);
+            if (direction.equalsIgnoreCase("desc")) {
+                priceComparator = priceComparator.reversed();
+            }
+            stream = stream.sorted(priceComparator);
+        }
+
+        return stream.toList();
     }
 
     /**

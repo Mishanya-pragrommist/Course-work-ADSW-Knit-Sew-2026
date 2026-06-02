@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<!-- Логотип -->
+<a th:fragment="logo" th:href="@{/}" class="text-2xl font-bold text-brand-600 flex items-center gap-2">
+	<i data-lucide="scissors" class="w-6 h-6"></i>
+	Knit&Sew
+</a>
+
+<!-- Іконки користувача -->
+<div th:fragment="user-cart-icon" class="flex items-center space-x-5">
+	<button class="text-gray-500 hover:text-brand-600 transition-colors">
+		<i data-lucide="user" class="w-6 h-6"></i>
+	</button>
+	<!-- Іконка кошика -->
+	<a th:href="@{/cart}" class="text-gray-500 hover:text-brand-600 transition-colors relative">
+		<i data-lucide="shopping-cart" class="w-6 h-6"></i>
+		<!-- Індикатор кількості товарів поруч з кошиком -->
+		<span class="absolute -top-2 -right-2 bg-brand-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full"
+			  id="cart-badge">0</span>
+	</a>
+</div>
+
+</html>

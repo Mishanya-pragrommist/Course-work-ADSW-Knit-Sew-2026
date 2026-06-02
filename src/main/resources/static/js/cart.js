@@ -132,22 +132,52 @@ function changeQuantity(amount) {
 }
 
 // Змінити кількість вибраного товару на сторінці Кошик
-function updateItemQuantity(itemId, amount) {
+async function updateItemQuantity(productId, change) {
+    // 1. Зчитуємо поточний стан кошика з LocalStorage
     let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
-    const itemIndex = cart.findIndex(item => parseInt(item.productId) === parseInt(itemId));
+    const itemIndex = cart.findIndex(item => parseInt(item.productId) === parseInt(productId));
 
-    if (itemIndex !== -1) {
-        cart[itemIndex].quantity += amount;
+    if (itemIndex === -1) return;
 
-        if (cart[itemIndex].quantity < 1) {
-            cart[itemIndex].quantity = 1;
+    const currentItem = cart[itemIndex];
+    const newQuantity = currentItem.quantity + change;
+
+    // 2. Якщо кількість зменшується до 0 або менше — видаляємо товар з кошика
+    if (newQuantity < 1) return;
+
+    // 3. Якщо користувач збільшує кількість, перевіряємо залишки на складі
+    if (change > 0) {
+        try {
+            // Робимо запит до REST API
+            const response = await fetch(`/Knit_and_Sew/api/products/${productId}/check-stock?quantity=${newQuantity}`);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Якщо на складі недостатньо товару для такої нової кількості
+            if (data.currentStock < newQuantity) {
+                showMiniNotification(`Не можна додати більше! На складі всього: ${data.currentStock} шт.`, 'error');
+                return; // Блокуємо оновлення, нічого не змінюємо в LocalStorage
+            }
+
         }
-
-        localStorage.setItem('knit_sew_cart', JSON.stringify(cart));
-
-        updateCartBadge();
-        renderCartPage();
+        catch (error) {
+            console.error("Помилка під час валідації кількості в кошику:", error);
+            showMiniNotification("Помилка перевірки складу на сервері", "error");
+            return;
+        }
     }
+
+    // 4. Якщо перевірка успішна (або це було зменшення кількості) — оновлюємо дані
+    currentItem.quantity = newQuantity;
+    localStorage.setItem('knit_sew_cart', JSON.stringify(cart));
+
+    // 5. Оновлюємо інтерфейс
+    renderCartPage();
+    updateCartBadge();
 }
 
 // Повністю видалити товар із кошика
@@ -155,8 +185,6 @@ function removeFromCart(itemId) {
     itemId = Number(itemId);
     let cart = JSON.parse(localStorage.getItem('knit_sew_cart')) || [];
 
-    console.log("updateItemQuantity() for ID:", itemId, " type ", typeof itemId);
-    console.log("Поточний кошик у пам'яті:", cart);
     const newCart = cart.filter(item => parseInt(item.productId) !== itemId);
 
     if (newCart.length === cart.length) return;
@@ -334,11 +362,17 @@ function morphButtonToGoToCart(button) {
 }
 
 // Відображення сповіщення про додавання товару
-function showMiniNotification(message) {
+function showMiniNotification(message, type) {
     // Створюємо елемент сповіщення
     const notification = document.createElement('div');
-    notification.className = "fixed bottom-5 right-5 bg-green-600 text-white " +
-        "px-4 py-3 rounded shadow-lg z-50 transition-opacity duration-300 animate-bounce";
+    if (type === 'success') {
+        notification.className = "fixed bottom-5 right-5 bg-green-600 text-white " +
+            "px-4 py-3 rounded shadow-lg z-50 transition-opacity duration-300 animate-bounce";
+    }
+    else if (type === 'error') {
+        notification.className = "fixed bottom-5 right-5 bg-red-600 text-white " +
+            "px-4 py-3 rounded shadow-lg z-50 transition-opacity duration-300 animate-bounce";
+    }
     notification.innerText = message;
 
     document.body.appendChild(notification);

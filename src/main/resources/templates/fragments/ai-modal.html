@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="ai-chat-modal"
+	 id="ai-chat-modal"
+	 class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 transition-all duration-300">
+	<div class="bg-white rounded-xl shadow-2xl w-full max-w-md flex flex-col h-[550px]
+	 overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
+
+		<div class="bg-gradient-to-r from-orange-600 to-red-600 text-white px-4 py-3.5 flex items-center justify-between shadow-sm">
+			<div class="flex items-center space-x-2.5">
+				<div class="p-1.5 bg-white/10 rounded-lg">
+					<i data-lucide="sparkles" class="w-5 h-5 text-amber-300 animate-pulse"></i>
+				</div>
+				<div>
+					<h3 class="font-bold text-sm tracking-wide">Knit&Sew AI Assistant</h3>
+					<p class="text-[11px] text-orange-100 flex items-center gap-1">
+						На базі Gemini Flash-lite 2.5
+					</p>
+				</div>
+			</div>
+			<button type="button"
+					id="close-ai-chat-btn"
+					class="p-1 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-all focus:outline-none"
+					title="Закрити чат">
+				<i data-lucide="x" class="w-5 h-5"></i>
+			</button>
+		</div>
+
+		<div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3.5 bg-gray-50/80">
+
+			<div class="flex items-start space-x-2.5 max-w-[85%]">
+				<div class="p-2 bg-orange-100 text-orange-600 rounded-xl flex-shrink-0 shadow-sm">
+					<i data-lucide="bot" class="w-4 h-4"></i>
+				</div>
+				<div class="bg-white p-3 rounded-2xl rounded-tl-none border border-gray-200/60 shadow-sm text-gray-700 text-sm leading-relaxed">
+					Привіт! Я твій розумний помічник **Knit&Sew**. 🧶 ✨<br><br>
+					Допоможу підібрати пряжу, розрахувати кількість матеріалів для светра чи шарфа,
+					або знайду ідеальний набір інструментів. Про що ти хочеш дізнатися?
+				</div>
+			</div>
+
+		</div>
+
+		<!--TODO: implement actual message sending-->
+		<div class="p-3.5 border-t border-gray-150 bg-white">
+			<form id="ai-chat-form" class="flex items-center space-x-2">
+				<input type="text"
+					   id="chat-user-input"
+					   placeholder="Запитайте щось у ШІ (напр. Скільки пряжі треба на шарф?)..."
+					   autocomplete="off"
+					   class="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl
+					   text-sm placeholder:text-gray-400 focus:outline-none focus:border-orange-500
+					    focus:ring-2 focus:ring-orange-500/20 text-gray-700 transition-all">
+
+				<button type="button"
+						id="send-chat-msg-btn"
+						class="p-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl
+						transition-all focus:outline-none shadow-md shadow-orange-600/10 active:scale-95">
+					<i data-lucide="send" class="w-4 h-4"></i>
+				</button>
+			</form>
+		</div>
+
+	</div>
+</div>
+</html>

@@ -1,11 +1,9 @@
-package misha.bondarenko;
+package misha.bondarenko.configs;
 
 import misha.bondarenko.entities.products.*;
 import misha.bondarenko.enums.MeasureUnit;
-import misha.bondarenko.services.AiService;
 import misha.bondarenko.services.CategoryService;
 import misha.bondarenko.services.ItemService;
-import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 
 @Configuration
-public class DbFiller {
+public class DataBaseConfig {
 
     @Bean
     @Transactional

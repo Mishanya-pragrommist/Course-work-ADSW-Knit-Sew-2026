@@ -4,7 +4,6 @@ import misha.bondarenko.entities.products.Category;
 import misha.bondarenko.records.dto.CategoryCardDto;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public interface ICategoryService {
     // --- Render methods ---

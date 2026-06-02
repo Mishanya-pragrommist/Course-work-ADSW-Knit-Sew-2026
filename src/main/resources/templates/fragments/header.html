@@ -9,9 +9,19 @@
 
 <!-- Іконки користувача -->
 <div th:fragment="user-cart-icon" class="flex items-center space-x-5">
-	<button class="text-gray-500 hover:text-brand-600 transition-colors">
+	<button type="button"
+			id="open-ai-chat-btn"
+			class="text-gray-500 hover:text-brand-600 transition-colors"
+			title="Запитати ШІ-асистента Knit&Sew">
+		<i data-lucide="sparkles" class="w-6 h-6"></i>
+	</button>
+
+	<button type="button"
+			class="text-gray-500 hover:text-brand-600 transition-colors"
+			title="Особистий кабінет">
 		<i data-lucide="user" class="w-6 h-6"></i>
 	</button>
+	
 	<!-- Іконка кошика -->
 	<a th:href="@{/cart}" class="text-gray-500 hover:text-brand-600 transition-colors relative">
 		<i data-lucide="shopping-cart" class="w-6 h-6"></i>

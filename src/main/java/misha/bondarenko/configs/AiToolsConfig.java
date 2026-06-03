@@ -1,5 +1,6 @@
 package misha.bondarenko.configs;
 
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import misha.bondarenko.records.dto.CategoryCardDto;
 import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
@@ -59,51 +60,90 @@ public class AiToolsConfig {
 
     /**
      * DTO-запит, який ШІ буде заповнювати самостійно на основі тексту користувача.
-     * и лише найпопулярніші поля для спрощення роботи ШІ.
+     * Містить лише найпопулярніші семантичні атрибути пошуку.
      */
     public record ProductSearchRequest(
+            @JsonPropertyDescription("ID каталогу, у якому шукати (обов'язково дізнайся його через getCategoriesTool)")
             Long catalogId,
+
+            @JsonPropertyDescription("Ключове слово для пошуку в назві товару")
             String name,
-            BigDecimal minPrice,
-            BigDecimal maxPrice,
+
+            @JsonPropertyDescription("Артикул товару, наприклад ART-101")
             String article,
-            String dyeLot,
-            String supplier,
+
+            @JsonPropertyDescription("Мінімальна ціна у гривнях")
+            BigDecimal minPrice,
+
+            @JsonPropertyDescription("Максимальна ціна у гривнях")
+            BigDecimal maxPrice,
+
+            @JsonPropertyDescription("Бренд товару")
             String brand,
+
+            @JsonPropertyDescription("Колір товару (наприклад: червоний, синій, меланж)")
             String color,
-            String material
+
+            @JsonPropertyDescription("Склад пряжі або тканини (наприклад: вовна, бавовна, акрил)")
+            String composition,
+
+            @JsonPropertyDescription("Матеріал інструментів чи фурнітури (наприклад: дерево, метал, пластик)")
+            String material,
+
+            @JsonPropertyDescription("Розмір (наприклад: діаметр спиць/гачків '4мм')")
+            String size,
+
+            @JsonPropertyDescription("Рівень складності (тільки для схем/майстер-класів: " +
+                    "'початковий', 'середній', 'складний')")
+            String difficultyLevel,
+
+            @JsonPropertyDescription("Встанови true, якщо користувач шукає наповнювач для дитячих іграшок або алергіків")
+            Boolean isHypoallergenic
     ) {}
 
     @Bean
     @Description("Шукати товари у визначеному каталозі." +
             " Завжди спочатку дізнавайся catalogId за допомогою getCategoriesTool. " +
-            "Можна вказати minPrice, maxPrice, article dyeLot (партія фарбування), supplier, brand, color, material." +
             "Усі параметри можуть бути задані як null, окрім catalogId")
     public Function<ProductSearchRequest, List<ProductCardDto>> searchProductsTool(ItemService itemService) {
         return request -> {
 
-            // Перетворюємо запит від ШІ у ваш складний ProductFilter
+            // Створюємо великий системний фільтр, заповнюючи лише ті поля, що передав ШІ.
+            // Інші поля залишаємо null.
             ProductFilter aiFilter = new ProductFilter(
-                    request.name(),
-                    request.minPrice(),
-                    request.maxPrice(),
-                    true, // Шукаємо тільки ті, що є в наявності
-                    request.brand(),
-                    request.supplier(),
-                    request.article(),
-                    request.color(),
-                    request.material(),
-                    null, null, null,
-                    null, null, null,
-                    null, null, null,
-                    null, null,
-                    null, null, null,
+                    request.name(),              // name
+                    request.minPrice(),          // minPrice
+                    request.maxPrice(),          // maxPrice
+                    true,                        // isAvailable (ШІ завжди має шукати те, що є в наявності)
+                    request.brand(),             // brand
+                    null,                        // supplier
+                    request.article(),           // article
+
+                    request.color(),             // color
+                    request.material(),          // material
+                    request.size(),              // size
+                    request.composition(),       // composition
+                    null,                        // country
+                    null,                        // minDensity
+                    null,                        // maxDensity
+
+                    // Специфічні типи (залишаємо null, бо ШІ шукає за catalogId та name)
                     null, null, null, null,
-                    null,  null, null
+                    null, null, null, null,
+
+                    null,                        // maxWeightKg
+                    null,                        // author
+                    null,                        // publisher
+                    null,                        // publicationYear
+                    request.difficultyLevel(),   // difficultyLevel
+                    null,                        // format
+                    null,                        // language
+
+                    request.isHypoallergenic()   // isHypoallergenic
             );
 
-            // Викликаємо ваш існуючий метод для фільтрації!
-            // За замовчуванням сортуємо за ціною за зростанням
+            // Викликаємо метод для фільтрації.
+            // За замовчуванням сортуємо за зростанням ціни
             return itemService.getProductCardsDtoFiltered(
                     request.catalogId(),
                     aiFilter,

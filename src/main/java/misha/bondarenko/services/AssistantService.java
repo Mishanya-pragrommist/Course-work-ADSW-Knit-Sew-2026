@@ -10,8 +10,11 @@ import org.springframework.stereotype.Service;
 public class AssistantService implements IAssistantService {
 
     private final ChatClient chatClient;
+    private final ChatHistoryService historyService;
 
-    public AssistantService(ChatClient.Builder chatClientBuilder, ChatMemory chatMemory) {
+    public AssistantService(ChatClient.Builder chatClientBuilder,
+                            ChatMemory chatMemory,
+                            ChatHistoryService historyService) {
         this.chatClient = chatClientBuilder
                 .defaultSystem("Ти — привітний та професійний ШІ-асистент магазину рукоділля Knit&Sew. " +
                         "Твоя мета — допомагати клієнтам підбирати товари. Завжди використовуй надані тобі інструменти (tools) " +
@@ -19,17 +22,36 @@ public class AssistantService implements IAssistantService {
                 .defaultToolNames("getCategoriesTool", "searchProductsTool")
                 .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build()) // ПІДКЛЮЧАЄМО ПАМ'ЯТЬ
                 .build();
+        this.historyService = historyService;
     }
 
     // Додаємо параметр chatId
     @Override
-    public String getResponseFromAi(String chatId, String prompt) {
-        return chatClient.prompt(prompt)
-                .advisors(a -> a.param(
-                        ChatMemory.CONVERSATION_ID,
-                        chatId
-                ))
-                .call()
-                .content();
+    public String getResponseFromAi(
+            String chatId,
+            String prompt) {
+
+        historyService.addMessage(
+                chatId,
+                "user",
+                prompt
+        );
+
+        String response =
+                chatClient.prompt(prompt)
+                        .advisors(a -> a.param(
+                                ChatMemory.CONVERSATION_ID,
+                                chatId
+                        ))
+                        .call()
+                        .content();
+
+        historyService.addMessage(
+                chatId,
+                "assistant",
+                response
+        );
+
+        return response;
     }
 }

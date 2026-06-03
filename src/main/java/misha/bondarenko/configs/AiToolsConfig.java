@@ -63,6 +63,7 @@ public class AiToolsConfig {
      */
     public record ProductSearchRequest(
             Long catalogId,
+            String name,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             String article,
@@ -83,6 +84,7 @@ public class AiToolsConfig {
 
             // Перетворюємо запит від ШІ у ваш складний ProductFilter
             ProductFilter aiFilter = new ProductFilter(
+                    request.name(),
                     request.minPrice(),
                     request.maxPrice(),
                     true, // Шукаємо тільки ті, що є в наявності

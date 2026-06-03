@@ -7,6 +7,7 @@ import java.math.BigDecimal;
  */
 public record ProductFilter(
         // === Загальні параметри (Product / Kit) ===
+        String name,
         BigDecimal minPrice,
         BigDecimal maxPrice,
         Boolean isAvailable,

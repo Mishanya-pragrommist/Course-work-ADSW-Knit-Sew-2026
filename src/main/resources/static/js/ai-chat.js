@@ -187,7 +187,6 @@ class ChatManager {
 
     // Додати та відобразити повідомлення (від юзера, від ШІ, від системи)
     appendMessage(sender, text) {
-
         const msgDiv = document.createElement('div');
         msgDiv.className = `flex items-start space-x-2.5 ${sender === 'user' ? 'justify-end' : 'max-w-[85%]'}`;
 

@@ -2,6 +2,7 @@ class ChatManager {
 
     constructor(aiEndpoint) {
         this.aiEndpoint = aiEndpoint;
+
         // Модальне вікно
         this.aiChatBtn = document.getElementById('open-ai-chat-btn');
         this.aiChatModal = document.getElementById('ai-chat-modal');

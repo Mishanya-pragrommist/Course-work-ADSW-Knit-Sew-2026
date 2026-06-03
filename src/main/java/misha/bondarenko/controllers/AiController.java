@@ -1,5 +1,6 @@
 package misha.bondarenko.controllers;
 
+import jakarta.servlet.http.HttpSession;
 import misha.bondarenko.services.interfaces.IAssistantService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +22,15 @@ public class AiController {
      * Отримати відповідь від розумного асистента на основі запиту
      */
     @GetMapping("/ask")
-    public ResponseEntity<String> getResponseFromAi(@RequestParam("prompt") String prompt) {
-        String responseFromAi = assistantService.getResponseFromAi(prompt);
-        return ResponseEntity.ok(responseFromAi);
+    public ResponseEntity<String> getResponseFromAi(
+            HttpSession session,
+            @RequestParam String prompt) {
+
+        String chatId = session.getId();
+
+        return ResponseEntity.ok(
+                assistantService.getResponseFromAi(chatId, prompt)
+        );
     }
+
 }

@@ -136,9 +136,11 @@
 <!-- Футер -->
 <footer th:replace="~{fragments/footer :: footer-copy}"></footer>
 
-<script>
-	lucide.createIcons();
-</script>
+<!-- Модальне вікно для ШІ-асистента -->
+<div th:replace="~{fragments/ai-modal.html :: ai-chat-modal}"></div>
+
+<script>lucide.createIcons();</script>
+<script th:src="@{/js/ai-chat.js}"></script>
 <script th:src="@{/js/cart.js}"></script>
 </body>
 </html>

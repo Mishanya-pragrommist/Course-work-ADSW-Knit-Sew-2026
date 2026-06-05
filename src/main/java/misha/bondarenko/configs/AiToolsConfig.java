@@ -6,7 +6,6 @@ import misha.bondarenko.records.dto.ProductCardDto;
 import misha.bondarenko.records.filters.ProductFilter;
 import misha.bondarenko.services.CategoryService;
 import misha.bondarenko.services.ItemService;
-import org.jspecify.annotations.NonNull;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;

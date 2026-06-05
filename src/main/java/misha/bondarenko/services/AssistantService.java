@@ -15,7 +15,8 @@ public class AssistantService implements IAssistantService {
     public AssistantService(ChatClient.Builder chatClientBuilder,
                             ChatMemory chatMemory,
                             ChatHistoryService historyService) {
-        // Формуємо детальний системний промпт з правилами маршрутизації
+        // Детальний системний промпт з правилами поведінки
+        // та складання посилань на товари та категорії
         String systemPrompt = """
                 Ти — привітний та професійний ШІ-асистент магазину рукоділля Knit&Sew.
                 Твоя мета — допомагати клієнтам підбирати товари.

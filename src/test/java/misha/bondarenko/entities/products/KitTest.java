@@ -22,7 +22,7 @@ public class KitTest {
     @Test
     @DisplayName("1. Додавання/видалення товарів та динамічне оновлення вартості набору")
     void testAddRemoveComponentsAndPriceUpdates() {
-        // Створюємо порожній набір без системної знижки
+        // Створюємо порожній набір без знижки
         Kit dynamicKit = new Kit(null, "ART-DYNAMIC", "Динамічний набір",
                 "Опис", BigDecimal.ZERO, true, "/images/plugs/kit.png");
 

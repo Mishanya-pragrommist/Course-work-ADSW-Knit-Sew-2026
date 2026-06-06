@@ -31,10 +31,10 @@
 
 <header class="bg-white shadow-sm sticky top-0 z-50">
 	<div class="container mx-auto px-4 py-4 flex justify-between items-center">
-		<!-- Логотип -->
+		<!-- Logo -->
 		<div th:replace="~{fragments/header.html :: logo}"></div>
 
-		<!-- Навігація по сайту -->
+		<!-- Navigation bar -->
 		<nav class="hidden md:flex space-x-8">
 			<a th:href="@{/}" class="text-gray-600 hover:text-brand-600 transition-colors">Каталоги</a>
 			<a th:href="@{/about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
@@ -42,7 +42,7 @@
 			<a th:href="@{/payment-delivery}" class="text-brand-600 font-medium">Оплата і доставка</a>
 		</nav>
 
-		<!-- Іконки користувача -->
+		<!-- User's icons -->
 		<div th:replace="~{fragments/header.html :: user-cart-icon}"></div>
 	</div>
 </header>
@@ -133,10 +133,8 @@
 	</div>
 </main>
 
-<!-- Футер -->
 <footer th:replace="~{fragments/footer :: footer-copy}"></footer>
 
-<!-- Модальне вікно для ШІ-асистента -->
 <div th:replace="~{fragments/ai-modal.html :: ai-chat-modal}"></div>
 
 <script>lucide.createIcons();</script>

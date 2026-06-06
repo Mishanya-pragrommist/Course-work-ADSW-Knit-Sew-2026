@@ -15,7 +15,7 @@
 						brand: {
 							50: '#fdf2f8',
 							100: '#fce7f3',
-							500: '#ec6648', // Основний помаранчевий акцент
+							500: '#ec6648',
 							600: '#dd571d',
 							700: '#be1818',
 						}
@@ -27,14 +27,14 @@
 </head>
 <body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
 
-<!-- Хедер -->
+<!-- Header -->
 <header class="bg-white shadow-sm sticky top-0 z-50">
 	<div class="container mx-auto px-4 py-4 flex justify-between items-center">
-		<!-- Логотип -->
+		<!-- Logo -->
 		<div th:replace="~{fragments/header.html :: logo}"></div>
 
 
-		<!-- Навігація по сайту -->
+		<!-- Navigation bar -->
 		<nav class="hidden md:flex space-x-8">
 			<a th:href="@{/}" class="text-brand-600 font-medium">Каталоги</a>
 			<a th:href="@{/about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
@@ -42,15 +42,16 @@
 			<a th:href="@{/payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
 		</nav>
 
-		<!-- Іконки користувача -->
+		<!-- User's icons -->
 		<div th:replace="~{fragments/header.html :: user-cart-icon}"></div>
 	</div>
 </header>
 
-<!-- Основний контент -->
+<!-- Main block -->
+
 <main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
 
-	<!-- Хлібні крихти -->
+	<!-- Breadcrumbs -->
 	<nav class="flex text-sm text-gray-500 mb-8" aria-label="Breadcrumb">
 		<ol class="inline-flex items-center space-x-1 md:space-x-3">
 			<li class="inline-flex items-center">
@@ -76,7 +77,7 @@
 	<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8">
 
-			<!-- Ліва колонка: Зображення -->
+			<!-- Big item image on the left side -->
 			<div class="flex flex-col gap-4">
 				<div class="aspect-square bg-gray-100 rounded-xl flex items-center justify-center overflow-hidden border border-gray-100 relative">
 					<img th:if="${product.imageUrl != null}"
@@ -85,7 +86,7 @@
 						 class="w-full h-full object-cover">
 					<i th:unless="${product.imageUrl != null}" data-lucide="image" class="w-24 h-24 text-gray-300"></i>
 
-					<!-- Шильдик знижки -->
+					<!-- Discount badge -->
 					<div th:if="${product.discount != null && product.discount > 0}"
 						 th:text="'Знижка ' + ${#numbers.formatDecimal(product.discount * 100, 1, 2) + '%'}"
 						 class="absolute top-4 left-4 bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">
@@ -94,7 +95,7 @@
 				</div>
 			</div>
 
-			<!-- Права колонка: Інформація та купівля -->
+			<!-- Item's name, "Add to cart", "+" and "-" buttons -->
 			<div class="flex flex-col">
 				<div class="mb-2 flex justify-between items-start">
 					<span class="text-sm text-gray-500" th:text="'Артикул: ' + ${product.article}">Артикул: Невідомо</span>
@@ -104,24 +105,24 @@
 
 				<h1 class="text-3xl font-bold text-gray-900 mb-4" th:text="${product.name}">Назва товару</h1>
 
-				<!-- Блок ціни -->
+				<!-- TotalPrice -->
 				<div class="mb-8 p-4 bg-gray-50 rounded-xl border border-gray-100">
-					<!-- Якщо є знижка -->
+					<!-- Show discount if it's present -->
 					<div th:if="${product.discount != null && product.discount > 0}" class="flex flex-col">
 						<span class="text-sm text-gray-500 line-through mb-1" th:text="${#numbers.formatDecimal(product.oldPrice(), 1, 2)} + ' грн'">100.00 грн (приклад)</span>
 						<div class="flex items-baseline gap-2">
 							<span class="text-4xl font-bold text-brand-600" th:text="${#numbers.formatDecimal(product.newPrice(), 1, 2)} + ' грн'">90.00 грн (приклад)</span>
 						</div>
 					</div>
-					<!-- Якщо знижки немає -->
+					<!-- If no discount -->
 					<div th:if="${product.discount == null || product.discount <= 0}">
 						<span class="text-4xl font-bold text-gray-900" th:text="${#numbers.formatDecimal(product.oldPrice(), 1, 2)} + ' грн'">100.00 грн (приклад)</span>
 					</div>
 				</div>
 
-				<!-- Додавання в кошик -->
+				<!-- Buttons for adding to cart  -->
 				<form class="flex gap-4 mb-8" th:if="${product.isAvailable}">
-					<!-- Вибір кількості -->
+					<!-- Choosing quantity of item -->
 					<div class="flex items-center border border-gray-300 rounded">
 						<button id="increase-quantity-btn" type="button" onclick="changeQuantity(-1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">-</button>
 						<input type="number" id="cart-quantity" name="quantity" value="1" min="1" readonly
@@ -129,6 +130,7 @@
 						<button id="decrease-quantity-btn" type="button" onclick="changeQuantity(1)" class="px-3 py-1 bg-gray-100 text-gray-700 hover:bg-gray-200">+</button>
 					</div>
 
+					<!-- Add to cart button -->
 					<button type="button"
 							id="add-to-cart-btn"
 							th:data-category-id="${category.id}"
@@ -144,7 +146,7 @@
 					</button>
 				</form>
 
-				<!-- Опис -->
+				<!-- Description -->
 				<div class="border-t border-gray-100 pt-8 mt-auto">
 					<h3 class="text-lg font-semibold text-gray-900 mb-3">Опис товару</h3>
 					<p class="text-gray-600 leading-relaxed" th:text="${product.description ?: 'Опис відсутній.'}">
@@ -155,15 +157,16 @@
 		</div>
 	</div>
 
-	<!-- Секція характеристик -->
+	<!-- Table with characteristics -->
 	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
 		 th:if="${productAttributes != null and !productAttributes.isEmpty()}">
+
 		<h3 class="text-xl font-bold text-gray-900 mb-6">Характеристики</h3>
 
-		<!-- Таблиця з даними про товар -->
+		<!-- Table itself -->
 		<div class="grid grid-cols-1 md:grid-cols-2 gap-x-20">
 
-			<!-- Ліва колонка: перша половина списку -->
+			<!-- First half of attributes on the left side -->
 			<div class="flex flex-col gap-4">
 				<div th:each="attr, stat : ${productAttributes}"
 					 th:if="${stat.index < (stat.size + 1) / 2}"
@@ -173,7 +176,7 @@
 				</div>
 			</div>
 
-			<!-- Права колонка: друга половина (решта) списку -->
+			<!-- The rest of attributes on the right side -->
 			<div class="flex flex-col gap-4 mt-4 md:mt-0">
 				<div th:each="attr, stat : ${productAttributes}"
 					 th:if="${stat.index >= (stat.size + 1) / 2}"
@@ -184,7 +187,8 @@
 			</div>
 		</div>
 	</div>
-	<!-- Секція "Склад набору" (Відображається тільки якщо є компоненти) -->
+
+	<!-- Section "Kits components" (only for Kits) -->
 	<div class="mt-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8"
 		 th:if="${product.kitComponents != null and !product.kitComponents.isEmpty()}">
 		<h3 class="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
@@ -193,11 +197,11 @@
 		</h3>
 
 		<div class="space-y-4">
-			<!-- Картка окремого компонента -->
+			<!-- Component cart -->
 			<div th:each="comp : ${product.kitComponents}"
 				 class="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl border border-gray-100 bg-gray-50 hover:bg-white hover:shadow-sm transition-all gap-4">
 
-				<!-- Інфо: Зображення + Назва -->
+				<!-- image + name -->
 				<div class="flex items-center gap-4 flex-1">
 					<div class="w-16 h-16 rounded-lg bg-white border border-gray-200 overflow-hidden flex-shrink-0 flex items-center justify-center">
 						<img th:if="${comp.product.imageUrl != null}"
@@ -222,10 +226,8 @@
 
 </main>
 
-<!-- Футер -->
 <footer th:replace="~{fragments/footer :: footer-copy}"></footer>
 
-<!-- Модальне вікно для ШІ-асистента -->
 <div th:replace="~{fragments/ai-modal.html :: ai-chat-modal}"></div>
 
 <script>lucide.createIcons();</script>

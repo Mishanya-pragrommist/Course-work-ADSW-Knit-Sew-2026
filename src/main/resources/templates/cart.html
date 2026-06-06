@@ -28,10 +28,10 @@
 
 <header class="bg-white shadow-sm sticky top-0 z-50">
 	<div class="container mx-auto px-4 py-4 flex justify-between items-center">
-		<!-- Логотип -->
+		<!-- Logo -->
 		<div th:replace="~{fragments/header.html :: logo}"></div>
 
-		<!-- Навігація по сайту -->
+		<!-- Navigation bar -->
 		<nav class="hidden md:flex space-x-8">
 			<a th:href="@{/}" class="text-gray-600 hover:text-brand-600 transition-colors">Каталоги</a>
 			<a th:href="@{/about-us}" class="text-gray-600 hover:text-brand-600 transition-colors">Про нас</a>
@@ -39,7 +39,7 @@
 			<a th:href="@{/payment-delivery}" class="text-gray-600 hover:text-brand-600 transition-colors">Оплата і доставка</a>
 		</nav>
 
-		<!-- Іконки користувача -->
+		<!-- User's icons -->
 		<div th:replace="~{fragments/header.html :: user-cart-icon}"></div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 
 	<div id="main-cart-view" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-		<!-- Таблиця з товарами, доданими в Кошик -->
+		<!-- Table with added items -->
 		<div class="lg:grid-cols-3 lg:col-span-2 bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
 			<div class="p-6 border-b border-gray-100 bg-gray-50">
 				<div class="grid grid-cols-12 text-sm font-bold text-gray-500 uppercase tracking-wider">
@@ -87,7 +87,7 @@
 			</div>
 		</div>
 
-		<!-- Підсумок замовлення (загальна к-сть товарів + загальна ціна) -->
+		<!-- Totals of future order: total quantity and price of added items-->
 		<div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6 h-fit sticky top-6">
 			<h3 class="text-lg font-bold border-b border-gray-100 pb-4 mb-4">Підсумок замовлення</h3>
 
@@ -117,10 +117,8 @@
 	</div>
 </main>
 
-<!-- Футер -->
 <footer th:replace="~{fragments/footer :: footer-copy}"></footer>
 
-<!-- Модальне вікно для ШІ-асистента -->
 <div th:replace="~{fragments/ai-modal.html :: ai-chat-modal}"></div>
 
 <script th:src="@{/js/ai-chat.js}"></script>

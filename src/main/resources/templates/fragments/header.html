@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org">
 
-<!-- Логотип -->
+<!-- Website logo -->
 <a th:fragment="logo" th:href="@{/}" class="text-2xl font-bold text-brand-600 flex items-center gap-2">
 	<i data-lucide="scissors" class="w-6 h-6"></i>
 	Knit&Sew
 </a>
 
-<!-- Іконки користувача -->
+<!-- Icons near user's icon -->
 <div th:fragment="user-cart-icon" class="flex items-center space-x-5">
+
+	<!-- AI-assistant icon -->
 	<button type="button"
 			id="open-ai-chat-btn"
 			class="text-gray-500 hover:text-brand-600 transition-colors"
@@ -16,13 +18,14 @@
 		<i data-lucide="sparkles" class="w-6 h-6"></i>
 	</button>
 
+	<!-- Account icon -->
 	<button type="button"
 			class="text-gray-500 hover:text-brand-600 transition-colors"
 			title="Особистий кабінет">
 		<i data-lucide="user" class="w-6 h-6"></i>
 	</button>
 	
-	<!-- Іконка кошика -->
+	<!-- Cart icon -->
 	<a th:href="@{/cart}"
 	   title="Кошик" class="text-gray-500 hover:text-brand-600 transition-colors relative">
 		<i data-lucide="shopping-cart" class="w-6 h-6"></i>

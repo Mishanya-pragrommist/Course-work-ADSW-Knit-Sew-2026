@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<!-- Modal window for smart assistant -->
 <div th:fragment="ai-chat-modal"
 	 id="ai-chat-modal"
 	 class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 transition-all duration-300">
+
 	<div class="bg-white rounded-xl shadow-2xl w-full max-w-md flex flex-col h-[90vh]
 	 overflow-hidden border border-gray-100 animate-in fade-in zoom-in-95 duration-200">
-
+		<!-- Header of modal (assistance's name + button for closing) -->
 		<div class="bg-gradient-to-r from-orange-600 to-red-600 text-white px-4 py-3.5
 					flex items-center justify-between shadow-sm">
 			<div class="flex items-center space-x-2.5">
@@ -27,6 +29,7 @@
 			</button>
 		</div>
 
+		<!-- Greeting message like "Hello, I am your personal assistant..." -->
 		<div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3.5 bg-gray-50/80">
 
 			<div class="flex items-start space-x-2.5 max-w-[85%]">
@@ -42,7 +45,11 @@
 
 		</div>
 
-		<!--TODO: implement product cards rendering-->
+		<!-- Here go all messages in user's dialogue -->
+
+		<!-- TODO: implement product cards rendering in AI's answers -->
+
+		<!-- Text input + button for sending messages -->
 		<div class="p-3.5 border-t border-gray-150 bg-white">
 			<form id="ai-chat-form" class="flex items-center space-x-2">
 				<input type="text"
@@ -64,6 +71,7 @@
 
 	</div>
 
+	<!-- For AI answers rendering using markdown format -->
 	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </div>
 </html>

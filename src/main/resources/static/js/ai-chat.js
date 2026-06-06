@@ -3,12 +3,12 @@ class ChatManager {
     constructor(aiEndpoint) {
         this.aiEndpoint = aiEndpoint;
 
-        // Модальне вікно
+        // Modal window
         this.aiChatBtn = document.getElementById('open-ai-chat-btn');
         this.aiChatModal = document.getElementById('ai-chat-modal');
         this.closeAiChatBtn = document.getElementById('close-ai-chat-btn');
 
-        // Форма чату
+        // Chat form
         this.chatForm = document.getElementById('ai-chat-form');
         this.chatInput = document.getElementById('chat-user-input');
         this.chatMessagesContainer = document.getElementById('chat-messages');
@@ -17,7 +17,7 @@ class ChatManager {
     }
 
     init() {
-        // Якщо чогось немає в DOM — не продовжуємо
+        // If some DOM element is missing, do not render anything
         if (!this.aiChatBtn ||
             !this.aiChatModal ||
             !this.closeAiChatBtn ||
@@ -28,36 +28,36 @@ class ChatManager {
             return;
         }
 
-        // Відкриття чату
+        // For chat opening
         this.aiChatBtn.addEventListener('click', () => this.openChat());
 
-        // Закриття чату
+        // For chat closing
         this.closeAiChatBtn.addEventListener('click', () => this.closeChat());
 
-        // Закриття по кліку на фон
+        // Closing modal by clicking outside the window
         this.aiChatModal.addEventListener('click', (event) => {
             if (event.target === this.aiChatModal) {
                 this.closeChat();
             }
         });
 
-        // Закриття по Escape
+        // Closing modal by clicking "Esc"
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && !this.aiChatModal.classList.contains('hidden')) {
                 this.closeChat();
             }
         });
 
-        // Надсилання повідомлення
-        this.chatForm.addEventListener('submit',
-            (event) => this.handleSubmit(event));
-
+        // Message sending
         this.chatForm.addEventListener('submit',
             (event) => this.handleSubmit(event));
 
         this.loadHistory().then(r => 0);
     }
 
+    // Get all messages from server memory.
+    // History of dialog is only saved for current session.
+    // When session is over, the history gets deleted
     async loadHistory() {
         try {
             const response = await fetch(
@@ -74,15 +74,16 @@ class ChatManager {
                 throw new Error(`HTTP Error: ${response.status}`);
             }
 
-            // Якщо історія порожня, нічого не робимо. Текст привітання залишається
-
             const history = await response.json();
+
+            // If history is empty, don't change anything in modal window.
+            // Greeting message thus remains still
             if (history.length === 0) {
                 return;
             }
 
-            // Якщо вже є історія переписок, видалити привітальне повідомлення (якщо воно було)
-
+            // If history contains smth, delete greeting message (if it was there)
+            // TODO: fix deleting of greeting message. For now, AI's icon is not deleted
             const welcomeMessage =
                 document.getElementById('chat-welcome-message');
 
@@ -90,9 +91,10 @@ class ChatManager {
                 welcomeMessage.remove();
             }
 
-            // Додавання та відображення повідомлень.
-            // Залежно від відправника (юзера, ШІ або системи),
-            // повідомлення відображатимуться по-різному
+            // Add and show messages.
+            // Depending on sender (user, AI or system),
+            // the messages will be shown differently.
+            // Users messages are on right side, all other - on left side
             history.forEach(message => {
                 let sender;
                 switch (message.role) {
@@ -106,6 +108,7 @@ class ChatManager {
                         sender = 'system';
                 }
 
+                // Add and render message
                 this.appendMessage(
                     sender,
                     message.content
@@ -118,7 +121,7 @@ class ChatManager {
         }
     }
 
-    // Відкрити модальне вікно, перевести фокус на нього, затемнити фон
+    // Open modal window, focus it, darken the background
     openChat() {
         this.aiChatModal.classList.remove('hidden');
         this.aiChatModal.classList.add('flex');
@@ -132,32 +135,33 @@ class ChatManager {
         }
     }
 
-    // Закрити модалку та привести вебсторінку до початкового виду
+    // Close modal and return page into normal state
     closeChat() {
         this.aiChatModal.classList.remove('flex');
         this.aiChatModal.classList.add('hidden');
         document.body.classList.remove('overflow-hidden');
     }
 
-    // Надіслати повідомлення юзера до ШІ, додати повідомлення
-    // про запит та відповідь від ШІ до історії переписки
+    // Send user's message to AI, append message with prompt and with AI's response
     async handleSubmit(event) {
         event.preventDefault();
 
-        // Якщо юзер ввів порожній рядок (або просто пробіли, таби чи ще щось таке), нічого не робити
         const userMessage = this.chatInput.value.trim();
+
+        // If blank text is entered (empty, with only spaces, tabs etc), do nothing
         if (!userMessage) {
             return;
         }
 
-        this.chatInput.value = ''; // Очистити рядок вводу
-        this.appendMessage('user', userMessage); // Додати повідомлення юзера до історії
+        this.chatInput.value = ''; // Clear input text
+        this.appendMessage('user', userMessage); // Append user's message to history
 
-        // Показати кульки завантаження (поки відповідь не завантажиться)
+        // Show loading bubbles until AI response is loaded
         const loadingId = this.showLoadingIndicator();
 
+        // Send message to AI
+        // TODO: probably change method to POST
         try {
-            // Власне, надсилання запиту
             const response = await fetch(
                 `${this.aiEndpoint}?prompt=${encodeURIComponent(userMessage)}`,
                 {
@@ -172,9 +176,9 @@ class ChatManager {
                 throw new Error(`HTTP Error: ${response.status}`);
             }
 
-            // Отримання відповіді
+            // Get response
             const aiResponse = await response.text();
-            this.removeMessage(loadingId); // Прибрати кульки завантаження
+            this.removeMessage(loadingId); // Remove loading bubbles
             this.appendMessage('ai', aiResponse);
         }
         catch (error) {
@@ -185,14 +189,14 @@ class ChatManager {
         }
     }
 
-    // Додати та відобразити повідомлення (від юзера, від ШІ, від системи)
+    // Add message (from user, AI or system) to history and show it in modal
     appendMessage(sender, text) {
         const msgDiv = document.createElement('div');
         msgDiv.className = `flex items-start space-x-2.5 ${sender === 'user' ? 'justify-end' : 'max-w-[85%]'}`;
 
         let innerHTML;
 
-        // ПОВІДОМЛЕННЯ КОРИСТУВАЧА (залишаємо як було, з жорстким escapeHTML)
+        // User's message. escapeHTML is used to sanitize the entered text to prevent XSS-attacks.
         if (sender === 'user') {
             innerHTML = `
                 <div class="bg-orange-600 text-white px-4 py-2.5 rounded-2xl
@@ -201,24 +205,26 @@ class ChatManager {
                 </div>
             `;
         }
-        // ПОВІДОМЛЕННЯ ВІД ШІ (використовуємо Markdown)
+        // AI's message, is also formatted using markdown formatting
         else {
             const isError = sender === 'system';
 
-            // Парсимо Markdown.
-            // Якщо це повідомлення про помилку (system) - парсити не треба.
-            let formattedText = text;
+            // Parse Markdown
+            // If this is system message (like error) - don't parse.
+            let formattedText;
             if (sender === 'ai' && typeof marked !== 'undefined') {
-                // marked.parse() перетворює Markdown на HTML
-                // breaks: true зберігає перенесення рядків (Enter)
+                // marked.parse() makes Markdown an HTML text
+                // breaks: true saves line breaks
                 formattedText = marked.parse(text, { breaks: true });
             }
             else if (sender === 'ai') {
-                // Фолбек: якщо бібліотека не завантажилась, просто міняємо \n на <br>
+                // If markdown library didn't load, change \n на <br>
+                // The text then will be not that nice but still readable.
+                // However, links won't be orange.
                 formattedText = this.escapeHTML(text).replace(/\n/g, '<br>');
             }
             else {
-                // Повідомлення про помилку з'єднання
+                // Message about connection error
                 formattedText = this.escapeHTML(text);
             }
 
@@ -241,7 +247,7 @@ class ChatManager {
         this.scrollToBottom();
     }
 
-    // Показати індикатор завантаження (три кульки типу "Друкує...")
+    // Show loading indicator (three bubbles like "Typing...")
     showLoadingIndicator() {
         const id = `loading-${Date.now()}`;
         const loadingDiv = document.createElement('div');
@@ -270,8 +276,8 @@ class ChatManager {
         return id;
     }
 
-    // Видалити повідомлення з історії (загалом, видаляє кульки завантаження
-    // та привітальне повідомлення на початку діалогу)
+    // Delete message from history (overall, is used to delete loading bubbles
+    // and greeting message)
     removeMessage(id) {
         const element = document.getElementById(id);
         if (element) {
@@ -279,7 +285,7 @@ class ChatManager {
         }
     }
 
-    // Переміститися до останнього повідомлення
+    // Scroll modal to the last message sent
     scrollToBottom() {
         this.chatMessagesContainer.scrollTo({
             top: this.chatMessagesContainer.scrollHeight,
@@ -287,8 +293,11 @@ class ChatManager {
         });
     }
 
-    // Для запобігання XSS-атакам. Замінює керуючі елементи на прості символи,
-    // інструкції з яких браузер не розпізнаватиме
+    // For preventing XSS-attacks. Changes control characters like "< > & '' " to safe symbols,
+    // so the browser won't do any dangerous scripts<br>
+    // NOTE: This is a pretty basic security measure,
+    // therefore some more advanced security will be necessary in future
+    // TODO: add text sanitizing in server logic
     escapeHTML(str) {
         return str
             .replace(

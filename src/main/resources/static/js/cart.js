@@ -1,13 +1,13 @@
 // ==============================================================
-// ЛОГІКА РОБОТИ З КОШИКОМ + РЕНДЕР СТОРІНОК
+// CART HANDLING LOGIC + CART PAGE RENDER
 // ==============================================================
 
 // ===============================================
-// eventListeners (тут він поки один єдиний)
+// eventListeners (for now there is only one)
 // ===============================================
 
 
-// Оновлення бейджика для кошика та стану кнопки при кожному завантаженні сторінки
+// Updating cart badge and "Add" button's state after each page loading
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof updateCartBadge === 'function') updateCartBadge();
 
